@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:app = "http://schemas.android.com/apk/res-auto"
+    style = "@style/roundedLayout"
+
+    >
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id = "@+id/login_email_inp"
+        style="@style/editText"
+
+        android:ems = "10"
+        android:inputType = "textEmailAddress"
+        app:layout_constraintEnd_toEndOf = "parent"
+        app:layout_constraintStart_toStartOf = "parent"
+        app:layout_constraintTop_toTopOf = "parent"
+        app:met_floatingLabel = "highlight"
+        app:met_floatingLabelAlwaysShown = "true"
+        app:met_floatingLabelAnimating = "true"
+        app:met_floatingLabelText = "@string/email_input_label" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id = "@+id/login_password_inp"
+        style="@style/editText"
+        android:inputType = "textPassword"
+        app:layout_constraintEnd_toEndOf = "parent"
+        app:layout_constraintStart_toStartOf = "parent"
+        app:layout_constraintTop_toBottomOf = "@+id/login_email_inp"
+        app:met_floatingLabel = "highlight"
+        app:met_floatingLabelAlwaysShown = "true"
+        app:met_floatingLabelAnimating = "true"
+        app:met_floatingLabelText = "@string/password_input_label" />
+
+    <TextView
+        android:id = "@+id/login_forgetPassword_textView"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:text = "@string/forget_password_textView"
+        app:layout_constraintEnd_toEndOf = "@+id/login_password_inp"
+        app:layout_constraintTop_toBottomOf = "@+id/login_password_inp" />
+
+    <Button
+        android:id = "@+id/login_login_btn"
+        style = "@style/loginButton"
+        android:layout_marginEnd = "8dp"
+        android:layout_marginStart = "8dp"
+        android:text = "@string/login_btn_text"
+        app:layout_constraintEnd_toEndOf = "parent"
+        app:layout_constraintStart_toStartOf = "parent"
+        app:layout_constraintTop_toBottomOf = "@+id/login_forgetPassword_textView" />
+
+    <Button
+        android:id = "@+id/login_signin_btn"
+        style = "@style/loginButton"
+        android:layout_marginEnd = "8dp"
+        android:layout_marginStart = "8dp"
+        android:text = "@string/signIn_btn_text"
+        app:layout_constraintEnd_toEndOf = "parent"
+        app:layout_constraintStart_toStartOf = "parent"
+        app:layout_constraintTop_toBottomOf = "@+id/login_login_btn" />
+</android.support.constraint.ConstraintLayout>

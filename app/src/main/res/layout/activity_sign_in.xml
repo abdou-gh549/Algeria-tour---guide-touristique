@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:app = "http://schemas.android.com/apk/res-auto"
+    xmlns:tools = "http://schemas.android.com/tools"
+    android:layout_width = "match_parent"
+    android:layout_height = "match_parent"
+    android:background="@drawable/layout_background"
+    tools:context = ".SignInActivity">
+
+    <ImageView
+        android:id="@+id/signin_back_btn"
+        android:layout_width = "32dp"
+        android:layout_height = "33dp"
+        android:layout_marginStart = "8dp"
+        android:layout_marginTop = "8dp"
+        android:src = "@drawable/ic_back_white_24dp"
+        app:layout_constraintStart_toStartOf = "parent"
+        app:layout_constraintTop_toTopOf = "parent" />
+
+    <ImageView
+        android:id = "@+id/imageView"
+        android:layout_width = "86dp"
+        android:layout_height = "92dp"
+        android:layout_marginBottom = "8dp"
+        android:layout_marginEnd = "8dp"
+        android:layout_marginStart = "8dp"
+        android:layout_marginTop = "24dp"
+        android:src = "@drawable/signin"
+        app:layout_constraintBottom_toTopOf = "@+id/include3"
+        app:layout_constraintEnd_toEndOf = "parent"
+        app:layout_constraintStart_toStartOf = "parent"
+        app:layout_constraintTop_toTopOf = "parent" />
+
+    <include
+        android:id = "@+id/include3"
+        layout = "@layout/singin_input_layout"
+        android:layout_width = "289dp"
+        android:layout_height = "wrap_content"
+        android:layout_marginBottom = "56dp"
+        android:layout_marginEnd = "8dp"
+        android:layout_marginStart = "16dp"
+        app:layout_constraintBottom_toBottomOf = "parent"
+        app:layout_constraintEnd_toEndOf = "parent"
+        app:layout_constraintStart_toStartOf = "parent" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,10 @@
+<resources>
+    <string name = "app_name">Algeria Tour</string>
+    <string name = "email_input_label">Email</string>
+    <string name = "password_input_label">Mot de passe</string>
+    <string name = "confirme_password_input_label">Confirmer</string>
+    <string name = "forget_password_textView">Mot de passe perdu</string>
+    <string name = "login_btn_text">S\'authentifier</string>
+    <string name = "signIn_btn_text">S\'inscrire</string>
+    <string name = "pseudo_input_label">Pseudo</string>
+</resources>
