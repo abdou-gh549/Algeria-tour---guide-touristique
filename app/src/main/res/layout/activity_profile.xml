@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:app = "http://schemas.android.com/apk/res-auto"
+    xmlns:tools = "http://schemas.android.com/tools"
+    android:layout_width = "match_parent"
+    android:layout_height = "match_parent"
+    android:background = "@drawable/layout_background"
+    tools:context = ".ProfileActivity">
+
+    <ImageView
+        android:layout_width = "29dp"
+        android:layout_height = "33dp"
+        android:layout_marginStart = "8dp"
+        android:src = "@drawable/ic_back_white_24dp"
+        app:layout_constraintStart_toStartOf = "parent" />
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width = "325dp"
+        android:layout_height = "479dp"
+
+        app:layout_constraintBottom_toBottomOf = "parent"
+        app:layout_constraintEnd_toEndOf = "parent"
+        app:layout_constraintStart_toStartOf = "parent"
+        app:layout_constraintTop_toTopOf = "parent"
+        app:layout_constraintVertical_bias = "0.253">
+
+        <LinearLayout
+            android:id = "@+id/linLay"
+            style = "@style/roundedLayout"
+            android:layout_width = "match_parent"
+            android:layout_height = "wrap_content"
+            android:layout_gravity = "bottom"
+            android:layout_margin = "16dp"
+            android:orientation = "vertical"
+            android:paddingStart = "28dp">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id = "@+id/materialEditText"
+                style = "@style/editText"
+                android:layout_marginStart = "8dp"
+                android:focusable="false"
+                android:layout_marginTop = "90dp"
+                app:met_floatingLabel = "highlight"
+                app:met_floatingLabelAlwaysShown = "true"
+                app:met_floatingLabelAnimating = "true"
+                app:met_floatingLabelText = "Nom d'utilisateur"
+                app:met_iconPadding = "0dp"
+                app:met_iconRight = "@drawable/edit_icon" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id = "@+id/materialEditText2"
+
+                style = "@style/editText"
+                android:layout_marginStart = "8dp"
+                android:layout_marginTop = "8dp"
+                app:met_floatingLabel = "highlight"
+                app:met_floatingLabelAlwaysShown = "true"
+                app:met_floatingLabelAnimating = "true"
+                app:met_floatingLabelText = "E-mail"
+                app:met_iconPadding = "0dp"
+                app:met_iconRight = "@drawable/edit_icon" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id = "@+id/materialEditText3"
+                style = "@style/editText"
+                android:layout_marginStart = "8dp"
+                android:layout_marginTop = "8dp"
+                android:inputType = "textPassword"
+                app:met_floatingLabel = "highlight"
+                app:met_floatingLabelAlwaysShown = "true"
+                app:met_floatingLabelAnimating = "true"
+                app:met_floatingLabelText = "Mot de passe"
+                app:met_iconPadding = "0dp"
+                app:met_iconRight = "@drawable/edit_icon" />
+
+            <Button
+                android:id = "@+id/button3"
+                style = "@style/loginButton"
+                android:layout_marginStart = "0dp"
+                android:layout_marginTop = "8dp"
+
+                android:text = "Appliquer les changements" />
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id = "@+id/tst"
+            android:layout_width = "150dp"
+            android:layout_height = "150dp"
+            android:elevation = "10dp"
+            android:src = "@drawable/tst"
+            app:layout_anchor = "@id/linLay"
+            app:layout_anchorGravity = "top|center" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</android.support.constraint.ConstraintLayout>
