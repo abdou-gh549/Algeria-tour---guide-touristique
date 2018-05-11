@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:tools = "http://schemas.android.com/tools"
+    tools:showIn = "navigation_view">
+
+    <group >
+        <item
+            android:id = "@+id/nav_menu_profile"
+            android:icon = "@drawable/ic_menu_person"
+            android:title = "@string/main_navItem_profile" />
+        <item
+            android:id = "@+id/nav_menu_maPosition"
+            android:icon = "@drawable/ic_menu_ma_position"
+            android:title = "@string/main_navItem_ma_position" />
+
+    </group>
+    <item android:title="Other">
+        <menu>
+            <item
+                android:icon="@drawable/ic_contact_us"
+                android:id = "@+id/nav_menu_contactUs"
+                android:title = "@string/main_navItem_contacter_nous" />
+            <item
+                android:icon="@drawable/ic_logout"
+                android:id = "@+id/nav_menu_logout"
+                android:title = "@string/main_navItem_logout" />
+            <item
+                android:id = "@+id/nav_menu_quit"
+                android:title = "@string/main_navItem_exit" />
+        </menu>
+
+    </item>
+
+
+</menu>

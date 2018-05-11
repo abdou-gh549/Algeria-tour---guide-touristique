@@ -4,7 +4,7 @@
     xmlns:tools = "http://schemas.android.com/tools"
     android:layout_width = "match_parent"
     android:layout_height = "match_parent"
-    android:background="@drawable/layout_background"
+    android:background="@drawable/bg_layout_half_bleu"
     tools:context = ".SignInActivity">
 
     <ImageView
@@ -26,6 +26,7 @@
         android:layout_marginStart = "8dp"
         android:layout_marginTop = "24dp"
         android:src = "@drawable/signin"
+
         app:layout_constraintBottom_toTopOf = "@+id/include3"
         app:layout_constraintEnd_toEndOf = "parent"
         app:layout_constraintStart_toStartOf = "parent"

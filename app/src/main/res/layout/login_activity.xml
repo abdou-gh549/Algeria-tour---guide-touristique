@@ -4,7 +4,7 @@
     xmlns:tools = "http://schemas.android.com/tools"
     android:layout_width = "match_parent"
     android:layout_height = "match_parent"
-    android:background = "@drawable/layout_background"
+    android:background = "@drawable/bg_layout_half_bleu"
     tools:context = ".LoginActivity"
     tools:layout_editor_absoluteY = "25dp">
 

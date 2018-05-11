@@ -7,4 +7,13 @@
     <string name = "login_btn_text">S\'authentifier</string>
     <string name = "signIn_btn_text">S\'inscrire</string>
     <string name = "pseudo_input_label">Pseudo</string>
+    <string name = "title_activity_main">MainActivity</string>
+    <string name = "navigation_drawer_open">Open navigation drawer</string>
+    <string name = "navigation_drawer_close">Close navigation drawer</string>
+    <string name = "action_settings">Settings</string>
+    <string name = "main_navItem_profile">Profile</string>
+    <string name = "main_navItem_ma_position">Ma Position</string>
+    <string name = "main_navItem_contacter_nous">Contacter-nous</string>
+    <string name = "main_navItem_logout">Déconnectez</string>
+    <string name = "main_navItem_exit">Quitter</string>
 </resources>
