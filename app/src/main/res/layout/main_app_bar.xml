@@ -5,7 +5,7 @@
     android:layout_width = "match_parent"
     android:layout_height = "match_parent"
     android:background = "@color/white"
-    tools:context = ".MainActivity">
+    tools:context = ".main.MainActivity">
 
     <LinearLayout
         android:id = "@+id/linlay_appBar_view"
@@ -17,32 +17,20 @@
 
         android:orientation = "horizontal">
 
-        <ImageView
+        <ImageButton
             android:id = "@+id/appBar_navDrawerImageView"
-            style = "@style/appBarImageView"
+            style = "@style/appBarImageButton"
             android:layout_weight = "4"
+            android:background = "@null"
             android:src = "@drawable/ic_menu_black" />
 
-        <LinearLayout
+        <android.support.design.widget.TabLayout
+            android:id = "@+id/main_tabLayout"
             android:layout_width = "match_parent"
             android:layout_height = "match_parent"
-            android:layout_gravity = "center"
-            android:layout_weight = "1">
-
-            <ImageView
-                style = "@style/appBarImageView"
-                android:src = "@drawable/ic_home_black_24dp" />
-
-            <ImageView
-                style = "@style/appBarImageView"
-
-                android:src = "@drawable/ic_favorite_black_24dp" />
-
-            <ImageView
-                style = "@style/appBarImageView"
-                android:src = "@drawable/ic_search_black" />
-
-        </LinearLayout>
+            android:layout_weight = "1"
+            app:tabIndicatorHeight = "0dp"
+            app:tabMode = "fixed" />
 
     </LinearLayout>
 
@@ -50,7 +38,7 @@
         android:id = "@+id/main_viewPager"
         android:layout_width = "match_parent"
         android:layout_height = "match_parent"
-        android:layout_marginTop="65dp"/>
+        android:layout_marginTop="65dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id = "@+id/fab"
@@ -58,6 +46,6 @@
         android:layout_height = "50dp"
         android:layout_gravity = "bottom|end"
         android:layout_margin = "@dimen/fab_margin"
-        android:src = "@drawable/ic_map" />
+        android:src = "@drawable/ic_map"/>
 
 </android.support.design.widget.CoordinatorLayout>

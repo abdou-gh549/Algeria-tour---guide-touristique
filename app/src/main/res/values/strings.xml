@@ -16,4 +16,7 @@
     <string name = "main_navItem_contacter_nous">Contacter-nous</string>
     <string name = "main_navItem_logout">Déconnectez</string>
     <string name = "main_navItem_exit">Quitter</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name = "hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,48 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android = "http://schemas.android.com/apk/res/android"
-    xmlns:app = "http://schemas.android.com/apk/res-auto"
     android:layout_width = "match_parent"
     android:layout_height = "@dimen/nav_header_height"
     android:background = "@drawable/nav_header_back_ground"
     android:gravity = "bottom"
     android:orientation = "vertical"
+
     android:theme = "@style/ThemeOverlay.AppCompat.Dark">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id = "@+id/nav_header_profileImage"
         android:layout_width = "90dp"
         android:layout_height = "90dp"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/tst"
-        />
+        android:layout_marginStart = "16dp"
+        android:src = "@drawable/tst" />
+
     <LinearLayout
         android:layout_width = "match_parent"
         android:layout_height = "wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
-        android:orientation="vertical"
-        android:background="@drawable/bg_bleu_faded">
+        android:background = "@drawable/bg_bleu_faded"
+        android:orientation = "vertical"
+        android:paddingBottom = "10dp"
+        android:paddingEnd = "16dp"
+        android:paddingStart = "16dp">
+
         <TextView
-            android:id="@+id/nav_header_pseudoTextView"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:fontFamily=""
+            android:id = "@+id/nav_header_pseudoTextView"
             android:layout_width = "match_parent"
             android:layout_height = "wrap_content"
+            android:fontFamily = ""
             android:paddingTop = "@dimen/nav_header_vertical_spacing"
             android:text = "Ichalamen_si02"
-             />
+            android:textColor = "@color/white"
+            android:textStyle = "bold" />
 
         <TextView
-            android:id="@+id/nav_header_emailTextView"
+            android:id = "@+id/nav_header_emailTextView"
             android:layout_width = "wrap_content"
             android:layout_height = "wrap_content"
-            android:textColor="#ececec"
             android:text = "Ichalamen_si02@gmail.com" />
 
-
     </LinearLayout>
-
 
 </LinearLayout>
