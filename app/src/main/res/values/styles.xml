@@ -6,7 +6,6 @@
         <item name = "colorPrimary">@color/colorPrimary</item>
         <item name = "colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name = "colorAccent">@color/colorAccent</item>
-        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name = "loginButton">
@@ -42,7 +41,15 @@
         <item name = "android:layout_margin">10dp</item>
 
     </style>
+    <style name="favotieRatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">#a3a2a2</item>
+        <item name="colorControlActivated">#807f7f</item>
+    </style>
 
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">#FFF</item>
+        <item name="colorControlActivated">#FFF</item>
+    </style>
 
     <style name = "AppTheme.AppBarOverlay" parent = "ThemeOverlay.AppCompat.Dark.ActionBar" />
 

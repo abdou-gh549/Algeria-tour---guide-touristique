@@ -8,10 +8,7 @@
             android:id = "@+id/nav_menu_profile"
             android:icon = "@drawable/ic_menu_person"
             android:title = "@string/main_navItem_profile" />
-        <item
-            android:id = "@+id/nav_menu_maPosition"
-            android:icon = "@drawable/ic_menu_ma_position"
-            android:title = "@string/main_navItem_ma_position" />
+
 
     </group>
     <item android:title="Other">

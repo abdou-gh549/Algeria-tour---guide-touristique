@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name = "email_already_exist_error" type = "id">E-mail already exist</item>
+    <item name = "pseudo_already_exist_error" type = "id">pseudo already exist</item>
+</resources>

@@ -1,10 +1,10 @@
 package com.algeriatour.main;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.*;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -12,17 +12,26 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.algeriatour.ProfileActivity;
+import com.algeriatour.profile.ProfileActivity;
 import com.algeriatour.R;
+import com.algeriatour.main.favorite.FavoriteFragment;
+import com.algeriatour.main.home.HomeFragment;
+import com.algeriatour.main.searche.SearchFragment;
+import com.algeriatour.utils.StaticValue;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainConstraint.IViewConstraint {
+
+
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
@@ -36,24 +45,46 @@ public class MainActivity extends AppCompatActivity
     TabLayout tabLayout;
 
     private ViewPagerAdapter viewPagerAdapter;
+    private MainPresenter mainPresenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         ButterKnife.bind(this);
+        mainPresenter = new MainPresenter(this);
 
         // declar and add fragment to view Pager adapter
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(new HomeFragment(), R.drawable.ic_home_black_24dp);
-        viewPagerAdapter.addFragment(new FavoriteFragment(), R.drawable.ic_favorite_black_24dp);
+        viewPagerAdapter.addFragment(new FavoriteFragment(), R.drawable.ic_favorite);
         viewPagerAdapter.addFragment(new SearchFragment(), R.drawable.ic_search_black);
 
-        navDrawerBtn.setOnClickListener(e -> drawer.openDrawer(Gravity.START));
-        navigationView.setNavigationItemSelectedListener(this);
+        setUpDrawer();
+
+
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         setUpTabLayout();
+
+        /*************************/
+
+    }
+
+    private void setUpDrawer() {
+        navDrawerBtn.setOnClickListener(e -> drawer.openDrawer(Gravity.START));
+        navigationView.setNavigationItemSelectedListener(this);
+
+        if(StaticValue.isUser){
+            navigationView.inflateMenu(R.menu.main_drawer_user);
+
+        }else{
+            navigationView.inflateMenu(R.menu.main_drawer_visitor);
+            LinearLayout headerView = (LinearLayout) navigationView.getHeaderView(0);
+            headerView  .removeAllViews();
+
+        }
 
     }
 
@@ -61,25 +92,24 @@ public class MainActivity extends AppCompatActivity
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                tab.getIcon().setTint(ContextCompat.getColor(MainActivity.this, R.color
-                        .appBarSelectedIcon));
+                setTabColor(tab, R.color.appBarSelectedIcon);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                tab.getIcon().setTint(ContextCompat.getColor(MainActivity.this, R.color
-                        .appBarIcon));
+                setTabColor(tab, R.color.appBarIcon);
+
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                tab.getIcon().setTint(ContextCompat.getColor(MainActivity.this, R.color
-                        .appBarSelectedIcon));
+                setTabColor(tab, R.color.appBarSelectedIcon);
             }
         });
 
         for (int i = 0; i < viewPagerAdapter.getCount(); i++) {
             tabLayout.getTabAt(i).setIcon(viewPagerAdapter.getFragmentImageId(i));
+
         }
         if (viewPagerAdapter.getCount() > 0) {
             tabLayout.getTabAt(0).select();
@@ -87,39 +117,51 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void setTabColor(TabLayout.Tab tab, int colorId) {
+        Drawable icon = tab.getIcon();
+        if (icon != null) {
+            icon.setTint(ContextCompat.getColor(MainActivity.this, colorId));
+        }
+    }
+
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START))
-            drawer.closeDrawer(GravityCompat.START);
-        else
-            super.onBackPressed();
+        mainPresenter.onBackPressed(drawer.isDrawerOpen(GravityCompat.START));
     }
 
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.nav_menu_profile:
-                Intent intent = new Intent(this, ProfileActivity.class);
-                startActivity(intent);
-                break;
+        return mainPresenter.navigationItemSelected(item.getItemId());
+    }
 
-            case R.id.nav_menu_maPosition:
-                Toast.makeText(this, "ma position clicked", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_menu_contactUs:
-                Toast.makeText(this, "contact Us CLicked", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_menu_logout:
-                Toast.makeText(this, "logout clicked", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_menu_quit:
-                finish();
-                break;
-        }
 
+    @Override
+    public void defaultBackPress() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public void closeDrawer() {
         drawer.closeDrawer(GravityCompat.START);
-        return true;
+    }
+
+    @Override
+    public void startProfileActivity() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+    }
+
+
+    @Override
+    public void startContactUs() {
+        Toast.makeText(this, "contact Us CLicked", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void exitApp() {
+        finish();
     }
 
 

@@ -5,9 +5,10 @@
     android:layout_width = "match_parent"
     android:layout_height = "match_parent"
     android:background="@drawable/bg_layout_half_bleu"
-    tools:context = ".SignInActivity">
+    tools:context = ".signin.SignInActivity">
 
     <ImageView
+        android:background = "?android:attr/selectableItemBackground"
         android:id="@+id/signin_back_btn"
         android:layout_width = "32dp"
         android:layout_height = "33dp"

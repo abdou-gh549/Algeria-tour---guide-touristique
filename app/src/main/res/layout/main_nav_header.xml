@@ -5,7 +5,6 @@
     android:background = "@drawable/nav_header_back_ground"
     android:gravity = "bottom"
     android:orientation = "vertical"
-
     android:theme = "@style/ThemeOverlay.AppCompat.Dark">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -16,6 +15,7 @@
         android:src = "@drawable/tst" />
 
     <LinearLayout
+        android:id="@+id/nav_header_information_layout"
         android:layout_width = "match_parent"
         android:layout_height = "wrap_content"
         android:background = "@drawable/bg_bleu_faded"

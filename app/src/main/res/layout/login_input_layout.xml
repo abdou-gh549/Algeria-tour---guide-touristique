@@ -2,12 +2,13 @@
 <android.support.constraint.ConstraintLayout xmlns:android = "http://schemas.android.com/apk/res/android"
     xmlns:app = "http://schemas.android.com/apk/res-auto"
     style = "@style/roundedLayout"
+    android:paddingBottom="8dp"
 
     >
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id = "@+id/login_email_inp"
-        style="@style/editText"
+        style = "@style/editText"
 
         android:ems = "10"
         android:inputType = "textEmailAddress"
@@ -21,7 +22,7 @@
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id = "@+id/login_password_inp"
-        style="@style/editText"
+        style = "@style/editText"
         android:inputType = "textPassword"
         app:layout_constraintEnd_toEndOf = "parent"
         app:layout_constraintStart_toStartOf = "parent"
@@ -36,8 +37,10 @@
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
         android:text = "@string/forget_password_textView"
+        android:clickable="true"
         app:layout_constraintEnd_toEndOf = "@+id/login_password_inp"
-        app:layout_constraintTop_toBottomOf = "@+id/login_password_inp" />
+        app:layout_constraintTop_toBottomOf = "@+id/login_password_inp"
+        android:focusable = "true" />
 
     <Button
         android:id = "@+id/login_login_btn"

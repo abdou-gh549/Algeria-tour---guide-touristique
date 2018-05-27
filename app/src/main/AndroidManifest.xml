@@ -9,15 +9,17 @@
         android:roundIcon = "@mipmap/ic_launcher_round"
         android:supportsRtl = "true"
         android:theme = "@style/AppTheme">
-        <activity android:name = ".LoginActivity" />
-        <activity android:name = ".SignInActivity"></activity>
-        <activity android:name = ".ProfileActivity">
-
-        </activity>
+        <activity android:name = ".login.LoginActivity" />
+        <activity android:name = ".signin.SignInActivity" />
+        <activity android:name = ".profile.ProfileActivity" />
         <activity
             android:name = ".main.MainActivity"
-            android:label = "@string/title_activity_main"
-            android:theme = "@style/AppTheme">
+            android:label = "@string/title_activity_main" />
+        <activity android:name = ".endroit.CentreIntereActivity">
+
+        </activity>
+        <activity android:name = ".villes.VilleActivity"></activity>
+        <activity android:name = ".SplashActivity">
             <intent-filter>
                 <action android:name = "android.intent.action.MAIN" />
 

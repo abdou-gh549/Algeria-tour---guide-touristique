@@ -1,14 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android = "http://schemas.android.com/apk/res/android"
     xmlns:tools = "http://schemas.android.com/tools"
     android:layout_width = "match_parent"
     android:layout_height = "match_parent"
-    tools:context = ".main.FavoriteFragment">
+    android:orientation = "vertical"
+    tools:context = ".main.favorite.FavoriteFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width = "match_parent"
-        android:layout_height = "match_parent"
-        android:text = "Hello frome favorit" />
+        android:id = "@+id/textView2"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:layout_marginStart = "8dp"
+        android:layout_marginTop = "8dp"
+        android:text = "Favoris" />
 
-</FrameLayout>
+    <FrameLayout
+        android:layout_width = "match_parent"
+        android:layout_height = "match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id = "@+id/favorite_recyclerView"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent" />
+
+        <LinearLayout
+            android:id="@+id/favorite_visitorLayout"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_gravity = "center"
+
+            android:orientation = "vertical">
+
+            <TextView
+                android:layout_width = "wrap_content"
+                android:layout_height = "wrap_content"
+                android:layout_gravity = "center"
+                android:gravity = "center"
+                android:text = "Pour Consulter list des favoritsvous devez vous connecter
+        " />
+
+            <TextView
+                android:id = "@+id/favorite_visitorConnectTxtV"
+                android:layout_width = "wrap_content"
+                android:layout_height = "wrap_content"
+                android:layout_gravity = "center"
+                android:gravity = "center"
+                android:text = "Click pour connecté"
+                android:textColor = "@color/colorPrimary"
+                android:textStyle = "bold" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>
