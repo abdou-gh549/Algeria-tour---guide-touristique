@@ -9,13 +9,13 @@
     <android.support.v7.widget.RecyclerView
         android:id = "@+id/home_recyclerView"
         android:layout_width = "match_parent"
-        android:layout_height = "473dp"
+        android:layout_height = "0dp"
 
         app:layout_constraintBottom_toBottomOf = "parent"
         app:layout_constraintEnd_toEndOf = "parent"
         app:layout_constraintHorizontal_bias = "1.0"
         app:layout_constraintStart_toStartOf = "parent"
-        app:layout_constraintTop_toBottomOf = "@+id/home_spinner_filter"
+        app:layout_constraintTop_toBottomOf = "@+id/dialog_filter_btn"
         app:layout_constraintVertical_bias = "0.0" />
 
     <TextView
@@ -27,16 +27,27 @@
         app:layout_constraintStart_toStartOf = "parent"
         app:layout_constraintTop_toTopOf = "parent" />
 
+    <LinearLayout
 
-    <Spinner
-        android:gravity="end"
-        android:overlapAnchor="false"
-        android:id = "@+id/home_spinner_filter"
+        android:id = "@+id/dialog_filter_btn"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
-        android:layout_centerHorizontal = "true"
         android:layout_marginEnd = "8dp"
+        android:background = "?android:attr/selectableItemBackground"
+        android:orientation = "horizontal"
         app:layout_constraintEnd_toEndOf = "parent"
-        app:layout_constraintTop_toTopOf = "parent" />
+        app:layout_constraintTop_toTopOf = "parent">
+
+        <TextView
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"
+            android:gravity = "center_vertical"
+            android:text = "Wilaya" />
+
+        <ImageView
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:src = "@drawable/ic_drop_down" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import com.algeriatour.R;
 import com.algeriatour.login.LoginActivity;
 import com.algeriatour.utils.StaticValue;
+import com.algeriatour.utils.User;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,22 +45,25 @@ public class FavoriteFragment extends Fragment {
         ButterKnife.bind(this, view);
         recyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(getContext());
-        recyclerViewAdapter = new FavoriteRecycleViewAdapter();
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(recyclerViewAdapter);
+        setUpAdapter();
         // user test
         // TODO mazl makamlthach
-        if(StaticValue.isUser){
+        if(User.getUserType() == StaticValue.MEMBER){
             recyclerView.setVisibility(View.VISIBLE);
             visitorLayout.setVisibility(View.GONE);
         }else{
             recyclerView.setVisibility(View.GONE);
             visitorLayout.setVisibility(View.VISIBLE);
         }
-
         return view;
 
+    }
+
+    private void setUpAdapter() {
+        mLayoutManager = new LinearLayoutManager(getContext());
+        recyclerViewAdapter = new FavoriteRecycleViewAdapter();
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(recyclerViewAdapter);
     }
 
     @OnClick(R.id.favorite_visitorConnectTxtV)

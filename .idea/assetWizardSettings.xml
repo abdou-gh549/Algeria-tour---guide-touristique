@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/D:/WINDOWS/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_person_add_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/D:/WINDOWS/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_arrow_drop_down_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -34,7 +34,7 @@
                         <option name="values">
                           <map>
                             <entry key="opacityPercent" value="58" />
-                            <entry key="outputName" value="ic_person_add" />
+                            <entry key="outputName" value="ic_drop_down" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="C:\Users\abdellah\Desktop\Logo.svg" />
                           </map>

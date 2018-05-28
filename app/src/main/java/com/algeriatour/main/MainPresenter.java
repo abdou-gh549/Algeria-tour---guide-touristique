@@ -1,6 +1,8 @@
 package com.algeriatour.main;
 
 import com.algeriatour.R;
+import com.algeriatour.utils.StaticValue;
+import com.algeriatour.utils.User;
 
 public class MainPresenter {
     private MainConstraint.IViewConstraint m_mainView;
@@ -15,15 +17,22 @@ public class MainPresenter {
                 m_mainView.startProfileActivity();
                 break;
 
-
             case R.id.nav_menu_contactUs:
                 m_mainView.startContactUs();
                 break;
             case R.id.nav_menu_logout:
+                // change static var
+                User.setUserType(StaticValue.VISITOR);
+                // TODO : remove from sharedPreference !
+
                 // logout
+                m_mainView.disconnect();
                 break;
             case R.id.nav_menu_quit:
                 m_mainView.exitApp();
+                break;
+            case R.id.nav_menu_creatAccount:
+                m_mainView.openLoginActivity();
                 break;
         }
 
@@ -37,6 +46,19 @@ public class MainPresenter {
             m_mainView.closeDrawer();
         }else{
             m_mainView.defaultBackPress();
+        }
+    }
+
+    public void setUpDrawerInformation(String email) {
+        if(email.isEmpty()){
+            // visitor mode
+            m_mainView.makeItVisitorDrawer();
+        }
+        else{
+            //user mode
+
+            m_mainView.makeItMembreDrawer();
+
         }
     }
 }

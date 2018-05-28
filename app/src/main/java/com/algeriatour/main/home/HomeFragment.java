@@ -1,6 +1,7 @@
 package com.algeriatour.main.home;
 
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,27 +9,25 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
 
 import com.algeriatour.R;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements HomeFragmentConstraint.ViewContsraint {
 
     @BindView(R.id.home_recyclerView)
     RecyclerView recyclerView;
 
-    @BindView(R.id.home_spinner_filter)
-    Spinner spinner_filter;
-
+    HomeRecycleViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private HomeFragementPresenter presenter;
+    private FilterDialog filterDialog;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -40,36 +39,41 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        ButterKnife.bind(this,view);
-        recyclerView.setHasFixedSize(true);
+        ButterKnife.bind(this, view);
 
-        mLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(mLayoutManager);
+        presenter = new HomeFragementPresenter(this);
 
-        HomeRecycleViewAdapter mAdapter = new  HomeRecycleViewAdapter();
-        recyclerView.setAdapter(mAdapter);
+        setUpRecyclerView();
+        initFilterDialog();
 
-
-
-
-        ArrayList<StateVO> listVOs = new ArrayList<>();
-
-        listVOs.add(new StateVO("wilaya "));
-        listVOs.add(new StateVO("alger"));
-        listVOs.add(new StateVO("blida"));
-        listVOs.add(new StateVO("Tizi Ouezou", true));
-        listVOs.add(new StateVO("Setif"));
-        listVOs.add(new StateVO("Oran"));
-        listVOs.add(new StateVO("Tlemcen"));
-
-        SpinnerAdapter myAdapter = new SpinnerAdapter(getActivity(), 0, listVOs);
-        spinner_filter.setAdapter(myAdapter);
-
-
-
+        presenter.loadDataToRecylerView();
 
 
         return view;
     }
 
+    private void initFilterDialog() {
+        filterDialog = new FilterDialog(getContext());
+    }
+
+    private void setUpRecyclerView() {
+        recyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new HomeRecycleViewAdapter();
+        recyclerView.setAdapter(mAdapter);
+    }
+
+    @OnClick(R.id.dialog_filter_btn)
+    void onOpenDialogFilterClicked(){
+        filterDialog.show();
+        filterDialog.saveState();
+    }
+
+    @Override
+    public void addVilleToAdapter( /* class ville */) {
+        // Todo finish funciton
+        mAdapter.addVille(/* class type ville */);
+    }
 }

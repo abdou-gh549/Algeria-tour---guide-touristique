@@ -1,19 +1,19 @@
 package com.algeriatour.main.home;
 
-public class StateVO {
+public class Wilaya {
     private String title;
     private boolean selected;
 
-    StateVO(){
+    Wilaya(){
         selected =  false;
         title = "item";
     }
-    StateVO(String title, boolean selected){
+    Wilaya(String title, boolean selected){
         this.selected =  selected;
         this.title =  title;
 
     }
-    StateVO(String title){
+    Wilaya(String title){
         this.title =  title;
         this.selected =  false;
     }

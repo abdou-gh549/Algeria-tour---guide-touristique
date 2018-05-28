@@ -42,6 +42,8 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SIGN_IN_TAG) {
+            if (data == null)
+                return;
             Bundle bundle = data.getExtras();
             String email = "";
             if (bundle != null) {
@@ -64,11 +66,11 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
     @OnClick(R.id.login_exit_imageview)
     public void onExitImageViewClicked() {
         Bundle bundle = getIntent().getExtras();
-        assert bundle != null;
-        boolean startFromSplashScreen = bundle.getBoolean(StaticValue.START_FROM_SPLASH_TAG, false);
-        if (startFromSplashScreen) {
+
+        if(bundle != null && bundle.getBoolean(StaticValue.START_FROM_SPLASH_TAG, false)){
             startMainActiviy(null);
         }
+
         finish();
     }
 
@@ -123,6 +125,8 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
         Intent intent = new Intent(this, MainActivity.class);
         if (userEmail != null){
             intent.putExtra(StaticValue.EMAIL_TAGE, userEmail);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         }
         startActivity(intent);
 

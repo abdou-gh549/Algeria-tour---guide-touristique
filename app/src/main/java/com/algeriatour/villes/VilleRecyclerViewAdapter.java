@@ -1,11 +1,13 @@
 package com.algeriatour.villes;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.algeriatour.R;
+import com.algeriatour.endroit.CentreIntereActivity;
 
 public class VilleRecyclerViewAdapter extends RecyclerView.Adapter<VilleRecyclerViewAdapter.ViewHolder>{
     @Override
@@ -19,7 +21,6 @@ public class VilleRecyclerViewAdapter extends RecyclerView.Adapter<VilleRecycler
         // setup item
     }
 
-
     @Override
     public int getItemCount() {
         return 30;
@@ -30,6 +31,11 @@ public class VilleRecyclerViewAdapter extends RecyclerView.Adapter<VilleRecycler
 
         ViewHolder(View v) {
             super(v);
+
+            v.setOnClickListener(view ->{
+                Intent intent = new Intent(view.getContext(), CentreIntereActivity.class);
+                view.getContext().startActivity(intent);
+            });
         }
     }
 }

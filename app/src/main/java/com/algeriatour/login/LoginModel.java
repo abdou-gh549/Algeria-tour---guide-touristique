@@ -8,6 +8,6 @@ public class LoginModel implements LoginConstraint.modelConstraint {
     public boolean userExist(String email, String psw) {
 
 
-        return StaticValue.userExist;
+        return StaticValue.isUser = StaticValue.userExist;
     }
 }

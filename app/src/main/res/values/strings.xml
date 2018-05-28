@@ -27,4 +27,55 @@
     <string name = "space_pseudo_error">les escape ne sont pas permis</string>
     <string name = "unmatch_password_error">unmatch passworde</string>
     <string name = "signIn_sucess">SignIn Success</string>
+
+    <string-array name = "algeria_wilayas">
+        <item>Adrar</item>
+        <item>Chlef</item>
+        <item>Laghouat</item>
+        <item>Oum El Bouaghi</item>
+        <item>Batna</item>
+        <item>Bejaia</item>
+        <item>Biskra</item>
+        <item>Bechar</item>
+        <item>Blida</item>
+        <item>Bouira</item>
+        <item>Tamanrasset</item>
+        <item>Tebessa</item>
+        <item>Tlemcen</item>
+        <item>Tiaret</item>
+        <item>Tizi Ouzou</item>
+        <item>Alger</item>
+        <item>Djelfa</item>
+        <item>Jijel</item>
+        <item>Setif</item>
+        <item>Saida</item>
+        <!--<item>Skikda</item>
+        <item>Sidi Bel Abbes</item>
+        <item>Annaba</item>
+        <item>Guelma</item>
+        <item>Constantine</item>
+        <item>Medea</item>
+        <item>Mostaganem</item>
+        <item>MSila</item>
+        <item>Mascara</item>
+        <item>Ouargla</item>
+        <item>Oran</item>
+        <item>El Bayadh</item>
+        <item>Illizi</item>
+        <item>Bordj Bou Arreridj</item>
+        <item>Boumerdes</item>
+        <item>El Tarf</item>
+        <item>Tindouf</item>
+        <item>Tissemsilt</item>
+        <item>Oued</item>
+        <item>Khenchela</item>
+        <item>Souk Ahras</item>
+        <item>Tipaza</item>
+        <item>Mila</item>
+        <item>Ain Defla</item>
+        <item>Naama</item>
+        <item>Ain Temouchent</item>
+        <item>Ghardaia</item>
+        <item>Relizanes</item>-->
+    </string-array>
 </resources>
