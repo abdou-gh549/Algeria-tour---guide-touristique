@@ -8,11 +8,14 @@ public class MainConstraint {
         void startProfileActivity();
         void startContactUs();
         void exitApp();
-        public void disconnect();
+        void disconnect();
 
         void makeItVisitorDrawer();
         void makeItMembreDrawer();
         void openLoginActivity();
+
+        void setDrawerEmail(String email);
+        void setDrawerPseudo(String pseudo);
     }
 
 }

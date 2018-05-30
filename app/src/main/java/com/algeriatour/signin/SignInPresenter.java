@@ -4,44 +4,27 @@ package com.algeriatour.signin;
 import com.algeriatour.R;
 import com.algeriatour.utils.FormatValidator;
 
-public class SignInPresenter  {
+public class SignInPresenter  implements SignInConstraint.PresenterConstraint{
     private SignInConstraint.ViewConstraint signInView;
     private SignInModel signInModel;
 
     public SignInPresenter(SignInConstraint.ViewConstraint signInView) {
         this.signInView = signInView;
-        signInModel = new SignInModel();
+        signInModel = new SignInModel(this);
     }
 
 
     public void signIn() {
         if(!checkInput())
             return;
-
-
-        if (signInModel.emailAlreadyExist( signInView.getEmail())){
-            signInView.showEmailFieldError( signInView.getStringFromResource(R.id
-                    .email_already_exist_error));
-        }
-        if (signInModel.pseudoAlreadyExist( signInView.getPseudo())){
-            signInView.showPasswordFieldError(signInView.getStringFromResource(R.id
-                    .pseudo_already_exist_error));
-        }
-
         // signInProcess
         String pseudo = signInView.getPseudo();
         String email = signInView.getEmail();
         String password = signInView.getPassword();
-
-        boolean signInResult = signInModel.signIn(pseudo, email, password);
-        if( signInResult ){
-            signInView.signInSuccess();
-        }
-        else{
-            signInView.signInFail("Sign In Fail !");
-        }
-
+        signInView.showProgressDialog();
+        signInModel.signIn(pseudo, email, password);
     }
+
     private boolean checkInput(){
         // pseudo check
         int inputTocheck = 4;
@@ -72,5 +55,17 @@ public class SignInPresenter  {
         }else inputValid++;
 
         return inputTocheck == inputValid;
+    }
+
+    @Override
+    public void onSignInSuccess() {
+        signInView.hideProgressDialog();
+        signInView.signInSuccess();
+    }
+
+    @Override
+    public void onSignInFail(String msg) {
+        signInView.hideProgressDialog();
+        signInView.signInFail(msg);
     }
 }

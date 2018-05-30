@@ -18,7 +18,7 @@
         app:met_floatingLabel = "highlight"
         app:met_floatingLabelAlwaysShown = "true"
         app:met_floatingLabelAnimating = "true"
-        app:met_floatingLabelText = "@string/email_input_label" />
+        app:met_floatingLabelText = "@string/pseudo_input_label" />
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id = "@+id/login_password_inp"

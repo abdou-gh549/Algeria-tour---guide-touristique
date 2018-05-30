@@ -14,12 +14,16 @@ public class SignInConstraint {
         String getPassword();
         String getConfirmationPassword();
         String getStringFromResource(int id);
+        void showProgressDialog();
+        void hideProgressDialog();
     }
 
     public interface  ModelConstraint{
-        boolean emailAlreadyExist(String Email);
-        boolean pseudoAlreadyExist(String Email);
-        boolean signIn(String pseudo, String email, String password);
+        void signIn(String pseudo, String email, String password);
+    }
+    public interface PresenterConstraint{
+        void onSignInSuccess();
+        void onSignInFail(String mgs);
 
     }
 }

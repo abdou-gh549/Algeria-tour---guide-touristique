@@ -33,30 +33,15 @@
         app:layout_constraintStart_toStartOf = "parent"
         app:layout_constraintTop_toTopOf = "parent">
 
-        <LinearLayout
+
+        <TextView
+            android:id="@+id/profile_pseudo_textView"
+            android:textSize="32dp"
+            android:paddingRight="8dp"
             android:layout_width = "match_parent"
             android:layout_height = "wrap_content"
-            android:orientation = "horizontal">
-
-            <com.rengwuxian.materialedittext.MaterialEditText
-                android:id = "@+id/profile_userNameField"
-                style = "@style/editText"
-                android:layout_marginStart = "8dp"
-                android:layout_weight = "1"
-                android:enabled = "false"
-                app:met_floatingLabel = "highlight"
-                app:met_floatingLabelAlwaysShown = "true"
-                app:met_floatingLabelAnimating = "true"
-                app:met_floatingLabelText = "Nom d'utilisateur"
-                app:met_iconPadding = "0dp" />
-
-            <ImageView
-                android:id = "@+id/profile_editUserNameImgV"
-                android:layout_width = "wrap_content"
-                android:layout_height = "match_parent"
-                android:padding = "5dp"
-                android:src = "@drawable/edit_icon" />
-        </LinearLayout>
+            android:gravity="center"
+            android:text="User"/>
 
         <LinearLayout
             android:layout_width = "match_parent"
@@ -128,7 +113,7 @@
                 android:layout_width = "wrap_content"
                 android:layout_height = "wrap_content"
                 android:layout_marginStart = "8dp"
-                android:text = "20 Mars 2018" />
+                android:text = "... ... ..." />
         </LinearLayout>
 
         <Button

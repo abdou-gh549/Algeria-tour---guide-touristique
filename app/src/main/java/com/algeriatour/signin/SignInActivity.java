@@ -6,12 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.algeriatour.R;
+import com.algeriatour.utils.Networking;
 import com.algeriatour.utils.StaticValue;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dmax.dialog.SpotsDialog;
 import es.dmoral.toasty.Toasty;
 
 public class SignInActivity extends AppCompatActivity implements SignInConstraint.ViewConstraint {
@@ -30,6 +32,7 @@ public class SignInActivity extends AppCompatActivity implements SignInConstrain
     //other declaration
 
     SignInPresenter presenter;
+    private SpotsDialog progressDialog;
 
 
     @Override
@@ -38,6 +41,9 @@ public class SignInActivity extends AppCompatActivity implements SignInConstrain
         setContentView(R.layout.signin_activity);
         ButterKnife.bind(this);
         presenter = new SignInPresenter(this);
+        Networking.initAndroidNetworking(this);
+        progressDialog = new SpotsDialog(this);
+
     }
 
     @OnClick(R.id.signin_back_btn)
@@ -53,6 +59,16 @@ public class SignInActivity extends AppCompatActivity implements SignInConstrain
     @Override
     public String getStringFromResource(int id) {
         return getString(id);
+    }
+
+    @Override
+    public void showProgressDialog() {
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        progressDialog.hide();
     }
 
     @Override
@@ -84,7 +100,7 @@ public class SignInActivity extends AppCompatActivity implements SignInConstrain
     public void signInSuccess() {
         Toasty.success(this, getString(R.string.signIn_sucess), Toast.LENGTH_LONG, true).show();
         Intent intent = new Intent();
-        intent.putExtra(StaticValue.EMAIL_TAGE, getEmail());
+        intent.putExtra(StaticValue.PSEUDO_TAGE, getPseudo());
         setResult(StaticValue.SIGN_IN_RESULT_TAGE, intent);
         finish();
     }

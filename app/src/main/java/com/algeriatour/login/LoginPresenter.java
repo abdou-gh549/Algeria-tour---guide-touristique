@@ -1,43 +1,53 @@
 package com.algeriatour.login;
 
 import com.algeriatour.R;
-import com.algeriatour.utils.FormatValidator;
 
-public class LoginPresenter {
+public class LoginPresenter implements LoginConstraint.PresenterConstraint{
 
     private LoginConstraint.viewConstraint loginView;
     private LoginModel loginModel;
 
     public LoginPresenter(LoginConstraint.viewConstraint loginVeiw) {
         this.loginView = loginVeiw;
-        loginModel = new LoginModel();
+        loginModel = new LoginModel(this);
     }
 
-    void authentificationButtonClicked() {
-        String email = loginView.getEmail();
-        String psw = loginView.getEmail();
+    @Override
+    public void doAuthentification() {
+        String pseudo = loginView.getPseudo();
+        String psw = loginView.getPassword();
 
         // if input are not valid quit function
-        if( ! checkInput(email, psw) )
+        if( ! checkInput(pseudo, psw) )
             return;
-
-        if( loginModel.userExist(email, psw) ){
-            loginView.showLoginSucess( "Login Success !");
-            loginView.startMainActiviy(email);
-        }else{
-            loginView.showLoginFailed("User doesn't exist !");
-        }
-
+        loginView.showProgressDialog();
+        loginModel.doLogin(pseudo, psw);
     }
 
-    private boolean checkInput(String email, String psw) {
+
+
+    @Override
+    public void onLoginSucess(String pseudo, String psw, String email) {
+        loginView.hideProgressDialog();
+        loginView.showLoginSucess( "Login Success !");
+        loginView.startMainActiviy(pseudo, psw, email);
+    }
+
+    @Override
+    public void onLoginFail(String errorMsg) {
+        loginView.hideProgressDialog();
+        loginView.showLoginFailed(errorMsg);
+    }
+
+
+    private boolean checkInput(String pseudo, String psw) {
 
         boolean inputValid = true;
-        if (email.isEmpty()) {
-            loginView.showEmailError(loginView.getStringFromRessource(R.string.empty_email_error));
+        if (pseudo.isEmpty()) {
+            loginView.showPseudoError(loginView.getStringFromRessource(R.string.empy_pseudo_error));
             inputValid = false;
-        } else if (!FormatValidator.isValidEmail(email)) {
-            loginView.showEmailError(loginView.getStringFromRessource(R.string.invalid_email_format_error));
+        } else if (pseudo.contains(" ")) {
+            loginView.showPseudoError(loginView.getStringFromRessource(R.string.space_pseudo_error));
             inputValid = false;
         }
 

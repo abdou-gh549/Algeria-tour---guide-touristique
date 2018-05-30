@@ -1,6 +1,5 @@
 package com.algeriatour.main;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,7 +15,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.algeriatour.R;
@@ -31,6 +30,7 @@ import com.algeriatour.utils.User;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.dmoral.toasty.Toasty;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainConstraint.IViewConstraint {
@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     @Override
     protected void onDestroy() {
         // reset user type to visitor
@@ -105,12 +104,23 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         String email = "";
+        String pseudo = "";
+        try {
+            Log.d("tixx", "setUpDrawer: im in ty");
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null) {
+                Log.d("tixx", "setUpDrawer: im in if");
+                email = bundle.getString(StaticValue.EMAIL_TAGE);
+                pseudo = bundle.getString(StaticValue.PSEUDO_TAGE);
+            }
+        } catch (Exception exp) {
+            Log.d("tixx", "setUpDrawer: im in catch");
+            //just to catch null exception hehehehe
+        }
+        Log.d("tixx", "setUpDrawer: im in end of fucntion email = "+ email+" pseudo = "+pseudo);
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null)
-            email = bundle.getString(StaticValue.EMAIL_TAGE);
+        mainPresenter.setUpDrawerInformation(email, pseudo);
 
-        mainPresenter.setUpDrawerInformation(email);
 
     }
 
@@ -154,7 +164,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     @Override
     public void onBackPressed() {
         mainPresenter.onBackPressed(drawer.isDrawerOpen(GravityCompat.START));
@@ -177,8 +186,18 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void startProfileActivity() {
-        Intent intent = new Intent(this, ProfileActivity.class);
-        startActivity(intent);
+        try {
+            Bundle bundle = getIntent().getExtras();
+            String password = bundle.getString(StaticValue.PASSWORD_TAGE);
+            String pseudo = bundle.getString(StaticValue.PSEUDO_TAGE);
+            Intent intent = new Intent(this, ProfileActivity.class);
+            intent.putExtra(StaticValue.PASSWORD_TAGE, password);
+            intent.putExtra(StaticValue.PSEUDO_TAGE, pseudo);
+            startActivity(intent);
+        } catch (Exception exp) {
+            Toasty.error(this, "sothing happend cant open profile", Toast.LENGTH_LONG, true).show();
+        }
+
     }
 
     @Override
@@ -210,7 +229,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void disconnect(){
+    public void setDrawerEmail(String email) {
+        LinearLayout headerView = (LinearLayout) navigationView.getHeaderView(0);
+        TextView emailTextView = headerView.findViewById(R.id.nav_header_emailTextView);
+        emailTextView.setText(email);
+    }
+
+    @Override
+    public void setDrawerPseudo(String pseudo) {
+        LinearLayout headerView = (LinearLayout) navigationView.getHeaderView(0);
+        TextView pseudoTextView = headerView.findViewById(R.id.nav_header_pseudoTextView);
+        pseudoTextView.setText(pseudo);
+    }
+
+    @Override
+    public void disconnect() {
         Intent intent = new Intent(this, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

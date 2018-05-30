@@ -49,15 +49,16 @@ public class MainPresenter {
         }
     }
 
-    public void setUpDrawerInformation(String email) {
-        if(email.isEmpty()){
+    public void setUpDrawerInformation(String email, String pseudo) {
+        if(email.isEmpty() || pseudo.isEmpty()){
             // visitor mode
             m_mainView.makeItVisitorDrawer();
         }
         else{
             //user mode
-
             m_mainView.makeItMembreDrawer();
+            m_mainView.setDrawerEmail(email);
+            m_mainView.setDrawerPseudo(pseudo);
 
         }
     }

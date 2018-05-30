@@ -1,21 +1,26 @@
 package com.algeriatour.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.algeriatour.R;
+import com.algeriatour.main.MainActivity;
+import com.algeriatour.utils.Networking;
+import com.algeriatour.utils.StaticValue;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dmax.dialog.SpotsDialog;
 import es.dmoral.toasty.Toasty;
 
 public class ProfileActivity extends AppCompatActivity implements ProfileConstraint.ViewConstrain {
-    @BindView(R.id.profile_userNameField)
-    MaterialEditText userNameField;
+    @BindView(R.id.profile_pseudo_textView)
+    TextView pseudoTextView;
 
     @BindView(R.id.profile_passwordField)
     MaterialEditText passwordField;
@@ -27,21 +32,34 @@ public class ProfileActivity extends AppCompatActivity implements ProfileConstra
     TextView dateInscreptionTextView;
 
     ProfilePresenter presenter;
+    private SpotsDialog progressDialog;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_activity);
         ButterKnife.bind(this);
         presenter = new ProfilePresenter(this);
-
+        Networking.initAndroidNetworking(this);
+        progressDialog = new SpotsDialog(this);
         loadData();
     }
 
     private void loadData() {
-        emailField.setText("abdellah.tst@gmail.com");
-        userNameField.setText("tixx");
-        passwordField.setText("abcdefghijklm");
-        dateInscreptionTextView.setText("12/10/2018");
+        Bundle bundle = getIntent().getExtras();
+        String pseudo;
+        String psw;
+        try {
+
+            pseudo = bundle.getString(StaticValue.PSEUDO_TAGE);
+            psw = bundle.getString(StaticValue.PASSWORD_TAGE);
+            presenter.loadProfileData(pseudo, psw);
+        } catch (Exception exp) {
+            showToastError("can't get profile information try later");
+            finish();
+        }
+
     }
 
 
@@ -50,18 +68,10 @@ public class ProfileActivity extends AppCompatActivity implements ProfileConstra
         finish();
     }
 
-    @OnClick(R.id.profile_editUserNameImgV)
-    public void onEditUserNameImgVClicked() {
-        userNameField.setEnabled(true);
-        emailField.setEnabled(false);
-        passwordField.setEnabled(false);
-        userNameField.requestFocus();
-    }
 
     @OnClick(R.id.profile_editEmailImgV)
     public void onEditEmailImgVClicked() {
         emailField.setEnabled(true);
-        userNameField.setEnabled(false);
         passwordField.setEnabled(false);
         emailField.requestFocus();
     }
@@ -69,18 +79,17 @@ public class ProfileActivity extends AppCompatActivity implements ProfileConstra
     @OnClick(R.id.profile_editPasswordImgV)
     public void onEditPasswordImgVClicked() {
         passwordField.setEnabled(true);
-        userNameField.setEnabled(false);
         emailField.setEnabled(false);
         passwordField.requestFocus();
     }
 
     @OnClick(R.id.profile_saveChangeBtn)
-    public void onSaveChangeClick(){
+    public void onSaveChangeClick() {
         presenter.onSaveClick();
     }
 
     @OnClick(R.id.profile_cancelBtn)
-    public void onCanclClick(){
+    public void onCanclClick() {
         finish();
     }
 
@@ -94,10 +103,6 @@ public class ProfileActivity extends AppCompatActivity implements ProfileConstra
         passwordField.setError(msg);
     }
 
-    @Override
-    public void showUserNameError(String msg) {
-        userNameField.setError(msg);
-    }
 
     @Override
     public void showToastError(String msg) {
@@ -110,18 +115,14 @@ public class ProfileActivity extends AppCompatActivity implements ProfileConstra
     }
 
     @Override
-    public void enableField(int fieldNumber) {
-        MaterialEditText fields[] = new MaterialEditText[]{userNameField, emailField, passwordField};
-        if (fieldNumber > 0 && fieldNumber < 4) {
-            for (int i = 1; i <= 3; i++) {
-                if (i == fieldNumber) {
-                    fields[i].setEnabled(true);
-                    fields[i].requestFocus();
-                } else {
-                    fields[i].setEnabled(false);
-                }
-            }
-        }
+    public void showToastInformation(String msg) {
+        Toasty.info(this, msg, Toast.LENGTH_LONG, true).show();
+
+    }
+
+    @Override
+    public void setInscreptionDate(String inscreptionDate) {
+        dateInscreptionTextView.setText(inscreptionDate);
     }
 
     @Override
@@ -130,18 +131,60 @@ public class ProfileActivity extends AppCompatActivity implements ProfileConstra
     }
 
     @Override
+    public void setEmail(String email) {
+        emailField.setText(email);
+    }
+
+    @Override
     public String getPassword() {
         return passwordField.getText().toString();
     }
 
     @Override
-    public String getUserName() {
-        return userNameField.getText().toString();
+    public void setPassword(String psw) {
+        passwordField.setText(psw);
+    }
+
+    @Override
+    public void showProgressDialog() {
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        progressDialog.hide();
+    }
+
+    @Override
+    public String getPseudo() {
+        return pseudoTextView.getText().toString();
+    }
+
+    @Override
+    public void setPseudo(String pseudo) {
+        pseudoTextView.setText(pseudo);
     }
 
     @Override
     public String getStringFromRessource(int stringId) {
         return getString(stringId);
+    }
+
+    @Override
+    public void finishAcitivity() {
+        finish();
+    }
+
+    @Override
+    public void startMainActivityAfterChange(String pseudo, String password, String email) {
+        Intent intent = new Intent(this, MainActivity.class);
+        if (pseudo != null && password != null) {
+            intent.putExtra(StaticValue.PSEUDO_TAGE, pseudo);
+            intent.putExtra(StaticValue.PASSWORD_TAGE, password);
+            intent.putExtra(StaticValue.EMAIL_TAGE, email);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
     }
 
 

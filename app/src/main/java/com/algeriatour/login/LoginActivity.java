@@ -2,23 +2,28 @@ package com.algeriatour.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.algeriatour.R;
 import com.algeriatour.main.MainActivity;
 import com.algeriatour.signin.SignInActivity;
-import com.algeriatour.utils.FormatValidator;
+import com.algeriatour.utils.Networking;
 import com.algeriatour.utils.StaticValue;
+import com.androidnetworking.AndroidNetworking;
 import com.rengwuxian.materialedittext.MaterialEditText;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dmax.dialog.SpotsDialog;
 import es.dmoral.toasty.Toasty;
+import okhttp3.OkHttpClient;
 
-public class LoginActivity extends AppCompatActivity implements LoginConstraint.viewConstraint{
+public class LoginActivity extends AppCompatActivity implements LoginConstraint.viewConstraint {
 
     private final int SIGN_IN_TAG = 11;
 
@@ -29,6 +34,7 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
     MaterialEditText passwordFiled;
 
     private LoginPresenter presenter;
+    private SpotsDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +42,10 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
         ButterKnife.bind(this);
 
         presenter = new LoginPresenter(this);
+        /* init networking*/
+            Networking.initAndroidNetworking(this);
+        /*---------------*/
+        progressDialog = new SpotsDialog(this);
     }
 
     @Override
@@ -45,18 +55,18 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
             if (data == null)
                 return;
             Bundle bundle = data.getExtras();
-            String email = "";
+            String pseudo = "";
             if (bundle != null) {
-                email = data.getExtras().getString(StaticValue.EMAIL_TAGE, "");
+                pseudo = data.getExtras().getString(StaticValue.PSEUDO_TAGE, "");
             }
 
-            if (!email.isEmpty()) {
-                emailField.setText(email);
+            if (!pseudo.isEmpty()) {
+                emailField.setText(pseudo);
                 passwordFiled.requestFocus();
             }
         }
     }
-
+    //
     @OnClick(R.id.login_signin_btn)
     public void onSignInButtonCLicked() {
         Intent intent = new Intent(this, SignInActivity.class);
@@ -67,8 +77,8 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
     public void onExitImageViewClicked() {
         Bundle bundle = getIntent().getExtras();
 
-        if(bundle != null && bundle.getBoolean(StaticValue.START_FROM_SPLASH_TAG, false)){
-            startMainActiviy(null);
+        if (bundle != null && bundle.getBoolean(StaticValue.START_FROM_SPLASH_TAG, false)) {
+            startMainActiviy();
         }
 
         finish();
@@ -76,7 +86,7 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
 
     @OnClick(R.id.login_login_btn)
     public void onLoginButtonClicked() {
-        presenter.authentificationButtonClicked();
+        presenter.doAuthentification();
     }
 
     @OnClick(R.id.login_forgetPassword_textView)
@@ -86,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
 
 
     @Override
-    public String getEmail() {
+    public String getPseudo() {
         return emailField.getText().toString();
     }
 
@@ -101,7 +111,7 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
     }
 
     @Override
-    public void showEmailError(String message) {
+    public void showPseudoError(String message) {
         emailField.setError(message);
     }
 
@@ -121,15 +131,32 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
     }
 
     @Override
-    public void startMainActiviy(String userEmail) {
+    public void startMainActiviy(String pseudo, String psw, String email) {
         Intent intent = new Intent(this, MainActivity.class);
-        if (userEmail != null){
-            intent.putExtra(StaticValue.EMAIL_TAGE, userEmail);
+        if (pseudo != null && psw != null) {
+            intent.putExtra(StaticValue.PSEUDO_TAGE, pseudo);
+            intent.putExtra(StaticValue.PASSWORD_TAGE, psw);
+            intent.putExtra(StaticValue.EMAIL_TAGE, email);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
+            startActivity(intent);
         }
-        startActivity(intent);
 
+    }
+
+    @Override
+    public void startMainActiviy() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void showProgressDialog() {
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        progressDialog.hide();
     }
 
 }
