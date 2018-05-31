@@ -1,53 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android = "http://schemas.android.com/apk/res/android"
     xmlns:app = "http://schemas.android.com/apk/res-auto"
     xmlns:tools = "http://schemas.android.com/tools"
     android:layout_width = "match_parent"
     android:layout_height = "match_parent"
     tools:context = ".main.home.HomeFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id = "@+id/home_recyclerView"
-        android:layout_width = "match_parent"
-        android:layout_height = "0dp"
-
-        app:layout_constraintBottom_toBottomOf = "parent"
-        app:layout_constraintEnd_toEndOf = "parent"
-        app:layout_constraintHorizontal_bias = "1.0"
-        app:layout_constraintStart_toStartOf = "parent"
-        app:layout_constraintTop_toBottomOf = "@+id/dialog_filter_btn"
-        app:layout_constraintVertical_bias = "0.0" />
-
     <TextView
-        android:id = "@+id/textView"
-        android:layout_width = "wrap_content"
-        android:layout_height = "wrap_content"
-        android:layout_marginStart = "8dp"
-        android:text = "Villes touristiques"
-        app:layout_constraintStart_toStartOf = "parent"
-        app:layout_constraintTop_toTopOf = "parent" />
+        android:id = "@+id/home_empty_town_textview"
+        android:layout_width = "match_parent"
+        android:layout_height = "match_parent"
+        android:layout_gravity = "center"
+        android:layout_margin = "40dp"
+        android:gravity = "center"
+        android:textSize = "24dp"
+        android:visibility = "gone" />
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
+        android:id = "@+id/home_container_layout"
+        android:layout_width = "match_parent"
+        android:layout_height = "match_parent">
 
-        android:id = "@+id/dialog_filter_btn"
-        android:layout_width = "wrap_content"
-        android:layout_height = "wrap_content"
-        android:layout_marginEnd = "8dp"
-        android:background = "?android:attr/selectableItemBackground"
-        android:orientation = "horizontal"
-        app:layout_constraintEnd_toEndOf = "parent"
-        app:layout_constraintTop_toTopOf = "parent">
+        <android.support.v7.widget.RecyclerView
+            android:id = "@+id/home_recyclerView"
+            android:layout_width = "match_parent"
+            android:layout_height = "0dp"
+
+            app:layout_constraintBottom_toBottomOf = "parent"
+            app:layout_constraintEnd_toEndOf = "parent"
+            app:layout_constraintHorizontal_bias = "1.0"
+            app:layout_constraintStart_toStartOf = "parent"
+            app:layout_constraintTop_toBottomOf = "@+id/dialog_filter_btn"
+            app:layout_constraintVertical_bias = "0.0" />
 
         <TextView
-            android:layout_width = "match_parent"
-            android:layout_height = "match_parent"
-            android:gravity = "center_vertical"
-            android:text = "Wilaya" />
-
-        <ImageView
+            android:id = "@+id/textView"
             android:layout_width = "wrap_content"
             android:layout_height = "wrap_content"
-            android:src = "@drawable/ic_drop_down" />
-    </LinearLayout>
+            android:layout_marginStart = "8dp"
+            android:text = "Villes touristiques"
+            app:layout_constraintStart_toStartOf = "parent"
+            app:layout_constraintTop_toTopOf = "parent" />
 
-</android.support.constraint.ConstraintLayout>
+        <LinearLayout
+
+            android:id = "@+id/dialog_filter_btn"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_marginEnd = "8dp"
+            android:background = "?android:attr/selectableItemBackground"
+            android:orientation = "horizontal"
+            app:layout_constraintEnd_toEndOf = "parent"
+            app:layout_constraintTop_toTopOf = "parent">
+
+            <TextView
+                android:layout_width = "match_parent"
+                android:layout_height = "match_parent"
+                android:gravity = "center_vertical"
+                android:text = "Wilaya" />
+
+            <ImageView
+                android:layout_width = "wrap_content"
+                android:layout_height = "wrap_content"
+                android:src = "@drawable/ic_drop_down" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id = "@+id/home_progressBar"
+            style = "?android:attr/progressBarStyle"
+            android:visibility="gone"
+            android:layout_width = "98dp"
+            android:layout_height = "65dp"
+            android:layout_marginBottom = "8dp"
+            android:layout_marginEnd = "8dp"
+            android:layout_marginStart = "8dp"
+            android:layout_marginTop = "8dp"
+            app:layout_constraintBottom_toBottomOf = "parent"
+            app:layout_constraintEnd_toEndOf = "parent"
+            app:layout_constraintHorizontal_bias = "0.502"
+            app:layout_constraintStart_toStartOf = "parent"
+            app:layout_constraintTop_toTopOf = "parent" />
+
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>

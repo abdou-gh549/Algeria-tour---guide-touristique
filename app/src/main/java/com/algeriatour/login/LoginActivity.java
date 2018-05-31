@@ -1,8 +1,8 @@
 package com.algeriatour.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -11,17 +11,13 @@ import com.algeriatour.main.MainActivity;
 import com.algeriatour.signin.SignInActivity;
 import com.algeriatour.utils.Networking;
 import com.algeriatour.utils.StaticValue;
-import com.androidnetworking.AndroidNetworking;
 import com.rengwuxian.materialedittext.MaterialEditText;
-
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dmax.dialog.SpotsDialog;
 import es.dmoral.toasty.Toasty;
-import okhttp3.OkHttpClient;
 
 public class LoginActivity extends AppCompatActivity implements LoginConstraint.viewConstraint {
 
@@ -35,6 +31,7 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
 
     private LoginPresenter presenter;
     private SpotsDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
 
         presenter = new LoginPresenter(this);
         /* init networking*/
-            Networking.initAndroidNetworking(this);
+        Networking.initAndroidNetworking(this);
         /*---------------*/
         progressDialog = new SpotsDialog(this);
     }
@@ -66,6 +63,7 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
             }
         }
     }
+
     //
     @OnClick(R.id.login_signin_btn)
     public void onSignInButtonCLicked() {
@@ -157,6 +155,15 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
     @Override
     public void hideProgressDialog() {
         progressDialog.hide();
+    }
+
+    @Override
+    public void saveLoginTosharedPreference(String pseudo, String psw) {
+        SharedPreferences sharedPreferences = getPreferences( MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(StaticValue.PSEUDO_TAGE, pseudo);
+        editor.putString(StaticValue.PASSWORD_TAGE, psw);
+        editor.apply();
     }
 
 }

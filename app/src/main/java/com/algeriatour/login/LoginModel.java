@@ -11,10 +11,9 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.SocketTimeoutException;
-
 public class LoginModel implements LoginConstraint.modelConstraint {
-    private final String register_url = "https://algeriatour.000webhostapp.com/at_login.php";
+    private final String fileName = "at_login.php";
+    private final String login_url = StaticValue.MYSQL_SITE + fileName;
     LoginConstraint.PresenterConstraint presenter;
 
     public LoginModel(LoginConstraint.PresenterConstraint presenter) {
@@ -23,20 +22,20 @@ public class LoginModel implements LoginConstraint.modelConstraint {
 
     @Override
     public void doLogin(String pseudo, String psw) {
-        AndroidNetworking.post(register_url)
-                .addBodyParameter("target", "external")
-                .addBodyParameter("username", pseudo)
-                .addBodyParameter("password", psw)
+        AndroidNetworking.post(login_url)
+                .addBodyParameter(StaticValue.PHP_TARGET, StaticValue.PHP_MYSQL_TARGET)
+                .addBodyParameter(StaticValue.PHP_PSEUDO, pseudo)
+                .addBodyParameter(StaticValue.PHP_PASSWORD, psw)
                 .setPriority(Priority.MEDIUM)
 
                 .build().getAsJSONObject(new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    switch (response.getInt("success")){
+                    switch (response.getInt(StaticValue.JSON_NAME_SUCCESS)){
                         case 1 :
-                            JSONObject user = (JSONObject) response.get("user");
-                            String email = user.getString("email");
+                            JSONObject user = (JSONObject) response.get(StaticValue.JSON_NAME_USER);
+                            String email = user.getString(StaticValue.JSON_NAME_EMAIL);
                             presenter.onLoginSucess(pseudo, psw, email);
                             break;
                         case 0:
@@ -46,7 +45,7 @@ public class LoginModel implements LoginConstraint.modelConstraint {
                             presenter.onLoginFail("problem dans serveur ");
                             break;
                     }
-                    Log.d("tixx", "reponse " + response.getInt("success"));
+                    Log.d("tixx", "reponse " + response.getInt(StaticValue.JSON_NAME_SUCCESS));
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.d("tixx", "reponst catch" + e.getMessage());

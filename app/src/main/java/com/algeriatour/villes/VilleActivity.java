@@ -21,7 +21,6 @@ public class VilleActivity extends AppCompatActivity implements VilleConstraint.
     @BindView(R.id.ville_toolbar)
     Toolbar toolbar;
 
-
     @BindView(R.id.ville_centreInteret_recycleView)
     RecyclerView villeRecyclerView;
 

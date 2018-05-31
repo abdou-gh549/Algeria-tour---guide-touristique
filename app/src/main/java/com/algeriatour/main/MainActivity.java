@@ -1,6 +1,7 @@
 package com.algeriatour.main;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -25,8 +26,10 @@ import com.algeriatour.main.favorite.FavoriteFragment;
 import com.algeriatour.main.home.HomeFragment;
 import com.algeriatour.main.searche.SearchFragment;
 import com.algeriatour.profile.ProfileActivity;
+import com.algeriatour.utils.Networking;
 import com.algeriatour.utils.StaticValue;
 import com.algeriatour.utils.User;
+import com.androidnetworking.AndroidNetworking;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,7 +63,6 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         mainPresenter = new MainPresenter(this);
-
         Log.d("lifecycle", "Main OnCreat");
 
         // get user type
@@ -68,6 +70,9 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && !bundle.getString(StaticValue.EMAIL_TAGE, "").isEmpty()) {
             User.setUserType(StaticValue.MEMBER);
+            String password = bundle.getString(StaticValue.PASSWORD_TAGE);
+            String pseudo = bundle.getString(StaticValue.PSEUDO_TAGE);
+            saveLoginTosharedPreference(pseudo, password);
         } else
             User.setUserType(StaticValue.VISITOR);
         // declar and add fragment to view Pager adapter
@@ -75,7 +80,6 @@ public class MainActivity extends AppCompatActivity
         setUpDrawer();
 
     }
-
 
     @Override
     protected void onDestroy() {
@@ -117,7 +121,7 @@ public class MainActivity extends AppCompatActivity
             Log.d("tixx", "setUpDrawer: im in catch");
             //just to catch null exception hehehehe
         }
-        Log.d("tixx", "setUpDrawer: im in end of fucntion email = "+ email+" pseudo = "+pseudo);
+        Log.d("tixx", "setUpDrawer: im in end of fucntion email = " + email + " pseudo = " + pseudo);
 
         mainPresenter.setUpDrawerInformation(email, pseudo);
 
@@ -244,9 +248,26 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void disconnect() {
+        removeLoginFromSharedPreference();
         Intent intent = new Intent(this, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
+    private void saveLoginTosharedPreference(String pseudo, String psw) {
+        Log.d("tixx", "saveLoginTosharedPreference: pseudo = " + pseudo + " psw = " + psw);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences
+                (StaticValue.LOGIN_SHARED_PEFERENCE,
+                MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(StaticValue.PSEUDO_TAGE, pseudo);
+        editor.putString(StaticValue.PASSWORD_TAGE, psw);
+        editor.apply();
+    }
+    private void removeLoginFromSharedPreference(){
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(StaticValue
+                .LOGIN_SHARED_PEFERENCE,MODE_PRIVATE);
+        sharedPreferences.edit().clear().apply();
+        Log.d("tixx", "removeLoginFromSharedPreference: called");
+    }
 }

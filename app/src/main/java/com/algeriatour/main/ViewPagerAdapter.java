@@ -27,7 +27,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
 
 
-    public void addFragment(Fragment fragment, int imageId){
+     public void addFragment(Fragment fragment, int imageId){
         m_fragments.add(new FragmentAndImageID(fragment, imageId));
     }
 

@@ -2,6 +2,7 @@ package com.algeriatour.signin;
 
 import android.util.Log;
 
+import com.algeriatour.utils.StaticValue;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -28,16 +29,16 @@ public class SignInModel implements SignInConstraint.ModelConstraint {
     @Override
     public void signIn(String pseudo, String email, String password) {
         AndroidNetworking.post(register_url)
-                .addBodyParameter("target", "external")
-                .addBodyParameter("username", pseudo)
-                .addBodyParameter("password", password)
-                .addBodyParameter("email", email)
+                .addBodyParameter(StaticValue.PHP_TARGET, StaticValue.PHP_MYSQL_TARGET)
+                .addBodyParameter(StaticValue.PHP_EMAIL, email)
+                .addBodyParameter(StaticValue.PHP_PSEUDO, pseudo)
+                .addBodyParameter(StaticValue.PHP_PASSWORD, password)
                 .setPriority(Priority.MEDIUM)
                 .build().getAsJSONObject(new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    switch (response.getInt("success")) {
+                    switch (response.getInt(StaticValue.JSON_NAME_SUCCESS)) {
                         case 1:
                                 presenter.onSignInSuccess();
                             break;
@@ -49,7 +50,7 @@ public class SignInModel implements SignInConstraint.ModelConstraint {
                             presenter.onSignInFail("server error");
                             break;
                     }
-                    Log.d("tixx", "reponse " + response.getInt("success"));
+                    Log.d("tixx", "reponse " + response.getInt(StaticValue.JSON_NAME_SUCCESS));
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.d("tixx", "reponst catch" + e.getMessage());

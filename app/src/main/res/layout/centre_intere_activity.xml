@@ -57,10 +57,11 @@
                 app:layout_constraintTop_toTopOf = "parent">
 
                 <ImageView
+                    android:id="@+id/centre_intere_image"
                     android:layout_width = "match_parent"
                     android:layout_height = "match_parent"
                     android:scaleType = "centerCrop"
-                    android:src = "@drawable/tst_makamchahid" />
+                    android:src = "@drawable/wait_image_2" />
 
                 <View
                     android:layout_width = "match_parent"

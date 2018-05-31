@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 public class ProfileModel implements ProfileConstraint.ModelConstraint {
     private final String login_url = "https://algeriatour.000webhostapp.com/at_login.php";
-    private final String update_url = "https://algeriatour.000webhostapp.com/at_updateuser.php";
+    private final String update_url = "https://algeriatour.000webhostapp.com/at_update_user.php";
 
     ProfileConstraint.PresenterConstraint presenter;
 
@@ -25,18 +25,19 @@ public class ProfileModel implements ProfileConstraint.ModelConstraint {
     @Override
     public void change(String pseudo, String email, String password) {
         AndroidNetworking.post(update_url)
-                .addBodyParameter("target", "external")
-                .addBodyParameter("username", pseudo)
-                .addBodyParameter("password", password)
-                .addBodyParameter("email", email)
+                .addBodyParameter(StaticValue.PHP_TARGET, StaticValue.PHP_MYSQL_TARGET)
+                .addBodyParameter(StaticValue.PHP_EMAIL, email)
+                .addBodyParameter(StaticValue.PHP_PSEUDO, pseudo)
+                .addBodyParameter(StaticValue.PHP_PASSWORD, password)
                 .setPriority(Priority.MEDIUM)
                 .build().getAsJSONObject(new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    switch (response.getInt("success")) {
+                    switch (response.getInt(StaticValue.JSON_NAME_SUCCESS)) {
                         case 1:
-                            presenter.onChangeSucess(response.getString("message"));
+                            presenter.onChangeSucess(response.getString(StaticValue
+                                    .JSON_NAME_MESSAGE));
                             break;
                         case 0:
                             Log.d("tixx", "change onResponse: pseudo = " + pseudo);
@@ -46,7 +47,7 @@ public class ProfileModel implements ProfileConstraint.ModelConstraint {
                             presenter.onLoadProfileDataFail("problem dans serveur ");
                             break;
                     }
-                    Log.d("tixx", "reponse " + response.getInt("success"));
+                    Log.d("tixx", "reponse " + response.getInt(StaticValue.JSON_NAME_SUCCESS));
                 } catch (JSONException e) {
                     presenter.onChangeFail("getting information error");
                     e.printStackTrace();
@@ -65,16 +66,16 @@ public class ProfileModel implements ProfileConstraint.ModelConstraint {
     @Override
     public void loadUserInfo(String pseudo, String password) {
         AndroidNetworking.post(login_url)
-                .addBodyParameter("target", "external")
-                .addBodyParameter("username", pseudo)
-                .addBodyParameter("password", password)
+                .addBodyParameter(StaticValue.PHP_TARGET, StaticValue.PHP_MYSQL_TARGET)
+                .addBodyParameter(StaticValue.PHP_PSEUDO, pseudo)
+                .addBodyParameter(StaticValue.PHP_PASSWORD, password)
                 .setPriority(Priority.MEDIUM)
 
                 .build().getAsJSONObject(new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    switch (response.getInt(StaticValue.JSON_NAME_SUCESS)) {
+                    switch (response.getInt(StaticValue.JSON_NAME_SUCCESS)) {
                         case 1:
                             Membre membre = new Membre();
                             JSONObject user = (JSONObject) response.get(StaticValue.JSON_NAME_USER);
@@ -91,7 +92,7 @@ public class ProfileModel implements ProfileConstraint.ModelConstraint {
                             presenter.onLoadProfileDataFail("problem dans serveur ");
                             break;
                     }
-                    Log.d("tixx", "reponse " + response.getInt("success"));
+                    Log.d("tixx", "reponse " + response.getInt(StaticValue.JSON_NAME_SUCCESS));
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.d("tixx", "reponst catch" + e.getMessage());
