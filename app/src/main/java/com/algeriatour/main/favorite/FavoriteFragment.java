@@ -10,9 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.algeriatour.R;
 import com.algeriatour.login.LoginActivity;
+import com.algeriatour.uml_class.Favorite;
 import com.algeriatour.utils.StaticValue;
 import com.algeriatour.utils.User;
 
@@ -23,12 +26,18 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FavoriteFragment extends Fragment {
+public class FavoriteFragment extends Fragment implements FavoriteConstraint.ViewConstraint{
 
     @BindView(R.id.favorite_recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.favorite_visitorLayout)
     LinearLayout visitorLayout;
+
+    @BindView(R.id.favorite_information_textView)
+    TextView informationTextView;
+
+    @BindView(R.id.favorite_progressBar)
+    ProgressBar progressBar;
 
     LinearLayoutManager mLayoutManager;
     FavoriteRecycleViewAdapter recyclerViewAdapter;
@@ -72,4 +81,41 @@ public class FavoriteFragment extends Fragment {
         startActivity(intent);
     }
 
+    @Override
+    public void showProgressBar() {
+        informationTextView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showInformationText(String msg) {
+        progressBar.setVisibility(View.GONE);
+        informationTextView.setVisibility(View.VISIBLE);
+        informationTextView.setText(msg);
+    }
+
+    @Override
+    public void hideInformationText() {
+
+    }
+
+    @Override
+    public void addFavorite(Favorite favorite) {
+
+    }
+
+    @Override
+    public void showErrorToast(String msg) {
+
+    }
+
+    @Override
+    public void showSucessToast(String msg) {
+
+    }
 }

@@ -49,6 +49,21 @@
                 android:textStyle = "bold" />
 
         </LinearLayout>
+
+        <TextView
+            android:id = "@+id/favorite_information_textView"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_gravity = "center"
+            android:textSize = "18dp"
+            android:visibility = "gone" />
+
+        <ProgressBar
+            android:id = "@+id/favorite_progressBar"
+            android:layout_width = "wrap_content"
+            android:layout_height = "wrap_content"
+            android:layout_gravity = "center"
+            android:visibility = "gone" />
     </FrameLayout>
 
 </LinearLayout>

@@ -56,7 +56,7 @@ public class ContacterNousActivity extends AppCompatActivity {
         if (!checkInput())
             return;
         spotsDialog.show();
-
+        /*
         AndroidNetworking.post(web_site)
                 .addBodyParameter(StaticValue.PHP_TARGET, StaticValue.PHP_MYSQL_TARGET)
                 // Todo : add other parameter
@@ -73,6 +73,7 @@ public class ContacterNousActivity extends AppCompatActivity {
                 onMessageSendFail("can't send the message ... check your network !");
             }
         });
+        */
 
 
     }

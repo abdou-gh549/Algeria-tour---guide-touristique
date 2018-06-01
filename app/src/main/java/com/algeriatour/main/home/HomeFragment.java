@@ -3,6 +3,7 @@ package com.algeriatour.main.home;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.algeriatour.R;
 import com.algeriatour.uml_class.Ville;
+import com.androidnetworking.AndroidNetworking;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,16 +29,17 @@ public class HomeFragment extends Fragment implements HomeFragmentConstraint.Vie
     @BindView(R.id.home_recyclerView)
     RecyclerView recyclerView;
 
-    @BindView(R.id.home_progressBar)
-    ProgressBar progressBar;
-
     @BindView(R.id.home_empty_town_textview)
     TextView emptyTownTextView;
 
     @BindView(R.id.home_container_layout)
     View containerLayout;
 
+    @BindView(R.id.home_swipeToRefresh)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     HomeRecycleViewAdapter mAdapter;
+
 
     private RecyclerView.LayoutManager mLayoutManager;
     private HomeFragementPresenter presenter;
@@ -57,8 +60,16 @@ public class HomeFragment extends Fragment implements HomeFragmentConstraint.Vie
         mAdapter = new HomeRecycleViewAdapter();
         presenter.loadVilleToRecylerView();
         setUpRecyclerView();
+        setUpSwipToRefresh();
 
         return view;
+    }
+
+    private void setUpSwipToRefresh() {
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            AndroidNetworking.cancelAll();
+            presenter.loadVilleToRecylerView();
+        });
     }
 
 
@@ -73,7 +84,6 @@ public class HomeFragment extends Fragment implements HomeFragmentConstraint.Vie
 
     @Override
     public void addVilleToAdapter(Ville ville) {
-
         mAdapter.addVille(ville);
     }
 
@@ -84,12 +94,12 @@ public class HomeFragment extends Fragment implements HomeFragmentConstraint.Vie
 
     @Override
     public void showProgressBar() {
-        progressBar.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
     public void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

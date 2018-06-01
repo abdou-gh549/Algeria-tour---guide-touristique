@@ -49,8 +49,18 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
     }
 
     public void addVille(Ville ville) {
+        for (int i = 0; i < villes.size(); i++) {
+            if (villes.get(i).getId() == ville.getId()) {
+                // ville exist so replace it
+                villes.set(i, ville);
+                notifyItemChanged(i);
+                return;
+            }
+        }
+        // ville does not exist
         villes.add(ville);
         notifyDataSetChanged();
+
     }
 
     public void updateVille(Ville ville, int position) {

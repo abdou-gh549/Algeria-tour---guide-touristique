@@ -42,10 +42,11 @@ public class VilleActivity extends AppCompatActivity implements VilleConstraint.
     @BindView(R.id.ville_image)
     ImageView ville_image;
 
-    @BindView(R.id.ville_scrollView)
-    NestedScrollView scrollView;
     @BindView(R.id.ville_progressBar)
     ProgressBar progressBar;
+
+    @BindView(R.id.ville_scrollView)
+    NestedScrollView scrollView;
 
     private LinearLayoutManager mLayoutManager;
     private VilleRecyclerViewAdapter mrecyclerViewAdapter;
