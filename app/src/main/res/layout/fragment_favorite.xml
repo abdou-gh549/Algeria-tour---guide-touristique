@@ -13,57 +13,56 @@
         android:layout_marginStart = "8dp"
         android:layout_marginTop = "8dp"
         android:text = "Favoris" />
-
-    <FrameLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/favorite_swipToRefresh"
         android:layout_width = "match_parent"
         android:layout_height = "match_parent">
-
-        <android.support.v7.widget.RecyclerView
-            android:id = "@+id/favorite_recyclerView"
+        <FrameLayout
             android:layout_width = "match_parent"
-            android:layout_height = "match_parent" />
+            android:layout_height = "match_parent">
 
-        <LinearLayout
-            android:id = "@+id/favorite_visitorLayout"
-            android:layout_width = "wrap_content"
-            android:layout_height = "wrap_content"
-            android:layout_gravity = "center"
-            android:layout_margin = "16dp"
-            android:orientation = "vertical">
+            <android.support.v7.widget.RecyclerView
+                android:id = "@+id/favorite_recyclerView"
+                android:layout_width = "match_parent"
+                android:layout_height = "match_parent" />
 
-            <TextView
+            <LinearLayout
+                android:id = "@+id/favorite_visitorLayout"
                 android:layout_width = "wrap_content"
                 android:layout_height = "wrap_content"
                 android:layout_gravity = "center"
-                android:gravity = "center"
-                android:text = "Pour Consulter list des favoritsvous devez vous connecter" />
+                android:layout_margin = "16dp"
+                android:orientation = "vertical">
+
+                <TextView
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:layout_gravity = "center"
+                    android:gravity = "center"
+                    android:text = "Pour Consulter list des favoritsvous devez vous connecter" />
+
+                <TextView
+                    android:id = "@+id/favorite_visitorConnectTxtV"
+                    android:layout_width = "match_parent"
+                    android:layout_height = "wrap_content"
+                    android:layout_gravity = "center"
+                    android:gravity = "center"
+                    android:text = "Click pour connecté"
+                    android:textColor = "@color/colorPrimary"
+                    android:textStyle = "bold" />
+
+            </LinearLayout>
 
             <TextView
-                android:id = "@+id/favorite_visitorConnectTxtV"
-                android:layout_width = "match_parent"
+                android:id = "@+id/favorite_information_textView"
+                android:layout_width = "wrap_content"
                 android:layout_height = "wrap_content"
                 android:layout_gravity = "center"
-                android:gravity = "center"
-                android:text = "Click pour connecté"
-                android:textColor = "@color/colorPrimary"
-                android:textStyle = "bold" />
+                android:textSize = "18dp"
+                android:visibility = "gone" />
 
-        </LinearLayout>
+        </FrameLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-        <TextView
-            android:id = "@+id/favorite_information_textView"
-            android:layout_width = "wrap_content"
-            android:layout_height = "wrap_content"
-            android:layout_gravity = "center"
-            android:textSize = "18dp"
-            android:visibility = "gone" />
-
-        <ProgressBar
-            android:id = "@+id/favorite_progressBar"
-            android:layout_width = "wrap_content"
-            android:layout_height = "wrap_content"
-            android:layout_gravity = "center"
-            android:visibility = "gone" />
-    </FrameLayout>
 
 </LinearLayout>

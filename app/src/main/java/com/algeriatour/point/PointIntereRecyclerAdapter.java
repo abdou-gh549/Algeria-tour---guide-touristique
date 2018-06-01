@@ -1,6 +1,7 @@
 package com.algeriatour.point;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,15 @@ public class PointIntereRecyclerAdapter extends RecyclerView.Adapter<PointIntere
     }
 
     public void addComment(Commentaire commentaire) {
+        Log.d("commentaire", "addComment: " + commentaire.getId());
+        for (int i =0; i<commentaires.size(); i++){
+            if(commentaires.get(i).getId() == commentaire.getId()){
+                // case of commenataire already exist
+                commentaires.set(i, commentaire);
+                notifyItemChanged(i);
+                return;
+            }
+        }
         commentaires.add(commentaire);
         notifyDataSetChanged();
     }

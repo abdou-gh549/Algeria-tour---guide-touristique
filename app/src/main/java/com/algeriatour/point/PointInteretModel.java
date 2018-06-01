@@ -118,6 +118,9 @@ public class PointInteretModel implements PointIneteretConstraint.ModelConstrain
         commentaire.setComment( jsonObject.getString(StaticValue.JSON_NAME_COMMENT_DESCREPTION));
         commentaire.setDate(jsonObject.getString(StaticValue.JSON_NAME_DATE));
         commentaire.setRatting(jsonObject.getLong(StaticValue.JSON_NAME_RATTING));
+        commentaire.setId(jsonObject.getLong(StaticValue.JSON_NAME_ID));
+        commentaire.setUserId(jsonObject.getLong(StaticValue.JSON_NAME_USER_ID));
+        commentaire.setPointInteretId(jsonObject.getLong(StaticValue.JSON_NAME_POINT_ID));
         return commentaire;
     }
 }

@@ -19,7 +19,7 @@ public class VillePresenter implements VilleConstraint.PresenterConstraint {
     }
 
     public void loadPointIntere(long villeId) {
-        ville_view.showProgressBar();
+        ville_view.hideRefreshLayout();
         villeModel.loadPointInteret(villeId);
     }
 
@@ -32,12 +32,12 @@ public class VillePresenter implements VilleConstraint.PresenterConstraint {
         for (int i = 0; i < pointInterets.size(); i++) {
             ville_view.addPointInteret(pointInterets.get(i));
         }
-        ville_view.hideProgressBar();
+        ville_view.showRefreshLayout();
     }
 
     @Override
     public void onLoadPointIntereFail(String msg) {
-        ville_view.hideProgressBar();
+        ville_view.showRefreshLayout();
         ville_view.showToastError(msg);
     }
 

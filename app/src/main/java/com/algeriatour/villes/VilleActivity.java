@@ -3,6 +3,7 @@ package com.algeriatour.villes;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +20,7 @@ import com.algeriatour.uml_class.PointInteret;
 import com.algeriatour.uml_class.Ville;
 import com.algeriatour.utils.Networking;
 import com.algeriatour.utils.StaticValue;
+import com.androidnetworking.AndroidNetworking;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,8 +43,8 @@ public class VilleActivity extends AppCompatActivity implements VilleConstraint.
     @BindView(R.id.ville_image)
     ImageView ville_image;
 
-    @BindView(R.id.ville_progressBar)
-    ProgressBar progressBar;
+    @BindView(R.id.ville_swipeRefresh)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @BindView(R.id.ville_scrollView)
     NestedScrollView scrollView;
@@ -65,6 +66,7 @@ public class VilleActivity extends AppCompatActivity implements VilleConstraint.
         setUpActionToolBar();
         setUpAdapter();
         setUpVilleData();
+        setUpRefreshLayout();
 
         presenter.loadPointIntere(ville.getId());
     }
@@ -81,9 +83,16 @@ public class VilleActivity extends AppCompatActivity implements VilleConstraint.
         if (actionBar != null)
             actionBar.setTitle(ville.getName());
         ville_descreption.setText(ville.getDescreption());
-
         // load ville image
         presenter.loadVilleImage(ville);
+    }
+
+    private void setUpRefreshLayout() {
+        swipeRefreshLayout.setOnRefreshListener(()->{
+            AndroidNetworking.cancelAll();
+            presenter.loadVilleImage(ville);
+            presenter.loadPointIntere(ville.getId());
+        });
     }
 
     private void setUpActionToolBar() {
@@ -107,14 +116,14 @@ public class VilleActivity extends AppCompatActivity implements VilleConstraint.
 
 
     @Override
-    public void showProgressBar() {
+    public void hideRefreshLayout() {
         displayInfoTextView.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
-    public void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
+    public void showRefreshLayout() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -143,7 +152,7 @@ public class VilleActivity extends AppCompatActivity implements VilleConstraint.
     @Override
     public void showTextInDispalyInfor(String msg) {
         displayInfoTextView.setVisibility(View.VISIBLE);
-        hideProgressBar();
+        showRefreshLayout();
         displayInfoTextView.setText(msg);
     }
 }

@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public class VilleConstraint {
     public interface ViewConstraint {
 
-        void showProgressBar();
+        void hideRefreshLayout();
 
-        void hideProgressBar();
+        void showRefreshLayout();
 
         void setVilleImage(Bitmap villeImage);
 

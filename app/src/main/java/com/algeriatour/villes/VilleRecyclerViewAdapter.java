@@ -40,6 +40,14 @@ public class VilleRecyclerViewAdapter extends RecyclerView.Adapter<VilleRecycler
     }
 
     public void addPointInteret(PointInteret pointInteret) {
+        for (int i = 0; i < pointInterets.size(); i++) {
+            if(pointInterets.get(i).getId() == pointInteret.getId()){
+                // point already exist so replace it
+                pointInterets.set(i, pointInteret);
+                notifyItemChanged(i);
+                return;
+            }
+        }
         pointInterets.add(pointInteret);
         notifyDataSetChanged();
     }

@@ -3,6 +3,7 @@ package com.algeriatour.point;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +21,7 @@ import com.algeriatour.uml_class.Commentaire;
 import com.algeriatour.uml_class.PlaceInfo;
 import com.algeriatour.uml_class.PointInteret;
 import com.algeriatour.utils.StaticValue;
+import com.androidnetworking.AndroidNetworking;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,8 +49,8 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
     TextView pointInteretType;
     @BindView(R.id.centre_intere_descreption_ville)
     TextView pointInteretVille;
-    @BindView(R.id.centreIntere_comment_progress)
-    ProgressBar progressBar;
+    @BindView(R.id.centre_intere_swipToRefresh)
+    SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.centreIntere_comment_text_info)
     TextView commentTextInfo;
 
@@ -67,11 +69,19 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
 
         setUpToolBar();
         setUpCommentAdapter();
-
+        setUpSwipToRefresh();
         loadPointInteretInformation();
 
         presneter.loadCommentaire( pointInteret.getId() );
 
+    }
+
+    private void setUpSwipToRefresh() {
+        swipeRefreshLayout.setOnRefreshListener(()->{
+            AndroidNetworking.cancelAll();
+            presneter.loadCommentaire(pointInteret.getId());
+            presneter.loadPointIneteretImage(pointInteret.getId());
+        });
     }
 
     private void setUpToolBar() {
@@ -111,12 +121,12 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
     @Override
     public void showProgressBar() {
         commentTextInfo.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
     public void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
+        swipeRefreshLayout.setRefreshing(false);
     }
     @Override
     public void showToastInformation(String msg) {

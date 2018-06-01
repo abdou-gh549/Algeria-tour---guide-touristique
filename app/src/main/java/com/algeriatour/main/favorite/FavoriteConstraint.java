@@ -1,5 +1,7 @@
 package com.algeriatour.main.favorite;
 
+import android.graphics.Bitmap;
+
 import com.algeriatour.uml_class.Favorite;
 
 import java.util.ArrayList;
@@ -7,11 +9,12 @@ import java.util.ArrayList;
 public class FavoriteConstraint {
 
     public interface ViewConstraint{
+        void addFavorite(Favorite favorite);
+        void setFavoriteImage(Bitmap image);
         void showProgressBar();
         void hideProgressBar();
         void showInformationText(String msg);
         void hideInformationText();
-        void addFavorite(Favorite favorite);
         void showErrorToast(String msg);
         void showSucessToast(String msg);
     }
