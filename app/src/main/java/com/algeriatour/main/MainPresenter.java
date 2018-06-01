@@ -22,9 +22,7 @@ public class MainPresenter {
                 break;
             case R.id.nav_menu_logout:
                 // change static var
-                User.setUserType(StaticValue.VISITOR);
-                // TODO : remove from sharedPreference !
-
+                User.disconnect();
                 // logout
                 m_mainView.disconnect();
                 break;
@@ -49,17 +47,4 @@ public class MainPresenter {
         }
     }
 
-    public void setUpDrawerInformation(String email, String pseudo) {
-        if(email.isEmpty() || pseudo.isEmpty()){
-            // visitor mode
-            m_mainView.makeItVisitorDrawer();
-        }
-        else{
-            //user mode
-            m_mainView.makeItMembreDrawer();
-            m_mainView.setDrawerEmail(email);
-            m_mainView.setDrawerPseudo(pseudo);
-
-        }
-    }
 }

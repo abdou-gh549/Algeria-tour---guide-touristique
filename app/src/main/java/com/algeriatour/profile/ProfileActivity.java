@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.algeriatour.R;
 import com.algeriatour.main.MainActivity;
 import com.algeriatour.utils.Networking;
-import com.algeriatour.utils.StaticValue;
+import com.algeriatour.utils.User;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import butterknife.BindView;
@@ -43,18 +43,14 @@ public class ProfileActivity extends AppCompatActivity implements ProfileConstra
         presenter = new ProfilePresenter(this);
         Networking.initAndroidNetworking(this);
         progressDialog = new SpotsDialog(this);
+        progressDialog.setCancelable(false);
         loadData();
     }
 
     private void loadData() {
-        Bundle bundle = getIntent().getExtras();
-        String pseudo;
-        String psw;
-        try {
 
-            pseudo = bundle.getString(StaticValue.PSEUDO_TAGE);
-            psw = bundle.getString(StaticValue.PASSWORD_TAGE);
-            presenter.loadProfileData(pseudo, psw);
+        try {
+            presenter.loadProfileData(User.getMembre().getPseudo(), User.getMembre().getPassword());
         } catch (Exception exp) {
             showToastError("can't get profile information try later");
             finish();
@@ -176,15 +172,10 @@ public class ProfileActivity extends AppCompatActivity implements ProfileConstra
     }
 
     @Override
-    public void startMainActivityAfterChange(String pseudo, String password, String email) {
+    public void startMainActivityAfterChange() {
         Intent intent = new Intent(this, MainActivity.class);
-        if (pseudo != null && password != null) {
-            intent.putExtra(StaticValue.PSEUDO_TAGE, pseudo);
-            intent.putExtra(StaticValue.PASSWORD_TAGE, password);
-            intent.putExtra(StaticValue.EMAIL_TAGE, email);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
 

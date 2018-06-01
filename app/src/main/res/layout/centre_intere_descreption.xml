@@ -2,7 +2,9 @@
 <android.support.constraint.ConstraintLayout xmlns:android = "http://schemas.android.com/apk/res/android"
     xmlns:app = "http://schemas.android.com/apk/res-auto"
     android:layout_width = "match_parent"
-    android:layout_height = "wrap_content">
+    android:layout_height = "wrap_content"
+    android:background = "@drawable/bg_layout_white"
+    android:elevation = "1dp">
 
     <TextView
         android:id = "@+id/centre_intere_descreption_ville"
@@ -77,25 +79,14 @@
         app:layout_constraintStart_toStartOf = "parent"
         app:layout_constraintTop_toBottomOf = "@+id/textView7" />
 
-    <android.support.design.internal.BaselineLayout
-        android:id = "@+id/baselineLayout"
-
-        android:layout_width = "match_parent"
-        android:layout_height = "1dp"
-        android:layout_marginTop = "8dp"
-        android:background = "#c3b3b3b3"
-        android:textColor = "#c3000000"
-        app:layout_constraintEnd_toEndOf = "parent"
-        app:layout_constraintStart_toStartOf = "parent"
-        app:layout_constraintTop_toBottomOf = "@+id/centre_intere_descreption_descreption_txtv" />
 
     <TextView
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
         android:layout_marginStart = "8dp"
-        android:layout_marginTop = "8dp"
+        android:layout_marginTop = "16dp"
         android:text = "Avis des membres"
         app:layout_constraintStart_toStartOf = "parent"
-        app:layout_constraintTop_toBottomOf = "@+id/baselineLayout" />
+        app:layout_constraintTop_toBottomOf = "@+id/centre_intere_descreption_descreption_txtv" />
 
 </android.support.constraint.ConstraintLayout>

@@ -12,7 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SignInModel implements SignInConstraint.ModelConstraint {
-    private final String register_url = "https://algeriatour.000webhostapp.com/at_register.php";
+    private final String fileName = "at_register.php";
+    private final String register_url = StaticValue.MYSQL_SITE + fileName;
 
     SignInConstraint.PresenterConstraint presenter;
 
@@ -20,11 +21,11 @@ public class SignInModel implements SignInConstraint.ModelConstraint {
         this.presenter = presenter;
     }
     /*
-    *  -1 database error / Register failed
-    *   0 user already exist
-    *   1 registre success
-    *
-    */
+     *  -1 database error / Register failed
+     *   0 user already exist
+     *   1 registre success
+     *
+     */
 
     @Override
     public void signIn(String pseudo, String email, String password) {
@@ -40,7 +41,7 @@ public class SignInModel implements SignInConstraint.ModelConstraint {
                 try {
                     switch (response.getInt(StaticValue.JSON_NAME_SUCCESS)) {
                         case 1:
-                                presenter.onSignInSuccess();
+                            presenter.onSignInSuccess();
                             break;
                         case 0:
                             Log.d("tixx", "change onResponse: pseudo = " + pseudo);
@@ -65,5 +66,6 @@ public class SignInModel implements SignInConstraint.ModelConstraint {
                 Log.d("tixx", "error " + error.getMessage());
                 presenter.onSignInFail("verfier votre connection ");
             }
-        });    }
+        });
+    }
 }

@@ -9,7 +9,9 @@ import android.util.Log;
 
 import com.algeriatour.login.LoginActivity;
 import com.algeriatour.main.MainActivity;
+import com.algeriatour.uml_class.Membre;
 import com.algeriatour.utils.StaticValue;
+import com.algeriatour.utils.User;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -83,8 +85,9 @@ public class SplashActivity extends AppCompatActivity {
                     Log.d("tixx", "reponse " + response.getInt(StaticValue.JSON_NAME_SUCCESS));
                     if (response.getInt(StaticValue.JSON_NAME_SUCCESS) == 1) {
                         JSONObject user = (JSONObject) response.get(StaticValue.JSON_NAME_USER);
-                        String email = user.getString(StaticValue.JSON_NAME_EMAIL);
-                        onLoginSucess(pseudo, psw, email);
+                        User.connect(parseMembre(user));
+                        onLoginSucess();
+
                     } else {
                         onLoginFail();
                     }
@@ -112,7 +115,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void onLoginFail(int duration) {
-        new Handler().postDelayed((Runnable) () -> {
+        new Handler().postDelayed(() -> {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             intent.putExtra(StaticValue.START_FROM_SPLASH_TAG, true);
             startActivity(intent);
@@ -121,14 +124,20 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    private void onLoginSucess(String pseudo, String psw, String email) {
+    private void onLoginSucess() {
         Intent intent = new Intent(this, MainActivity.class);
-        if (pseudo != null && psw != null) {
-            intent.putExtra(StaticValue.PSEUDO_TAGE, pseudo);
-            intent.putExtra(StaticValue.PASSWORD_TAGE, psw);
-            intent.putExtra(StaticValue.EMAIL_TAGE, email);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
+    }
+
+    private Membre parseMembre(JSONObject jsonObject) throws JSONException {
+        Membre membre = new Membre();
+        membre.setId(jsonObject.getLong(StaticValue.JSON_NAME_ID));
+        membre.setPseudo(jsonObject.getString(StaticValue.JSON_NAME_PSEUDO));
+        membre.setPassword(jsonObject.getString(StaticValue.JSON_NAME_PASSWORD));
+        membre.setEmail(jsonObject.getString(StaticValue.JSON_NAME_EMAIL));
+        membre.setInscreptionDate(jsonObject.getString(StaticValue.JSON_NAME_JOIN_DATE));
+        return membre;
     }
 }

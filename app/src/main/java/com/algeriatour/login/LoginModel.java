@@ -2,11 +2,13 @@ package com.algeriatour.login;
 
 import android.util.Log;
 
+import com.algeriatour.uml_class.Membre;
 import com.algeriatour.utils.StaticValue;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,11 +34,10 @@ public class LoginModel implements LoginConstraint.modelConstraint {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    switch (response.getInt(StaticValue.JSON_NAME_SUCCESS)){
-                        case 1 :
+                    switch (response.getInt(StaticValue.JSON_NAME_SUCCESS)) {
+                        case 1:
                             JSONObject user = (JSONObject) response.get(StaticValue.JSON_NAME_USER);
-                            String email = user.getString(StaticValue.JSON_NAME_EMAIL);
-                            presenter.onLoginSucess(pseudo, psw, email);
+                            presenter.onLoginSucess(parseMembre(user));
                             break;
                         case 0:
                             presenter.onLoginFail("utilisateur n'exist pas !");
@@ -59,5 +60,15 @@ public class LoginModel implements LoginConstraint.modelConstraint {
                 Log.d("tixx", "error " + error.getMessage());
             }
         });
+    }
+
+    private Membre parseMembre(JSONObject jsonObject) throws JSONException {
+        Membre membre = new Membre();
+        membre.setId( jsonObject.getLong(StaticValue.JSON_NAME_ID));
+        membre.setPseudo(jsonObject.getString(StaticValue.JSON_NAME_PSEUDO));
+        membre.setPassword(jsonObject.getString(StaticValue.JSON_NAME_PASSWORD));
+        membre.setEmail(jsonObject.getString(StaticValue.JSON_NAME_EMAIL));
+        membre.setInscreptionDate(jsonObject.getString(StaticValue.JSON_NAME_JOIN_DATE));
+        return membre;
     }
 }

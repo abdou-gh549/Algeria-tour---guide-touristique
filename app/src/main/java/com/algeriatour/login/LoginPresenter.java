@@ -1,6 +1,7 @@
 package com.algeriatour.login;
 
 import com.algeriatour.R;
+import com.algeriatour.uml_class.Membre;
 
 public class LoginPresenter implements LoginConstraint.PresenterConstraint{
 
@@ -27,10 +28,10 @@ public class LoginPresenter implements LoginConstraint.PresenterConstraint{
 
 
     @Override
-    public void onLoginSucess(String pseudo, String psw, String email) {
+    public void onLoginSucess(Membre membre) {
         loginView.hideProgressDialog();
         loginView.showLoginSucess( "Login Success !");
-        loginView.startMainActiviy(pseudo, psw, email);
+        loginView.startMainActiviy(membre);
     }
 
     @Override

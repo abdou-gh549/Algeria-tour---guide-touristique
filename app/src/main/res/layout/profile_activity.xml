@@ -8,12 +8,14 @@
     tools:context = ".profile.ProfileActivity">
 
     <ImageView
-        android:id="@+id/profile_back_Button"
+        android:id = "@+id/profile_back_Button"
         android:layout_width = "29dp"
         android:layout_height = "33dp"
-        android:layout_marginStart = "8dp"
+        android:layout_marginStart = "16dp"
+        android:layout_marginTop = "16dp"
         android:src = "@drawable/ic_back_white_24dp"
-        app:layout_constraintStart_toStartOf = "parent" />
+        app:layout_constraintStart_toStartOf = "parent"
+        app:layout_constraintTop_toTopOf = "parent" />
 
     <LinearLayout
         android:id = "@+id/linLay"

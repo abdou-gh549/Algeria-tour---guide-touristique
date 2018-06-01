@@ -2,7 +2,8 @@ package com.algeriatour.profile;
 
 import com.algeriatour.R;
 import com.algeriatour.uml_class.Membre;
-import com.algeriatour.utils.FormatValidator;
+import com.algeriatour.utils.AlgeriaTourUtils;
+import com.algeriatour.utils.User;
 
 public class ProfilePresenter implements ProfileConstraint.PresenterConstraint {
 
@@ -84,9 +85,11 @@ public class ProfilePresenter implements ProfileConstraint.PresenterConstraint {
     public void onChangeSucess(String msg) {
         profile_view.hideProgressDialog();
         profile_view.showToastSuccess(msg);
-        profile_view.startMainActivityAfterChange(profile_view.getPseudo(),
-                                                  profile_view.getPassword(),
-                                                  profile_view.getEmail());
+        // save the new information
+        User.getMembre().setEmail(profile_view.getEmail());
+        User.getMembre().setPassword(profile_view.getPassword());
+        //start main activity after change
+        profile_view.startMainActivityAfterChange();
     }
 
     private boolean checkInput() {
@@ -96,7 +99,7 @@ public class ProfilePresenter implements ProfileConstraint.PresenterConstraint {
         if (email.isEmpty()) {
             profile_view.showEmailError(profile_view.getStringFromRessource(R.string.empty_email_error));
             inputValid = false;
-        } else if (!FormatValidator.isValidEmail(email)) {
+        } else if (!AlgeriaTourUtils.isValidEmail(email)) {
             profile_view.showEmailError(profile_view.getStringFromRessource(R.string.invalid_email_format_error));
             inputValid = false;
         }

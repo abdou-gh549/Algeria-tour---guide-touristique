@@ -2,12 +2,10 @@ package com.algeriatour.uml_class;
 
 import android.graphics.Bitmap;
 
-
-public class Ville extends PlaceInfo{
+public class PointInteret extends PlaceInfo{
 
     private Bitmap image;
-    public Ville() {
-
+    public PointInteret() {
         image = null;
     }
 

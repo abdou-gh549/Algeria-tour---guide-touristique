@@ -1,10 +1,7 @@
 package com.algeriatour.main.home;
 
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,10 +14,6 @@ import android.widget.TextView;
 
 import com.algeriatour.R;
 import com.algeriatour.uml_class.Ville;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,7 +40,6 @@ public class HomeFragment extends Fragment implements HomeFragmentConstraint.Vie
 
     private RecyclerView.LayoutManager mLayoutManager;
     private HomeFragementPresenter presenter;
-    private FilterDialog filterDialog;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -65,14 +57,10 @@ public class HomeFragment extends Fragment implements HomeFragmentConstraint.Vie
         mAdapter = new HomeRecycleViewAdapter();
         presenter.loadVilleToRecylerView();
         setUpRecyclerView();
-        initFilterDialog();
 
         return view;
     }
 
-    private void initFilterDialog() {
-        filterDialog = new FilterDialog(getContext());
-    }
 
     private void setUpRecyclerView() {
         recyclerView.setHasFixedSize(true);
@@ -82,11 +70,6 @@ public class HomeFragment extends Fragment implements HomeFragmentConstraint.Vie
         recyclerView.setAdapter(mAdapter);
     }
 
-    @OnClick(R.id.dialog_filter_btn)
-    void onOpenDialogFilterClicked() {
-        filterDialog.show();
-        filterDialog.saveState();
-    }
 
     @Override
     public void addVilleToAdapter(Ville ville) {

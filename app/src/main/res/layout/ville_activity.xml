@@ -4,6 +4,7 @@
     xmlns:tools = "http://schemas.android.com/tools"
     android:layout_width = "match_parent"
     android:layout_height = "match_parent"
+    android:background = "@drawable/bg_layout_white"
     tools:context = ".villes.VilleActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -97,11 +98,34 @@
                 android:layout_marginStart = "5dp"
                 android:text = "Centre d'intérêt" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id = "@+id/ville_centreInteret_recycleView"
+            <FrameLayout
                 android:layout_width = "match_parent"
-                android:layout_height = "wrap_content"
-                android:layout_marginTop = "5dp" />
+                android:layout_height = "wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id = "@+id/ville_centreInteret_recycleView"
+                    android:layout_width = "match_parent"
+                    android:layout_height = "wrap_content"
+                    android:layout_marginTop = "5dp" />
+
+                <ProgressBar
+                    android:id = "@+id/ville_progressBar"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:layout_gravity = "center"
+                    android:gravity = "center"
+                    android:visibility = "gone" />
+
+                <TextView
+                    android:id = "@+id/ville_diaplayInfoTextView"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:layout_gravity = "center"
+                    android:gravity = "center"
+                    android:textSize = "18dp"
+                    android:visibility = "gone" />
+            </FrameLayout>
+
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

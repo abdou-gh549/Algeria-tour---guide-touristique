@@ -1,7 +1,7 @@
 package com.algeriatour.resetpassword;
 
 import com.algeriatour.R;
-import com.algeriatour.utils.FormatValidator;
+import com.algeriatour.utils.AlgeriaTourUtils;
 
 public class ResetPasswordPresenter {
     ResetPasswordConstraint.ViewConstraint resetPsw_view;
@@ -32,7 +32,7 @@ public class ResetPasswordPresenter {
         if (email.isEmpty()) {
             resetPsw_view.showEmailError(resetPsw_view.getStringFromRessource(R.string.empty_email_error));
             inputValid = false;
-        } else if (!FormatValidator.isValidEmail(email)) {
+        } else if (!AlgeriaTourUtils.isValidEmail(email)) {
             resetPsw_view.showEmailError(resetPsw_view.getStringFromRessource(R.string.invalid_email_format_error));
             inputValid = false;
         }

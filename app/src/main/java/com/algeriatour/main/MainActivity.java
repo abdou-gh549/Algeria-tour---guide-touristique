@@ -21,15 +21,14 @@ import android.widget.Toast;
 
 import com.algeriatour.R;
 import com.algeriatour.SplashActivity;
+import com.algeriatour.contect_nous.ContacterNousActivity;
 import com.algeriatour.login.LoginActivity;
 import com.algeriatour.main.favorite.FavoriteFragment;
 import com.algeriatour.main.home.HomeFragment;
 import com.algeriatour.main.searche.SearchFragment;
 import com.algeriatour.profile.ProfileActivity;
-import com.algeriatour.utils.Networking;
 import com.algeriatour.utils.StaticValue;
 import com.algeriatour.utils.User;
-import com.androidnetworking.AndroidNetworking;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,14 +46,11 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.main_viewPager)
     ViewPager viewPager;
 
-
     @BindView(R.id.main_tabLayout)
     TabLayout tabLayout;
 
-
     private ViewPagerAdapter viewPagerAdapter;
     private MainPresenter mainPresenter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,25 +63,13 @@ public class MainActivity extends AppCompatActivity
 
         // get user type
         // if the email is empty so there is no success authentification  -> user is visitor
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null && !bundle.getString(StaticValue.EMAIL_TAGE, "").isEmpty()) {
-            User.setUserType(StaticValue.MEMBER);
-            String password = bundle.getString(StaticValue.PASSWORD_TAGE);
-            String pseudo = bundle.getString(StaticValue.PSEUDO_TAGE);
-            saveLoginTosharedPreference(pseudo, password);
-        } else
-            User.setUserType(StaticValue.VISITOR);
+        if (User.getUserType() == StaticValue.MEMBER) {
+            saveLoginTosharedPreference(User.getMembre().getPseudo(), User.getMembre().getPassword());
+        }
         // declar and add fragment to view Pager adapter
         setUpViewPager();
         setUpDrawer();
 
-    }
-
-    @Override
-    protected void onDestroy() {
-        // reset user type to visitor
-        User.setUserType(StaticValue.VISITOR);
-        super.onDestroy();
     }
 
 
@@ -106,26 +90,13 @@ public class MainActivity extends AppCompatActivity
     private void setUpDrawer() {
         navDrawerBtn.setOnClickListener(e -> drawer.openDrawer(Gravity.START));
         navigationView.setNavigationItemSelectedListener(this);
-
-        String email = "";
-        String pseudo = "";
-        try {
-            Log.d("tixx", "setUpDrawer: im in ty");
-            Bundle bundle = getIntent().getExtras();
-            if (bundle != null) {
-                Log.d("tixx", "setUpDrawer: im in if");
-                email = bundle.getString(StaticValue.EMAIL_TAGE);
-                pseudo = bundle.getString(StaticValue.PSEUDO_TAGE);
-            }
-        } catch (Exception exp) {
-            Log.d("tixx", "setUpDrawer: im in catch");
-            //just to catch null exception hehehehe
+        if (User.getUserType() == StaticValue.MEMBER) {
+            makeItMembreDrawer();
+            setDrawerEmail(User.getMembre().getEmail());
+            setDrawerPseudo(User.getMembre().getPseudo());
+        } else {
+            makeItVisitorDrawer();
         }
-        Log.d("tixx", "setUpDrawer: im in end of fucntion email = " + email + " pseudo = " + pseudo);
-
-        mainPresenter.setUpDrawerInformation(email, pseudo);
-
-
     }
 
     private void setUpTabLayout() {
@@ -167,7 +138,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
     @Override
     public void onBackPressed() {
         mainPresenter.onBackPressed(drawer.isDrawerOpen(GravityCompat.START));
@@ -191,12 +161,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void startProfileActivity() {
         try {
-            Bundle bundle = getIntent().getExtras();
-            String password = bundle.getString(StaticValue.PASSWORD_TAGE);
-            String pseudo = bundle.getString(StaticValue.PSEUDO_TAGE);
             Intent intent = new Intent(this, ProfileActivity.class);
-            intent.putExtra(StaticValue.PASSWORD_TAGE, password);
-            intent.putExtra(StaticValue.PSEUDO_TAGE, pseudo);
             startActivity(intent);
         } catch (Exception exp) {
             Toasty.error(this, "sothing happend cant open profile", Toast.LENGTH_LONG, true).show();
@@ -206,7 +171,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void startContactUs() {
-        Toast.makeText(this, "contact Us CLicked", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ContacterNousActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -231,6 +197,7 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
+
 
     @Override
     public void setDrawerEmail(String email) {
@@ -258,15 +225,16 @@ public class MainActivity extends AppCompatActivity
         Log.d("tixx", "saveLoginTosharedPreference: pseudo = " + pseudo + " psw = " + psw);
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences
                 (StaticValue.LOGIN_SHARED_PEFERENCE,
-                MODE_PRIVATE);
+                        MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(StaticValue.PSEUDO_TAGE, pseudo);
         editor.putString(StaticValue.PASSWORD_TAGE, psw);
         editor.apply();
     }
-    private void removeLoginFromSharedPreference(){
+
+    private void removeLoginFromSharedPreference() {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(StaticValue
-                .LOGIN_SHARED_PEFERENCE,MODE_PRIVATE);
+                .LOGIN_SHARED_PEFERENCE, MODE_PRIVATE);
         sharedPreferences.edit().clear().apply();
         Log.d("tixx", "removeLoginFromSharedPreference: called");
     }

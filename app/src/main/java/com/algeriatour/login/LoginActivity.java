@@ -9,8 +9,10 @@ import android.widget.Toast;
 import com.algeriatour.R;
 import com.algeriatour.main.MainActivity;
 import com.algeriatour.signin.SignInActivity;
+import com.algeriatour.uml_class.Membre;
 import com.algeriatour.utils.Networking;
 import com.algeriatour.utils.StaticValue;
+import com.algeriatour.utils.User;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import butterknife.BindView;
@@ -43,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
         Networking.initAndroidNetworking(this);
         /*---------------*/
         progressDialog = new SpotsDialog(this);
+        progressDialog.setCancelable(false);
     }
 
     @Override
@@ -128,17 +131,13 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
         Toasty.success(this, msg, Toast.LENGTH_LONG, true).show();
     }
 
-    @Override
-    public void startMainActiviy(String pseudo, String psw, String email) {
-        Intent intent = new Intent(this, MainActivity.class);
-        if (pseudo != null && psw != null) {
-            intent.putExtra(StaticValue.PSEUDO_TAGE, pseudo);
-            intent.putExtra(StaticValue.PASSWORD_TAGE, psw);
-            intent.putExtra(StaticValue.EMAIL_TAGE, email);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
 
+    @Override
+    public void startMainActiviy(Membre membre) {
+        User.connect(membre);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override

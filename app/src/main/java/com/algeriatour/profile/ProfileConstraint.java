@@ -25,7 +25,7 @@ public class ProfileConstraint {
 
         void finishAcitivity();
 
-        void startMainActivityAfterChange(String pseudo, String password, String email);
+        void startMainActivityAfterChange();
     }
 
 

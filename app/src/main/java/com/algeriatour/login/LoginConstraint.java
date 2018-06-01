@@ -1,5 +1,7 @@
 package com.algeriatour.login;
 
+import com.algeriatour.uml_class.Membre;
+
 public class LoginConstraint {
 
     public interface viewConstraint{
@@ -11,7 +13,7 @@ public class LoginConstraint {
 
         void showLoginFailed(String msg);
         void showLoginSucess(String msg);
-        void startMainActiviy(String userPseudo, String psw, String email);
+        void startMainActiviy(Membre membre);
         void startMainActiviy();
         void showProgressDialog();
         void hideProgressDialog();
@@ -25,7 +27,7 @@ public class LoginConstraint {
 
     public interface PresenterConstraint{
         void doAuthentification();
-        void onLoginSucess(String pseudo, String psw, String email);
+        void onLoginSucess(Membre membre);
         void onLoginFail(String errorMessage);
     }
 }

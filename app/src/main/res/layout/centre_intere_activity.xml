@@ -6,7 +6,7 @@
     xmlns:tools = "http://schemas.android.com/tools"
     android:layout_width = "match_parent"
     android:layout_height = "match_parent"
-    tools:context = ".endroit.CentreIntereActivity">
+    tools:context = ".point.PointIntereActivity">
 
     <android.support.v4.widget.NestedScrollView
         android:id = "@+id/centreIntere_scrollView"
@@ -22,11 +22,32 @@
             android:orientation = "vertical">
 
             <include layout = "@layout/centre_intere_descreption" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id = "@+id/centreIntere_comment_recycleView"
+            <FrameLayout
                 android:layout_width = "match_parent"
-                android:layout_height = "wrap_content" />
+                android:layout_height = "wrap_content">
+                <android.support.v7.widget.RecyclerView
+                    android:id = "@+id/centreIntere_comment_recycleView"
+                    android:layout_width = "match_parent"
+                    android:layout_height = "wrap_content"
+                    />
+                <TextView
+                    android:id="@+id/centreIntere_comment_text_info"
+                    android:layout_width = "match_parent"
+                    android:layout_height = "match_parent"
+                    android:layout_gravity="center"
+                    android:textSize="18dp"
+                    android:visibility="gone"
+                    android:gravity="center"/>
+
+                <ProgressBar
+
+                    android:id="@+id/centreIntere_comment_progress"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
+            </FrameLayout>
+
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
@@ -57,7 +78,7 @@
                 app:layout_constraintTop_toTopOf = "parent">
 
                 <ImageView
-                    android:id="@+id/centre_intere_image"
+                    android:id = "@+id/centre_intere_image"
                     android:layout_width = "match_parent"
                     android:layout_height = "match_parent"
                     android:scaleType = "centerCrop"
@@ -107,7 +128,7 @@
             android:layout_width = "wrap_content"
             android:layout_height = "wrap_content"
             android:src = "@drawable/ic_favorite"
-            android:tint="@color/white"
+            android:tint = "@color/white"
             app:fab_colorNormal = "@color/colorPrimary"
             app:fab_colorPressed = "@color/colorPrimary" />
 

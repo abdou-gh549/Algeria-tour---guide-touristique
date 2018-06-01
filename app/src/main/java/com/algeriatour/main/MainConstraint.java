@@ -13,7 +13,6 @@ public class MainConstraint {
         void makeItVisitorDrawer();
         void makeItMembreDrawer();
         void openLoginActivity();
-
         void setDrawerEmail(String email);
         void setDrawerPseudo(String pseudo);
     }

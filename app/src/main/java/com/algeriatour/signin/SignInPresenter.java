@@ -2,7 +2,7 @@ package com.algeriatour.signin;
 
 
 import com.algeriatour.R;
-import com.algeriatour.utils.FormatValidator;
+import com.algeriatour.utils.AlgeriaTourUtils;
 
 public class SignInPresenter  implements SignInConstraint.PresenterConstraint{
     private SignInConstraint.ViewConstraint signInView;
@@ -38,7 +38,7 @@ public class SignInPresenter  implements SignInConstraint.PresenterConstraint{
         // email check
         if(signInView.getEmail().isEmpty()){
             signInView.showEmailFieldError( signInView.getStringFromResource(R.string.empy_pseudo_error) );
-        }else if(! FormatValidator.isValidEmail(signInView.getEmail()) ){
+        }else if(! AlgeriaTourUtils.isValidEmail(signInView.getEmail()) ){
             signInView.showEmailFieldError( signInView.getStringFromResource(R.string
                     .invalid_email_format_error) );
         }else inputValid++;

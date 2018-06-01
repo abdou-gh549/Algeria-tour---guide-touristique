@@ -18,6 +18,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.algeriatour.utils.AlgeriaTourUtils.parsImage;
+
 public class HomeFragementModel implements HomeFragmentConstraint.ModelConstraint {
     private final String ville_info_file = "at_get_all_towns.php";
     private final String ville_image_file = "at_get_image_of.php";
@@ -129,8 +131,4 @@ public class HomeFragementModel implements HomeFragmentConstraint.ModelConstrain
         return v;
     }
 
-    private Bitmap parsImage(String encodedImage) {
-        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-    }
 }

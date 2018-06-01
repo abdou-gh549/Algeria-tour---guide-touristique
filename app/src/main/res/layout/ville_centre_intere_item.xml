@@ -5,7 +5,7 @@
     android:layout_height = "wrap_content"
     android:layout_margin = "5dp"
     app:cardCornerRadius = "1dp"
-    app:cardElevation = "3dp"
+    app:cardElevation = "1dp"
     app:contentPadding = "5dp">
 
     <android.support.constraint.ConstraintLayout
@@ -17,7 +17,7 @@
             android:layout_width = "125dp"
             android:layout_height = "80dp"
             android:scaleType = "centerCrop"
-            android:src = "@drawable/tst_musejmila"
+            android:src = "@drawable/wait_image_2"
             app:layout_constraintStart_toStartOf = "parent"
             app:layout_constraintTop_toTopOf = "parent" />
 
