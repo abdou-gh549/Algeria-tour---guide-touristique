@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class PlaceInfo implements Serializable {
     private String name;
     private String wilaya;
+    private String ville;
     private String descreption;
     private float rate;
     private long id;
@@ -13,6 +14,7 @@ public class PlaceInfo implements Serializable {
     public PlaceInfo() {
         name = "";
         wilaya = "";
+        ville = "";
         descreption = "";
         rate = 3.5f;
     }
@@ -74,6 +76,7 @@ public class PlaceInfo implements Serializable {
         placeInfo.setWilaya(wilaya);
         placeInfo.setRate(rate);
         placeInfo.setType(type);
+        placeInfo.setVille(ville);
         return placeInfo;
     }
 
@@ -84,5 +87,18 @@ public class PlaceInfo implements Serializable {
         wilaya = placeInfo.getWilaya();
         rate = placeInfo.getRate();
         type = placeInfo.getType();
+        ville = placeInfo.getVille();
+    }
+
+    public String getVille() {
+        return ville;
+    }
+
+    public void setVille(String ville) {
+        this.ville = ville;
+    }
+
+    public String getCompletAdress(){
+        return ville + " " + wilaya;
     }
 }

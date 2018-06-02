@@ -8,11 +8,13 @@ import android.widget.Toast;
 
 import com.algeriatour.R;
 import com.algeriatour.main.MainActivity;
+import com.algeriatour.resetpassword.ResetPasswordActivity;
 import com.algeriatour.signin.SignInActivity;
 import com.algeriatour.uml_class.Membre;
 import com.algeriatour.utils.Networking;
 import com.algeriatour.utils.StaticValue;
 import com.algeriatour.utils.User;
+import com.androidnetworking.AndroidNetworking;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import butterknife.BindView;
@@ -92,7 +94,8 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
 
     @OnClick(R.id.login_forgetPassword_textView)
     public void onForgetPasswordClicked() {
-        // TODO : forget password stuff
+        Intent intent = new Intent(this, ResetPasswordActivity.class);
+        startActivity(intent);
     }
 
 
@@ -153,7 +156,7 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
 
     @Override
     public void hideProgressDialog() {
-        progressDialog.hide();
+        progressDialog.dismiss();
     }
 
     @Override
@@ -165,4 +168,9 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
         editor.apply();
     }
 
+    @Override
+    protected void onDestroy() {
+        AndroidNetworking.cancelAll();
+        super.onDestroy();
+    }
 }

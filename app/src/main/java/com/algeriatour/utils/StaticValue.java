@@ -30,12 +30,16 @@ public class StaticValue {
     public static final String JSON_NAME_USER  = "user";
     public static final String JSON_NAME_MESSAGE  = "message";
     public static final String JSON_NAME_ID  = "id";
+    public static final String JSON_NAME_FAV_ID  = "favorite_id";
+    public static final String JSON_NAME_TOWN_ID  = "town_id";
     public static final String JSON_NAME_IMAGE  = "image";
     public static final String JSON_NAME_NAME  = "name";
     public static final String JSON_NAME_WILAYA = "wilaya";
     public static final String JSON_NAME_DESCREPTION = "description";
     public static final String JSON_NAME_TOWNS = "towns";
+    public static final String JSON_NAME_TOWN = "town";
     public static final String JSON_NAME_POINTS = "points";
+    public static final String JSON_NAME_POINT = "point";
     public static final String JSON_NAME_COMMENT = "opinions";
     public static final String JSON_NAME_COMMENT_DESCREPTION = "comment";
     public static final String JSON_NAME_TYPE = "type";
@@ -44,6 +48,8 @@ public class StaticValue {
     public static final String JSON_NAME_USER_NAME= "username";
     public static final String JSON_NAME_DATE= "date_time";
     public static final String JSON_NAME_RATTING= "rating";
+    public static final String JSON_NAME_FAVORITE= "favorites";
+    public static final String JSON_NAME_NOT= "note";
 
     public static final String PHP_TARGET  = "target";
     public static final String PHP_MYSQL_TARGET  = "external";
@@ -55,7 +61,9 @@ public class StaticValue {
     public static final String PHP_POINT_ID  = "point_id";
     public static final String PHP_WHAT = "what";
     public static final String PHP_ID = "id";
+    public static final String PHP_USER_ID = "user_id";
     public static final String PHP_TOWN_ID = "town_id";
+    public static final String PHP_NOTE = "note";
 
     public static final String WEB_HOST = "https://algeriatour.000webhostapp.com/";
     public static final String LOCAL_HOST = "local host";

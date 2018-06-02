@@ -25,9 +25,6 @@ public class User extends Application {
         userType = StaticValue.VISITOR;
     }
 
-    public static void getMembre(Membre membre) {
-        User.membre = membre;
-    }
 
     public static Membre getMembre() {
         return membre;

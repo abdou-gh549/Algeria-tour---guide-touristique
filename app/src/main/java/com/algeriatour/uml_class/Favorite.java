@@ -1,12 +1,21 @@
 package com.algeriatour.uml_class;
 
 public class Favorite {
+    long favoriteId;
     private PointInteret pointInteret;
     private String note;
 
     public Favorite() {
         pointInteret = new PointInteret();
         note = "";
+    }
+
+    public long getFavoriteId() {
+        return favoriteId;
+    }
+
+    public void setFavoriteId(long favoriteId) {
+        this.favoriteId = favoriteId;
     }
 
     public PointInteret getPointInteret() {

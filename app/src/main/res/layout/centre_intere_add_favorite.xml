@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:app = "http://schemas.android.com/apk/res-auto"
+    android:layout_width = "wrap_content"
+    android:layout_height = "wrap_content"
+    android:background = "@drawable/bg_layout_rounded_white">
+
+    <EditText
+        android:id = "@+id/centre_intere_addFavorite_note"
+        android:layout_width = "250dp"
+        android:layout_height = "225dp"
+        android:layout_marginEnd = "8dp"
+        android:layout_marginStart = "8dp"
+        android:layout_marginTop = "8dp"
+        android:gravity = "top"
+        android:hint = "add note"
+        android:inputType = "textMultiLine"
+        android:maxLength = "200"
+        app:layout_constraintEnd_toEndOf = "parent"
+        app:layout_constraintStart_toStartOf = "parent"
+        app:layout_constraintTop_toTopOf = "parent" />
+
+    <LinearLayout
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:layout_margin = "8dp"
+        android:layout_marginBottom = "8dp"
+        android:orientation = "horizontal"
+        app:layout_constraintBottom_toBottomOf = "parent"
+        app:layout_constraintEnd_toEndOf = "@+id/centre_intere_addFavorite_note"
+        app:layout_constraintStart_toStartOf = "@+id/centre_intere_addFavorite_note"
+        app:layout_constraintTop_toBottomOf = "@+id/centre_intere_addFavorite_note">
+
+        <Button
+            android:id = "@+id/centre_intere_addFavorite_cancel"
+            style = "@style/loginButton"
+            android:text = "Cancel" />
+
+        <Button
+            android:id = "@+id/centre_intere_addFavorite_add"
+            style = "@style/loginButton"
+            android:text = "Add" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

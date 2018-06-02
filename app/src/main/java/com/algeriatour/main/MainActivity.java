@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity
         Log.d("main", "setUpViewPager: init view pager");
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(new HomeFragment(), R.drawable.ic_home_black_24dp);
-        viewPagerAdapter.addFragment(new FavoriteFragment(), R.drawable.ic_favorite);
+        viewPagerAdapter.addFragment(new FavoriteFragment(), R.drawable.ic_favorite_bleu);
         viewPagerAdapter.addFragment(new SearchFragment(), R.drawable.ic_search_black);
 
         viewPager.setAdapter(viewPagerAdapter);

@@ -1,6 +1,7 @@
 package com.algeriatour.main.favorite;
 
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +28,7 @@ import com.androidnetworking.AndroidNetworking;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dmax.dialog.SpotsDialog;
 import es.dmoral.toasty.Toasty;
 
 /**
@@ -43,9 +47,12 @@ public class FavoriteFragment extends Fragment implements FavoriteConstraint.Vie
     @BindView(R.id.favorite_swipToRefresh)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    LinearLayoutManager mLayoutManager;
-    FavoriteRecycleViewAdapter recyclerViewAdapter;
-    FavoritePresenter presenter;
+    private LinearLayoutManager mLayoutManager;
+    private FavoriteRecycleViewAdapter recyclerViewAdapter;
+    private FavoritePresenter presenter;
+    private SpotsDialog progressDialog;
+    private Dialog editFavorite;
+
     public FavoriteFragment() {
         // Required empty public constructor
     }
@@ -57,13 +64,15 @@ public class FavoriteFragment extends Fragment implements FavoriteConstraint.Vie
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
         ButterKnife.bind(this, view);
         presenter = new FavoritePresenter(this);
-
+        progressDialog = new SpotsDialog(getActivity());
+        progressDialog.setCancelable(false);
         setUpSwipToRefresh();
         // user test
         if (User.getUserType() == StaticValue.MEMBER) {
             recyclerView.setVisibility(View.VISIBLE);
             visitorLayout.setVisibility(View.GONE);
             setUpAdapter();
+            presenter.loadFavoriteList();
         } else {
             recyclerView.setVisibility(View.GONE);
             visitorLayout.setVisibility(View.VISIBLE);
@@ -74,11 +83,10 @@ public class FavoriteFragment extends Fragment implements FavoriteConstraint.Vie
 
     private void setUpSwipToRefresh() {
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            if(User.getUserType() == StaticValue.MEMBER){
+            if (User.getUserType() == StaticValue.MEMBER) {
                 AndroidNetworking.cancelAll();
                 presenter.loadFavoriteList();
-            }
-            else{
+            } else {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -87,7 +95,7 @@ public class FavoriteFragment extends Fragment implements FavoriteConstraint.Vie
     private void setUpAdapter() {
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
-        recyclerViewAdapter = new FavoriteRecycleViewAdapter();
+        recyclerViewAdapter = new FavoriteRecycleViewAdapter(this);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
     }
@@ -100,23 +108,38 @@ public class FavoriteFragment extends Fragment implements FavoriteConstraint.Vie
 
     @Override
     public void addFavorite(Favorite favorite) {
-
+        recyclerViewAdapter.addFavortie(favorite);
     }
 
     @Override
-    public void setFavoriteImage(Bitmap image) {
-        
+    public void setFavoriteImage(Bitmap image, long position) {
+        recyclerViewAdapter.setFavoriteImage(image, position);
     }
 
     @Override
-    public void showProgressBar() {
+    public void deleteFavoriteClick(long favoriteId) {
+        presenter.deleteFavorite(favoriteId);
+    }
+
+    @Override
+    public void showProgressRefresh() {
         informationTextView.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
-    public void hideProgressBar() {
+    public void hideProgressRefresh() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showProgressDialog() {
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        progressDialog.dismiss();
     }
 
     @Override
@@ -138,6 +161,42 @@ public class FavoriteFragment extends Fragment implements FavoriteConstraint.Vie
     @Override
     public void showSucessToast(String msg) {
         Toasty.success(getContext(), msg, Toast.LENGTH_LONG).show();
+    }
 
+    @Override
+    public void removeFavorite(long favoriteID) {
+        recyclerViewAdapter.removeFavorite(favoriteID);
+    }
+
+    @Override
+    public void editFavoriteClick(Favorite favorite) {
+        editFavorite = new Dialog(getActivity());
+        editFavorite.setContentView(R.layout.favorite_edit_item);
+        editFavorite.setCancelable(false);
+        EditText noteEditText = editFavorite.findViewById(R.id.favorite_edit_item_note);
+        Button saveButton = editFavorite.findViewById(R.id.favorite_edit_item_save);
+        Button cancelButton = editFavorite.findViewById(R.id.favorite_edit_item_cancel);
+        noteEditText.setText(favorite.getNote());
+        cancelButton.setOnClickListener(view -> editFavorite.dismiss());
+        saveButton.setOnClickListener(view -> {
+            String newNote = noteEditText.getText().toString();
+            if (favorite.getNote().equals(newNote)) {
+                showInformationToast("nothing to change :)");
+            } else {
+                showProgressDialog();
+                presenter.updateNoteOfFavorite(favorite.getFavoriteId(), newNote);
+            }
+        });
+        editFavorite.show();
+    }
+
+    @Override
+    public void hideEditDialog() {
+        editFavorite.dismiss();
+    }
+
+    @Override
+    public void showInformationToast(String s) {
+        Toasty.info(getActivity(), s, Toast.LENGTH_LONG, true).show();
     }
 }

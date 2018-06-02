@@ -3,9 +3,9 @@ package com.algeriatour.point;
 import android.util.Log;
 
 import com.algeriatour.uml_class.Commentaire;
-import com.algeriatour.uml_class.PointInteret;
 import com.algeriatour.utils.AlgeriaTourUtils;
 import com.algeriatour.utils.StaticValue;
+import com.algeriatour.utils.User;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -20,8 +20,13 @@ import java.util.ArrayList;
 public class PointInteretModel implements PointIneteretConstraint.ModelConstraint {
     private final String laodImageFileName = "at_get_image_of.php";
     private final String getCommentFileName = "at_get_opinions_of_point.php";
+    private final String favoriteExistCheckFileName = "at_has_user_favorite.php";
+    private final String addToFavoriteFileName = "at_add_favorite.php";
     private final String getImage_url = StaticValue.MYSQL_SITE + laodImageFileName;
     private final String getComment_url = StaticValue.MYSQL_SITE + getCommentFileName;
+    private final String favoriteCheck_url = StaticValue.MYSQL_SITE + favoriteExistCheckFileName;
+    private final String addToFavorite_url = StaticValue.MYSQL_SITE + addToFavoriteFileName;
+
     private PointIneteretConstraint.PresenterConstraint presenter;
 
     public PointInteretModel(PointIneteretConstraint.PresenterConstraint p) {
@@ -112,10 +117,66 @@ public class PointInteretModel implements PointIneteretConstraint.ModelConstrain
         });
     }
 
+    @Override
+    public void favoriteAlreadyAddedCheck(long pointId) {
+        AndroidNetworking.post(favoriteCheck_url)
+                .addBodyParameter(StaticValue.PHP_TARGET, StaticValue.PHP_MYSQL_TARGET)
+                .addBodyParameter(StaticValue.PHP_USER_ID, User.getMembre().getId() + "")
+                .addBodyParameter(StaticValue.PHP_POINT_ID, pointId + "")
+                .setPriority(Priority.MEDIUM)
+                .build().getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (response.getInt(StaticValue.JSON_NAME_SUCCESS) == 1) {
+                        if (response.getInt("has") == 1) { // true
+                            presenter.onFavoriteAlreadyExist();
+                        } else { // false
+                            presenter.onFavoriteDoesNoteExist();
+                        }
+                    } else {
+                        presenter.onFavoriteCheckFail("server error please try again later");
+                    }
+                } catch (JSONException e) {
+                    Log.d("tixx", "onResponse check favorite: catch " + e.getMessage());
+                    presenter.onFavoriteCheckFail("ops something just happen");
+                }
+            }
+
+            @Override
+            public void onError(ANError error) {
+                Log.d("tixx", "load comment onError : " + error.getMessage());
+                presenter.onFavoriteCheckFail("connection error ");
+            }
+        });
+    }
+
+    @Override
+    public void addToFavorite(long pointId, String note) {
+        AndroidNetworking.post(addToFavorite_url)
+                .addBodyParameter(StaticValue.PHP_TARGET, StaticValue.PHP_MYSQL_TARGET)
+                .addBodyParameter(StaticValue.PHP_USER_ID, User.getMembre().getId() + "")
+                .addBodyParameter(StaticValue.PHP_POINT_ID, pointId+"")
+                .addBodyParameter(StaticValue.PHP_NOTE, note)
+                .setPriority(Priority.MEDIUM)
+                .build().getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                presenter.onAddFavoriteResultSuccess(response);
+            }
+
+            @Override
+            public void onError(ANError error) {
+                Log.d("tixx", "load comment onError : " + error.getMessage());
+                presenter.onAddFavoriteResultfail("check your connection");
+            }
+        });
+    }
+
     private Commentaire parsComment(JSONObject jsonObject) throws JSONException {
         Commentaire commentaire = new Commentaire();
-        commentaire.setUserName( jsonObject.getString(StaticValue.JSON_NAME_USER_NAME));
-        commentaire.setComment( jsonObject.getString(StaticValue.JSON_NAME_COMMENT_DESCREPTION));
+        commentaire.setUserName(jsonObject.getString(StaticValue.JSON_NAME_USER_NAME));
+        commentaire.setComment(jsonObject.getString(StaticValue.JSON_NAME_COMMENT_DESCREPTION));
         commentaire.setDate(jsonObject.getString(StaticValue.JSON_NAME_DATE));
         commentaire.setRatting(jsonObject.getLong(StaticValue.JSON_NAME_RATTING));
         commentaire.setId(jsonObject.getLong(StaticValue.JSON_NAME_ID));

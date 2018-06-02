@@ -58,9 +58,9 @@ public class HomeFragment extends Fragment implements HomeFragmentConstraint.Vie
         ButterKnife.bind(this, view);
         presenter = new HomeFragementPresenter(this);
         mAdapter = new HomeRecycleViewAdapter();
-        presenter.loadVilleToRecylerView();
-        setUpRecyclerView();
         setUpSwipToRefresh();
+        setUpRecyclerView();
+        presenter.loadVilleToRecylerView();
 
         return view;
     }

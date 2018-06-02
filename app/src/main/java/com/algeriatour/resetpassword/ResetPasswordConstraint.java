@@ -10,6 +10,8 @@ public class ResetPasswordConstraint {
             void sendPassword(String email, String password);
             void showToastError(String msg);
             String getStringFromRessource(int stringId);
+            void showProgressDialog();
+            void hideProgressDialog();
 
     }
 }

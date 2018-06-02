@@ -64,8 +64,10 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
     }
 
     public void updateVille(Ville ville, int position) {
-        villes.set(position, ville);
-        notifyItemChanged(position);
+        if(position < villes.size()){
+            villes.set(position, ville);
+            notifyItemChanged(position);
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

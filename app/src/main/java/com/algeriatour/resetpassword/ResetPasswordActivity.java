@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.algeriatour.R;
+import com.algeriatour.utils.Networking;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.function.Predicate;
@@ -12,6 +13,7 @@ import java.util.function.Predicate;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dmax.dialog.SpotsDialog;
 import es.dmoral.toasty.Toasty;
 
 public class ResetPasswordActivity extends AppCompatActivity implements ResetPasswordConstraint.ViewConstraint {
@@ -24,12 +26,17 @@ public class ResetPasswordActivity extends AppCompatActivity implements ResetPas
 
     ResetPasswordPresenter presenter;
 
+    SpotsDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reset_password_activity);
         ButterKnife.bind(this);
         presenter = new ResetPasswordPresenter(this);
+        Networking.initAndroidNetworking(this);
+        progressDialog = new SpotsDialog(this);
+        progressDialog.setCancelable(false);
     }
 
     @OnClick(R.id.resetPassword_sendCodeButton)
@@ -37,7 +44,10 @@ public class ResetPasswordActivity extends AppCompatActivity implements ResetPas
         presenter.sendPasswordClicked();
     }
 
-
+    @OnClick(R.id.forgetPassword_backButton)
+    void onBackButton(){
+        finish();
+    }
     @Override
     public String getEmail() {
         return emailField.getText().toString();
@@ -59,8 +69,8 @@ public class ResetPasswordActivity extends AppCompatActivity implements ResetPas
     }
 
     @Override
-    public void sendPassword(String email, String password) {
-        AlgeriaTourMail.sendResetCode(this, email,password);
+    public void sendPassword(String email, String msg) {
+        AlgeriaTourMail.sendResetCode(this, email,msg);
     }
 
     @Override
@@ -71,5 +81,15 @@ public class ResetPasswordActivity extends AppCompatActivity implements ResetPas
     @Override
     public String getStringFromRessource(int stringId) {
         return getString(stringId);
+    }
+
+    @Override
+    public void showProgressDialog() {
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        progressDialog.dismiss();
     }
 }
