@@ -165,6 +165,8 @@ public class VilleModel implements VilleConstraint.ModelConstraint {
         pointInteret.setName(jsonObject.getString(StaticValue.JSON_NAME_NAME));
         pointInteret.setType(jsonObject.getString(StaticValue.JSON_NAME_TYPE));
         pointInteret.setDescreption(jsonObject.getString(StaticValue.JSON_NAME_DESCREPTION));
+        pointInteret.setRate(Float.parseFloat(jsonObject.getString(StaticValue
+                .JSON_NAME_POINT_RATING)));
         return pointInteret;
     }
 }

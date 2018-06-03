@@ -103,6 +103,8 @@ public class PointInteretPresneter implements PointIneteretConstraint.PresenterC
                 pointInetertView.hideAddFavoriteDialog();
             } else {
                 pointInetertView.showToastError("server error , try again later");
+                Log.d("tixx", "onAddFavoriteResultSuccess -1 : " + response.getString(StaticValue
+                        .JSON_NAME_MESSAGE));
             }
         } catch (JSONException e) {
             Log.d("tixx", "onResponse check favorite: catch " + e.getMessage());
@@ -115,5 +117,49 @@ public class PointInteretPresneter implements PointIneteretConstraint.PresenterC
     public void onAddFavoriteResultfail(String msg) {
         pointInetertView.hideProgressDialog();
         pointInetertView.showToastError(msg);
+    }
+
+    @Override
+    public void addCommentClicked(long id) {
+        pointInetertView.showProgressDialog();
+        pointInteretModel.checkIfCommentExistAndAddIt(id);
+    }
+
+    @Override
+    public void onCheckCommentError(String msg) {
+        pointInetertView.hideProgressDialog();
+        pointInetertView.showToastError(msg);
+
+    }
+
+    @Override
+    public void onCheckCommentExist(String msg) {
+        pointInetertView.hideProgressDialog();
+        pointInetertView.hideAddCommentDialog();
+        pointInetertView.showToastInformation(msg);
+    }
+
+    @Override
+    public void onAddCommentSuccess(long pointInteretId) {
+        pointInetertView.hideProgressDialog();
+        pointInetertView.hideAddCommentDialog();
+        loadCommentaire(pointInteretId);
+        pointInetertView.showToastSuccess("comment added");
+    }
+
+    @Override
+    public void onAddCommentFail(String msg) {
+        pointInetertView.hideProgressDialog();
+        pointInetertView.showToastError(msg);
+    }
+
+    @Override
+    public void showCommentDialog() {
+        pointInetertView.showAddCommentDialog();
+    }
+
+    @Override
+    public void addComment(Commentaire commentaire) {
+        pointInteretModel.addCommentaire(commentaire);
     }
 }

@@ -13,8 +13,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ProfileModel implements ProfileConstraint.ModelConstraint {
-    private final String login_url = "https://algeriatour.000webhostapp.com/at_login.php";
-    private final String update_url = "https://algeriatour.000webhostapp.com/at_update_user.php";
+    private final String loginFileName = "at_login.php";
+    private final String updateFileName = "at_update_user.php";
+
+    private final String login_url = StaticValue.MYSQL_SITE + loginFileName;
+    private final String update_url = StaticValue.MYSQL_SITE + updateFileName;
 
     ProfileConstraint.PresenterConstraint presenter;
 

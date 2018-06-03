@@ -16,7 +16,7 @@ public class PlaceInfo implements Serializable {
         wilaya = "";
         ville = "";
         descreption = "";
-        rate = 3.5f;
+        rate = 0f;
     }
 
     public String getType() {

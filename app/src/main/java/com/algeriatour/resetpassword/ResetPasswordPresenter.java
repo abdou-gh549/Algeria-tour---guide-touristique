@@ -60,6 +60,7 @@ public class ResetPasswordPresenter {
             @Override
             public void onError(ANError error) {
                 resetPsw_view.hideProgressDialog();
+                Log.d("tixx", "onError: " + error.getMessage());
                 resetPsw_view.showToastError("check your connection");
                 resetPsw_view.hideProgressDialog();
             }

@@ -36,6 +36,7 @@ public class StaticValue {
     public static final String JSON_NAME_NAME  = "name";
     public static final String JSON_NAME_WILAYA = "wilaya";
     public static final String JSON_NAME_DESCREPTION = "description";
+    public static final String JSON_NAME_VILLE_RATING = "town_ratting";
     public static final String JSON_NAME_TOWNS = "towns";
     public static final String JSON_NAME_TOWN = "town";
     public static final String JSON_NAME_POINTS = "points";
@@ -46,10 +47,12 @@ public class StaticValue {
     public static final String JSON_NAME_USER_ID = "user_id";
     public static final String JSON_NAME_POINT_ID = "point_id";
     public static final String JSON_NAME_USER_NAME= "username";
-    public static final String JSON_NAME_DATE= "date_time";
-    public static final String JSON_NAME_RATTING= "rating";
+    public static final String JSON_NAME_DATE= "add_date";
+    public static final String JSON_NAME_RATING = "rating";
     public static final String JSON_NAME_FAVORITE= "favorites";
     public static final String JSON_NAME_NOT= "note";
+    public static final String JSON_NAME_POINT_RATING= "point_rating";
+    public static final String JSON_NAME_RESULT = "result";
 
     public static final String PHP_TARGET  = "target";
     public static final String PHP_MYSQL_TARGET  = "external";
@@ -64,14 +67,16 @@ public class StaticValue {
     public static final String PHP_USER_ID = "user_id";
     public static final String PHP_TOWN_ID = "town_id";
     public static final String PHP_NOTE = "note";
+    public static final String PHP_COMMENTAIRE = "comment";
+    public static final String PHP_RATING = "rating";
+    public static final String  PHP_KEY = "key";
+
 
     public static final String WEB_HOST = "https://algeriatour.000webhostapp.com/";
-    public static final String LOCAL_HOST = "local host";
+    public static final String LOCAL_HOST = "http://10.0.2.2/AT_PHP_FILE/";
     public static final String MYSQL_SITE = WEB_HOST;
-
     ////// user test to delete after get db
-    public static Boolean isUser = false;
-    public static Boolean userExist = true;
+
 
 
 }

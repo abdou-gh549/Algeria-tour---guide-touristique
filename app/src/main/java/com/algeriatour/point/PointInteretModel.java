@@ -22,10 +22,14 @@ public class PointInteretModel implements PointIneteretConstraint.ModelConstrain
     private final String getCommentFileName = "at_get_opinions_of_point.php";
     private final String favoriteExistCheckFileName = "at_has_user_favorite.php";
     private final String addToFavoriteFileName = "at_add_favorite.php";
+    private final String checkCommentExistFileName = "at_has_user_comment.php";
+    private final String addCommentFileName = "at_insert_comment.php";
     private final String getImage_url = StaticValue.MYSQL_SITE + laodImageFileName;
     private final String getComment_url = StaticValue.MYSQL_SITE + getCommentFileName;
     private final String favoriteCheck_url = StaticValue.MYSQL_SITE + favoriteExistCheckFileName;
     private final String addToFavorite_url = StaticValue.MYSQL_SITE + addToFavoriteFileName;
+    private final String checkComment_url = StaticValue.MYSQL_SITE + checkCommentExistFileName;
+    private final String addComment_url= StaticValue.MYSQL_SITE + addCommentFileName;
 
     private PointIneteretConstraint.PresenterConstraint presenter;
 
@@ -156,7 +160,7 @@ public class PointInteretModel implements PointIneteretConstraint.ModelConstrain
         AndroidNetworking.post(addToFavorite_url)
                 .addBodyParameter(StaticValue.PHP_TARGET, StaticValue.PHP_MYSQL_TARGET)
                 .addBodyParameter(StaticValue.PHP_USER_ID, User.getMembre().getId() + "")
-                .addBodyParameter(StaticValue.PHP_POINT_ID, pointId+"")
+                .addBodyParameter(StaticValue.PHP_POINT_ID, pointId + "")
                 .addBodyParameter(StaticValue.PHP_NOTE, note)
                 .setPriority(Priority.MEDIUM)
                 .build().getAsJSONObject(new JSONObjectRequestListener() {
@@ -173,12 +177,89 @@ public class PointInteretModel implements PointIneteretConstraint.ModelConstrain
         });
     }
 
+    @Override
+    public void checkIfCommentExistAndAddIt(long pointId) {
+        AndroidNetworking.post(checkComment_url)
+                .addBodyParameter(StaticValue.PHP_TARGET, StaticValue.PHP_MYSQL_TARGET)
+                .addBodyParameter(StaticValue.PHP_USER_ID, User.getMembre().getId() + "")
+                .addBodyParameter(StaticValue.PHP_POINT_ID, pointId + "")
+                .setPriority(Priority.MEDIUM)
+                .build().getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (response.getInt(StaticValue.JSON_NAME_SUCCESS) == 1) {
+                        if (response.getInt("has") == 1) { // true
+                            presenter.onCheckCommentExist("comment already exist");
+                        } else { // false
+                            presenter.showCommentDialog();
+                        }
+                    } else {
+                        presenter.onCheckCommentError("server error please try again later");
+                    }
+                } catch (JSONException e) {
+                    Log.d("tixx", "onResponse checkIfCommentExistAndAddIt : catch " + e
+                            .getMessage());
+                    presenter.onCheckCommentError("ops something just happen");
+                }
+            }
+            @Override
+            public void onError(ANError error) {
+                Log.d("tixx", "checkIfCommentExistAndAddIt onError : " + error.getMessage());
+                presenter.onCheckCommentError("connection error");
+
+            }
+        });
+    }
+
+    @Override
+    public void addCommentaire(Commentaire commentaire) {
+        AndroidNetworking.post(addComment_url)
+                .addBodyParameter(StaticValue.PHP_TARGET, StaticValue.PHP_MYSQL_TARGET)
+                .addBodyParameter(StaticValue.PHP_USER_ID, commentaire.getUserId() + "")
+                .addBodyParameter(StaticValue.PHP_POINT_ID, commentaire.getPointInteretId() + "")
+                .addBodyParameter(StaticValue.PHP_RATING, commentaire.getRatting()+"")
+                .addBodyParameter(StaticValue.PHP_COMMENTAIRE, commentaire.getComment())
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if(response.getInt(StaticValue.JSON_NAME_SUCCESS) == 1){
+
+                        presenter.onAddCommentSuccess(commentaire.getPointInteretId());
+                    }
+                    else{
+                        Log.d("tixx", "onResponse: -1 " + commentaire.getRatting()+" " + response
+                                .getString(StaticValue
+                                .JSON_NAME_MESSAGE));
+                        presenter.onAddCommentFail("error while adding comment try again later");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d("tixx", "onResponse exp : " + e.getMessage());
+
+                    presenter.onAddCommentFail("error while adding comment try again later");
+
+                }
+            }
+
+            @Override
+            public void onError(ANError error) {
+                Log.d("tixx", "load comment onError : " + error.getMessage());
+                presenter.onAddCommentFail("connection error ");
+            }
+        });
+
+    }
     private Commentaire parsComment(JSONObject jsonObject) throws JSONException {
         Commentaire commentaire = new Commentaire();
         commentaire.setUserName(jsonObject.getString(StaticValue.JSON_NAME_USER_NAME));
         commentaire.setComment(jsonObject.getString(StaticValue.JSON_NAME_COMMENT_DESCREPTION));
         commentaire.setDate(jsonObject.getString(StaticValue.JSON_NAME_DATE));
-        commentaire.setRatting(jsonObject.getLong(StaticValue.JSON_NAME_RATTING));
+        commentaire.setRatting(Float.parseFloat(jsonObject.getString(StaticValue
+                .JSON_NAME_RATING)));
         commentaire.setId(jsonObject.getLong(StaticValue.JSON_NAME_ID));
         commentaire.setUserId(jsonObject.getLong(StaticValue.JSON_NAME_USER_ID));
         commentaire.setPointInteretId(jsonObject.getLong(StaticValue.JSON_NAME_POINT_ID));

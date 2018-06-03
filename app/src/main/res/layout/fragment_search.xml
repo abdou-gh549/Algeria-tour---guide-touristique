@@ -1,13 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:app = "http://schemas.android.com/apk/res-auto"
     xmlns:tools = "http://schemas.android.com/tools"
     android:layout_width = "match_parent"
     android:layout_height = "match_parent"
     tools:context = ".main.searche.SearchFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id = "@+id/linearLayout3"
         android:layout_width = "match_parent"
-        android:layout_height = "match_parent"
-        android:text = "Hello form search" />
-</FrameLayout>
+        android:layout_height = "wrap_content"
+
+        android:layout_marginEnd = "10dp"
+        android:layout_marginStart = "10dp"
+        android:background = "@drawable/bg_layout_white"
+        android:elevation = "5dp"
+        android:orientation = "horizontal"
+        app:layout_constraintEnd_toEndOf = "parent"
+        app:layout_constraintStart_toStartOf = "parent"
+        app:layout_constraintTop_toTopOf = "parent">
+
+        <EditText
+            android:id = "@+id/search_input_editText"
+            android:inputType="text"
+            android:layout_width = "0dp"
+            android:layout_height = "wrap_content"
+            android:layout_weight = "1"
+            android:hint = "search"
+            />
+
+        <ImageView
+            android:id = "@+id/search_input_imageView"
+            android:layout_width = "wrap_content"
+            android:layout_height = "match_parent"
+            android:clickable="true"
+            android:layout_gravity = "center"
+            android:layout_margin = "2dp"
+            android:background = "?android:attr/selectableItemBackground"
+            android:padding = "8dp"
+            android:src = "@drawable/ic_search_black"
+            android:tint = "@color/colorPrimary"  />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width = "match_parent"
+        android:layout_height = "0dp"
+        android:layout_marginBottom = "8dp"
+        android:layout_marginEnd = "8dp"
+        android:layout_marginStart = "8dp"
+        android:layout_marginTop = "8dp"
+        app:layout_constraintBottom_toBottomOf = "parent"
+        app:layout_constraintEnd_toEndOf = "parent"
+        app:layout_constraintStart_toStartOf = "parent"
+        app:layout_constraintTop_toBottomOf = "@+id/linearLayout3">
+
+        <TextView
+            android:id = "@+id/search_information_textVeiw"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"
+            android:layout_gravity = "center"
+            android:layout_margin = "40dp"
+            android:gravity = "center"
+            android:textSize = "24dp"
+            android:visibility = "visible" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id = "@+id/search_result_recylerView"
+            android:layout_width = "match_parent"
+            android:layout_height = "wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+    </FrameLayout>
+
+</android.support.constraint.ConstraintLayout>

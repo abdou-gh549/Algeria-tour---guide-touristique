@@ -11,6 +11,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.interfaces.StringRequestListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,9 +81,12 @@ public class HomeFragementModel implements HomeFragmentConstraint.ModelConstrain
 
             @Override
             public void onError(ANError error) {
+                Log.d("tixx", "onError: "+ error.getMessage());
                 presenter.onLoadVillesFailed("check your connection ! ");
             }
         });
+
+
     }
 
     @Override
@@ -123,11 +127,15 @@ public class HomeFragementModel implements HomeFragmentConstraint.ModelConstrain
     }
 
     private Ville parsVille(JSONObject jsonVille) throws JSONException {
+        //town_ratting
+        Log.d("tixx", "parsVille: rating  = "+jsonVille.getString(StaticValue
+                .JSON_NAME_VILLE_RATING));
         Ville v = new Ville();
         v.setId(jsonVille.getLong(StaticValue.JSON_NAME_ID));
         v.setName(jsonVille.getString(StaticValue.JSON_NAME_NAME));
         v.setWilaya(jsonVille.getString(StaticValue.JSON_NAME_WILAYA));
         v.setDescreption(jsonVille.getString(StaticValue.JSON_NAME_DESCREPTION));
+        v.setRate(Float.parseFloat(jsonVille.getString(StaticValue.JSON_NAME_VILLE_RATING)));
         return v;
     }
 

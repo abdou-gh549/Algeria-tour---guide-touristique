@@ -3,7 +3,6 @@ package com.algeriatour.point;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -61,6 +60,7 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
     TextView commentTextInfo;
 
     SpotsDialog progressDialog;
+    Dialog addCommentDialog;
 
 
     private LinearLayoutManager mLayoutManager;
@@ -69,30 +69,6 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
     private PointInteretPresneter presneter;
     private Dialog addFavoriteDialog;
 
-
-    @OnClick(R.id.centre_intere_favorite_fab)
-    void onAddToFavoriteClick() {
-        if(User.getUserType() == StaticValue.VISITOR){
-            showToastInformation("you need to be member for use add to favorite");
-        }else{
-            presneter.checkIfFavoriteExist(pointInteret.getId());
-        }
-    }
-
-    @OnClick(R.id.centre_intere_comment_fab)
-    void onAddCommentClick() {
-        if(User.getUserType() == StaticValue.VISITOR){
-            showToastInformation("you need to be member for adding a comment");
-        }else{
-            showToastInformation("add comment clicked");
-
-        }
-    }
-
-    @OnClick(R.id.centre_intere_map_fab)
-    void onOpenInMapClick() {
-        showToastInformation("open in map clicked");
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +86,32 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
 
         presneter.loadCommentaire(pointInteret.getId());
         initAddToFavoriteDialog();
+        initAddCommentDialog();
 
+    }
+
+    @OnClick(R.id.centre_intere_favorite_fab)
+    void onAddToFavoriteClick() {
+        if (User.getUserType() == StaticValue.VISITOR) {
+            showToastInformation("you need to be member for use add to favorite");
+        } else {
+            presneter.checkIfFavoriteExist(pointInteret.getId());
+        }
+    }
+
+    @OnClick(R.id.centre_intere_comment_fab)
+    void onAddCommentClick() {
+        if (User.getUserType() == StaticValue.VISITOR) {
+            showToastInformation("you need to be member for adding a comment");
+        } else {
+            presneter.addCommentClicked(pointInteret.getId());
+
+        }
+    }
+
+    @OnClick(R.id.centre_intere_map_fab)
+    void onOpenInMapClick() {
+        showToastInformation("open in map clicked");
     }
 
     private void initAddToFavoriteDialog() {
@@ -123,6 +124,29 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
         cancelButton.setOnClickListener(view -> addFavoriteDialog.dismiss());
         addButton.setOnClickListener(view -> {
             presneter.addToFavorite(pointInteret.getId(), noteEditText.getText().toString());
+        });
+    }
+
+    private void initAddCommentDialog() {
+        addCommentDialog = new Dialog(this);
+        addCommentDialog.setContentView(R.layout.centre_intere_add_comment);
+
+        EditText commetnEditText = addCommentDialog.findViewById(R.id
+                .centre_intere_addComment_comment);
+        RatingBar ratingBar = addCommentDialog.findViewById(R.id
+                .centre_intere_addComment_rattingBar);
+        Button addButton = addCommentDialog.findViewById(R.id.centre_intere_addComment_add);
+        Button cancelButton = addCommentDialog.findViewById(R.id.centre_intere_addComment_cancele);
+        cancelButton.setOnClickListener(view -> addCommentDialog.dismiss());
+        addButton.setOnClickListener(view -> {
+            Commentaire commentaire = new Commentaire();
+            commentaire.setPointInteretId(pointInteret.getId());
+            commentaire.setUserId(User.getMembre().getId());
+            commentaire.setRatting(ratingBar.getRating());
+            commentaire.setComment(commetnEditText.getText().toString());
+
+            presneter.addComment(commentaire);
+
         });
     }
 
@@ -224,6 +248,16 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
     public void showToastSuccess(String msg) {
         Toasty.success(this, msg, Toast.LENGTH_LONG, true).show();
 
+    }
+
+    @Override
+    public void showAddCommentDialog() {
+        addCommentDialog.show();
+    }
+
+    @Override
+    public void hideAddCommentDialog() {
+        addCommentDialog.dismiss();
     }
 
     @Override

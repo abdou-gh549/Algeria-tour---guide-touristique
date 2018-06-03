@@ -33,6 +33,10 @@ public class PointIneteretConstraint {
         void showNotificationTaost(String msg);
 
         void showToastSuccess(String msg);
+
+        void showAddCommentDialog();
+
+        void hideAddCommentDialog();
     }
 
     public interface ModelConstraint {
@@ -43,6 +47,9 @@ public class PointIneteretConstraint {
         void favoriteAlreadyAddedCheck(long pointId);
 
         void addToFavorite(long pointId, String note);
+
+        void checkIfCommentExistAndAddIt(long pontID);
+        void addCommentaire(Commentaire commentaire);
     }
 
     public interface PresenterConstraint {
@@ -54,7 +61,7 @@ public class PointIneteretConstraint {
         void loadPointIneteretImage(long id);
         void loadCommentaire(long id);
 
-        void checkIfFavoriteExist(long pointId);
+        void checkIfFavoriteExist(long favoriteId);
         void addToFavorite(long pointId, String note);
 
         void onFavoriteAlreadyExist();
@@ -66,5 +73,20 @@ public class PointIneteretConstraint {
         void onAddFavoriteResultSuccess(JSONObject response);
 
         void onAddFavoriteResultfail(String msg);
+
+        void addCommentClicked(long commentaire);
+
+
+        void onCheckCommentError(String msg);
+
+        void onCheckCommentExist(String msg);
+
+        void onAddCommentSuccess(long pointInteretId);
+
+        void onAddCommentFail(String msg);
+
+        void showCommentDialog();
+
+        void addComment(Commentaire commentaire);
     }
 }
