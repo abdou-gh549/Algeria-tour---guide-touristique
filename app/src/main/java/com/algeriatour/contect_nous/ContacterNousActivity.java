@@ -8,11 +8,13 @@ import android.widget.Toast;
 import com.algeriatour.R;
 import com.algeriatour.utils.Networking;
 import com.algeriatour.utils.StaticValue;
+import com.algeriatour.utils.User;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.BindView;
@@ -23,7 +25,7 @@ import es.dmoral.toasty.Toasty;
 
 public class ContacterNousActivity extends AppCompatActivity {
 
-    private final String contacFileName = "";
+    private final String contacFileName = "at_send_message.php";
     private final String web_site = StaticValue.MYSQL_SITE + contacFileName;
     @BindView(R.id.contacter_nous_message)
     EditText messageEditText;
@@ -51,31 +53,44 @@ public class ContacterNousActivity extends AppCompatActivity {
 
     @OnClick(R.id.contacter_nous_send_btn)
     public void onSendButtonClicked() {
-        spotsDialog = new SpotsDialog(this);
-        spotsDialog.setCancelable(false);
+        if(spotsDialog == null){
+            spotsDialog = new SpotsDialog(this);
+            spotsDialog.setCancelable(false);
+        }
+
         if (!checkInput())
             return;
+
         spotsDialog.show();
-        /*
+
         AndroidNetworking.post(web_site)
                 .addBodyParameter(StaticValue.PHP_TARGET, StaticValue.PHP_MYSQL_TARGET)
-                // Todo : add other parameter
+                .addBodyParameter(StaticValue.PHP_USER_ID, User.getMembre().getId()+"")
+                .addBodyParameter(StaticValue.PHP_CONTENT, messageEditText.getText().toString())
+                .addBodyParameter(StaticValue.PHP_OBJECT, subjectEditText.getText().toString())
                 .setPriority(Priority.MEDIUM)
                 .build().getAsJSONObject(new JSONObjectRequestListener() {
 
             @Override
             public void onResponse(JSONObject response) {
-                // Todo : on reponse action
+                spotsDialog.dismiss();
+                try {
+                    if(response.getInt(StaticValue.JSON_NAME_SUCCESS) == 1){
+                        onMessageSendSuccess();
+                        return;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                onMessageSendFail("cant send message ... server Error");
             }
 
             @Override
             public void onError(ANError anError) {
-                onMessageSendFail("can't send the message ... check your network !");
+                spotsDialog.dismiss();
+                onMessageSendFail("can't send the message ... connection problem !");
             }
         });
-        */
-
-
     }
 
     private boolean checkInput() {

@@ -51,7 +51,8 @@
         <TextView
             android:layout_width = "wrap_content"
             android:layout_height = "wrap_content"
-            android:text = "Subject" />
+            android:text = "Subject"
+            />
 
         <EditText
             android:id = "@+id/contacter_nous_subject"
@@ -59,7 +60,7 @@
             android:layout_height = "wrap_content"
             android:hint = "subject"
             android:inputType = "text"
-            android:maxLength = "50" />
+            android:maxLength = "32" />
 
         <TextView
             android:layout_width = "wrap_content"
@@ -74,7 +75,8 @@
             android:gravity = "top"
             android:hint = "message"
             android:inputType = "textMultiLine"
-            android:maxLength = "250" />
+            android:maxLength = "256"
+            />
 
         <LinearLayout
             android:layout_width = "match_parent"

@@ -27,6 +27,8 @@
     <string name = "space_pseudo_error">les escape ne sont pas permis</string>
     <string name = "unmatch_password_error">unmatch passworde</string>
     <string name = "signIn_sucess">SignIn Success</string>
+    <string name="mor_information"><u>plus ...</u></string>
+
 
     <string-array name = "algeria_wilayas">
         <item>Adrar</item>
@@ -78,4 +80,5 @@
         <item>Ghardaia</item>
         <item>Relizanes</item>-->
     </string-array>
+    <string name = "title_activity_map">Map</string>
 </resources>

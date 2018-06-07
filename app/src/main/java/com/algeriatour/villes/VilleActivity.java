@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.algeriatour.R;
 import com.algeriatour.uml_class.PlaceInfo;
 import com.algeriatour.uml_class.PointInteret;
 import com.algeriatour.uml_class.Ville;
+import com.algeriatour.utils.AlgeriaTourUtils;
 import com.algeriatour.utils.Networking;
 import com.algeriatour.utils.StaticValue;
 import com.androidnetworking.AndroidNetworking;
@@ -82,6 +84,7 @@ public class VilleActivity extends AppCompatActivity implements VilleConstraint.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
             actionBar.setTitle(ville.getName());
+        Log.d("unicode", "setUpVilleData: " + ville.getDescreption());
         ville_descreption.setText(ville.getDescreption());
         // load ville image
         presenter.loadVilleImage(ville);

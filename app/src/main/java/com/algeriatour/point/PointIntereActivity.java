@@ -1,6 +1,7 @@
 package com.algeriatour.point;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
@@ -19,9 +20,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.algeriatour.R;
+import com.algeriatour.main.MainActivity;
+import com.algeriatour.map.activity.MapActivity;
 import com.algeriatour.uml_class.Commentaire;
 import com.algeriatour.uml_class.PlaceInfo;
 import com.algeriatour.uml_class.PointInteret;
+import com.algeriatour.utils.AlgeriaTourUtils;
 import com.algeriatour.utils.StaticValue;
 import com.algeriatour.utils.User;
 import com.androidnetworking.AndroidNetworking;
@@ -33,6 +37,7 @@ import dmax.dialog.SpotsDialog;
 import es.dmoral.toasty.Toasty;
 
 public class PointIntereActivity extends AppCompatActivity implements PointIneteretConstraint.ViewConstraint {
+
     @BindView(R.id.centreIntere_comment_recycleView)
     RecyclerView commentRecyclerView;
 
@@ -75,20 +80,31 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
         super.onCreate(savedInstanceState);
         setContentView(R.layout.centre_intere_activity);
         ButterKnife.bind(this);
-        pointInteret = new PointInteret();
+
         presneter = new PointInteretPresneter(this);
+
         progressDialog = new SpotsDialog(this);
         progressDialog.setCancelable(false);
+
+        pointInteret = new PointInteret();
+        pointInteret.setPlaceInfo((PlaceInfo) getIntent().getSerializableExtra(StaticValue.POINT_TAG));
+
         setUpToolBar();
         setUpCommentAdapter();
         setUpSwipToRefresh();
-        loadPointInteretInformation();
 
-        presneter.loadCommentaire(pointInteret.getId());
         initAddToFavoriteDialog();
         initAddCommentDialog();
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loadPointInteretInformation();
+        presneter.loadCommentaire(pointInteret.getId());
+    }
+
 
     @OnClick(R.id.centre_intere_favorite_fab)
     void onAddToFavoriteClick() {
@@ -111,8 +127,33 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
 
     @OnClick(R.id.centre_intere_map_fab)
     void onOpenInMapClick() {
-        showToastInformation("open in map clicked");
+        AlgeriaTourUtils.gpsRequest(this, new AlgeriaTourUtils.GpsResponsListiner() {
+            @Override
+            public void onPermissionDenied() {
+                Toasty.error(PointIntereActivity.this, "to use the map you need gps permission", Toast
+                                .LENGTH_SHORT,
+                        true).show();
+            }
+
+            @Override
+            public void onPermissionGaranted() {
+                Bundle bundle = getIntent().getExtras();
+                if (bundle != null) {
+                    String source = bundle.getString(StaticValue.POINT_SOURCE_TAGE, "");
+                    if (StaticValue.MAP.equals(source)) {
+                        finish();
+                    }
+                }
+                // open map activity
+                Intent mapIntent = new Intent(PointIntereActivity.this, MapActivity.class);
+                mapIntent.putExtra(StaticValue.MAP_SOURCE_TAG, StaticValue.POINT);
+                mapIntent.putExtra(StaticValue.POINT_TAG, pointInteret.getPlaceInfo());
+                startActivity(mapIntent);
+            }
+        });
+
     }
+
 
     private void initAddToFavoriteDialog() {
         addFavoriteDialog = new Dialog(this);
@@ -167,11 +208,12 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
     }
 
     private void loadPointInteretInformation() {
-        PlaceInfo placeInfo = (PlaceInfo) getIntent().getSerializableExtra(StaticValue.POINT_TAG);
-        pointInteret.setPlaceInfo(placeInfo);
+        // to reset point image in cas when result back from map
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(pointInteret.getName());
+
         }
         pointInteretDescreption.setText(pointInteret.getDescreption());
         pointInteretType.setText(pointInteret.getType());

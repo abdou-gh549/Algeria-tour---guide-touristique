@@ -1,5 +1,7 @@
 package com.algeriatour.uml_class;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 
 public class PlaceInfo implements Serializable {
@@ -11,12 +13,41 @@ public class PlaceInfo implements Serializable {
     private long id;
     private String type;
 
+    private double longitude;
+    private double latitude;
+
     public PlaceInfo() {
         name = "";
         wilaya = "";
         ville = "";
         descreption = "";
         rate = 0f;
+        longitude = 0d;
+        latitude = 0d;
+    }
+
+    public LatLng getLatLng(){
+        return new LatLng(latitude, longitude);
+    }
+    public void setLatLng(Double latitude, Double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     public String getType() {
@@ -77,6 +108,8 @@ public class PlaceInfo implements Serializable {
         placeInfo.setRate(rate);
         placeInfo.setType(type);
         placeInfo.setVille(ville);
+        placeInfo.setLongitude(longitude);
+        placeInfo.setLatitude(latitude);
         return placeInfo;
     }
 
@@ -88,6 +121,8 @@ public class PlaceInfo implements Serializable {
         rate = placeInfo.getRate();
         type = placeInfo.getType();
         ville = placeInfo.getVille();
+        longitude = placeInfo.getLongitude();
+        latitude = placeInfo.getLatitude();
     }
 
     public String getVille() {
@@ -98,7 +133,7 @@ public class PlaceInfo implements Serializable {
         this.ville = ville;
     }
 
-    public String getCompletAdress(){
-        return ville + " " + wilaya;
+    public String getCompletAdress() {
+        return ville + " , " + wilaya;
     }
 }

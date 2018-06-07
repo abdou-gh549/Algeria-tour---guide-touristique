@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.algeriatour.login.LoginActivity;
 import com.algeriatour.main.MainActivity;
+import com.algeriatour.map.activity.MapActivity;
 import com.algeriatour.uml_class.Membre;
+import com.algeriatour.utils.AlgeriaTourUtils;
 import com.algeriatour.utils.StaticValue;
 import com.algeriatour.utils.User;
 import com.androidnetworking.AndroidNetworking;
@@ -22,23 +25,14 @@ import org.json.JSONObject;
 
 import java.util.concurrent.TimeUnit;
 
+import es.dmoral.toasty.Toasty;
 import okhttp3.OkHttpClient;
 
 public class SplashActivity extends AppCompatActivity {
 
     private final int SPALSH_DURATION = 1; // 3 sec
 
-    // to get permmission
-    /* Dexter.withActivity(this)
-                    .withPermissions(Manifest.permission.ACCESS_NETWORK_STATE,
-                            Manifest.permission.INTERNET)
-                    .withListener(new MultiplePermissionsListener() {
-                        @Override
-                        public void onPermissionsChecked(MultiplePermissionsReport report) {*//* ... *//*}
 
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {*//* ... *//*}
-                }).check();*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,9 +58,23 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             doLogin(pseudo, password);
         }
-//        startActivity(new Intent(this, ResetPasswordActivity.class));
-//        finish();
+        /*
 
+        AlgeriaTourUtils.gpsRequest(this, new AlgeriaTourUtils.GpsResponsListiner() {
+            @Override
+            public void onPermissionDenied() {
+                Toasty.error(SplashActivity.this, "to use the map you need gps permission", Toast
+                                .LENGTH_SHORT,
+                        true).show();
+            }
+
+            @Override
+            public void onPermissionGaranted() {
+                startActivity(new Intent(SplashActivity.this, MapActivity.class));
+                finish();
+            }
+        });
+*/
     }
 
 

@@ -155,6 +155,7 @@ public class PointInteretPresneter implements PointIneteretConstraint.PresenterC
 
     @Override
     public void showCommentDialog() {
+        pointInetertView.hideProgressDialog();
         pointInetertView.showAddCommentDialog();
     }
 

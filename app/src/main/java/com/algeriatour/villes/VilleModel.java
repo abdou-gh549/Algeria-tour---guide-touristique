@@ -160,6 +160,8 @@ public class VilleModel implements VilleConstraint.ModelConstraint {
     }
 
     private PointInteret parstPointInteret(JSONObject jsonObject) throws JSONException {
+        Log.d("unicode", "parstPointInteret: " + jsonObject.getString(StaticValue.JSON_NAME_DESCREPTION));
+
         PointInteret pointInteret = new PointInteret();
         pointInteret.setId(jsonObject.getLong(StaticValue.JSON_NAME_ID));
         pointInteret.setName(jsonObject.getString(StaticValue.JSON_NAME_NAME));
@@ -167,6 +169,10 @@ public class VilleModel implements VilleConstraint.ModelConstraint {
         pointInteret.setDescreption(jsonObject.getString(StaticValue.JSON_NAME_DESCREPTION));
         pointInteret.setRate(Float.parseFloat(jsonObject.getString(StaticValue
                 .JSON_NAME_POINT_RATING)));
+        pointInteret.setLatitude(jsonObject.getDouble(StaticValue.JSON_NAME_LATITUDE));
+        pointInteret.setLongitude(jsonObject.getDouble(StaticValue.JSON_NAME_LONGITUDE));
+        pointInteret.setWilaya(jsonObject.getString(StaticValue.JSON_NAME_WILAYA));
+        pointInteret.setVille(jsonObject.getString("ville_name"));
         return pointInteret;
     }
 }

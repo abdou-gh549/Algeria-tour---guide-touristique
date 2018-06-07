@@ -187,6 +187,9 @@ public class FavoriteModel implements FavoriteConstraint.ModelConstraint {
         pointInteret.setDescreption(jsonObject.getString(StaticValue.JSON_NAME_DESCREPTION));
         pointInteret.setWilaya(jsonObject.getString(StaticValue.JSON_NAME_WILAYA));
         pointInteret.setVille(jsonObject.getString(StaticValue.JSON_NAME_TOWN));
+        pointInteret.setRate(Float.parseFloat(jsonObject.getString(StaticValue.JSON_NAME_POINT_RATING)));
+        pointInteret.setLatitude(jsonObject.getDouble(StaticValue.JSON_NAME_LATITUDE));
+        pointInteret.setLongitude(jsonObject.getDouble(StaticValue.JSON_NAME_LONGITUDE));
         favorite.setFavoriteId(jsonObject.getLong(StaticValue.JSON_NAME_ID));
 
         favorite.setNote(jsonObject.getString(StaticValue.JSON_NAME_NOT));

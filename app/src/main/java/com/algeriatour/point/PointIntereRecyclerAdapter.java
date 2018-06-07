@@ -40,6 +40,10 @@ public class PointIntereRecyclerAdapter extends RecyclerView.Adapter<PointIntere
         return commentaires.size();
     }
 
+    public void clearAll(){
+        commentaires.clear();
+        notifyDataSetChanged();
+    }
     public void addComment(Commentaire commentaire) {
         Log.d("commentaire", "addComment: " + commentaire.getId());
         for (int i =0; i<commentaires.size(); i++){

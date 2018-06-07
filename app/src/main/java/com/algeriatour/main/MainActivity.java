@@ -26,12 +26,15 @@ import com.algeriatour.login.LoginActivity;
 import com.algeriatour.main.favorite.FavoriteFragment;
 import com.algeriatour.main.home.HomeFragment;
 import com.algeriatour.main.searche.SearchFragment;
+import com.algeriatour.map.activity.MapActivity;
 import com.algeriatour.profile.ProfileActivity;
+import com.algeriatour.utils.AlgeriaTourUtils;
 import com.algeriatour.utils.StaticValue;
 import com.algeriatour.utils.User;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
 
 public class MainActivity extends AppCompatActivity
@@ -136,6 +139,26 @@ public class MainActivity extends AppCompatActivity
         if (icon != null) {
             icon.setTint(ContextCompat.getColor(MainActivity.this, colorId));
         }
+    }
+
+    @OnClick(R.id.main_fab_map)
+    public void onOpenMapClicked(){
+        AlgeriaTourUtils.gpsRequest(this, new AlgeriaTourUtils.GpsResponsListiner() {
+            @Override
+            public void onPermissionDenied() {
+                Toasty.error(MainActivity.this, "to use the map you need gps permission", Toast
+                                .LENGTH_SHORT,
+                        true).show();
+            }
+
+            @Override
+            public void onPermissionGaranted() {
+                Intent mapIntent = new Intent(MainActivity.this, MapActivity.class);
+                mapIntent.putExtra(StaticValue.MAP_SOURCE_TAG, StaticValue.MAIN);
+                startActivity(mapIntent);
+            }
+        });
+
     }
 
     @Override

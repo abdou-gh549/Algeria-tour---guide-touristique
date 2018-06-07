@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+    xmlns:app = "http://schemas.android.com/apk/res-auto"
+    xmlns:tools = "http://schemas.android.com/tools"
+    android:layout_width = "match_parent"
+    android:layout_height = "wrap_content"
+    android:clickable="true"
+    android:background = "#FFF"
+    android:elevation = "5dp"
+    android:padding = "20dp">
+
+    <ImageView
+        android:id = "@+id/map_point_detaille_image"
+        android:layout_width = "125dp"
+        android:layout_height = "80dp"
+        android:scaleType = "centerCrop"
+        android:src = "@drawable/wait_image_1"
+        app:layout_constraintStart_toStartOf = "parent"
+        app:layout_constraintTop_toTopOf = "parent" />
+
+    <TextView
+        android:id = "@+id/map_point_detaille_name"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:layout_marginStart = "8dp"
+        android:maxLength = "20"
+        android:text = "Musée de Djémila"
+        android:textColor = "#000"
+        android:textSize = "16dp"
+        app:layout_constraintStart_toEndOf = "@+id/map_point_detaille_image"
+        app:layout_constraintTop_toTopOf = "@+id/map_point_detaille_image" />
+
+    <TextView
+        android:id = "@+id/map_point_detaille_adress"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:layout_marginStart = "8dp"
+        android:text = "Djémila"
+        app:layout_constraintStart_toEndOf = "@+id/map_point_detaille_image"
+        app:layout_constraintTop_toBottomOf = "@+id/map_point_detaille_name" />
+
+    <TextView
+        android:id = "@+id/map_point_detaille_type"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:layout_marginStart = "8dp"
+        android:background = "@drawable/bg_view_border"
+        android:paddingEnd = "5dp"
+        android:paddingStart = "5dp"
+        android:text = "Musée"
+        android:textColor = "#a2324b7d"
+        app:layout_constraintStart_toEndOf = "@+id/map_point_detaille_image"
+        app:layout_constraintTop_toBottomOf = "@+id/map_point_detaille_rattingBar" />
+
+    <TextView
+        android:id = "@+id/map_point_detaille_more"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:layout_marginBottom = "8dp"
+        android:layout_marginEnd = "8dp"
+        android:autoLink = "all"
+        android:linksClickable = "false"
+        android:selectAllOnFocus = "false"
+        android:text = "@string/mor_information"
+        android:textColor = "@color/colorPrimary"
+        android:textSize = "16dp"
+        app:layout_constraintBottom_toBottomOf = "@+id/map_point_detaille_image"
+        app:layout_constraintEnd_toEndOf = "parent" />
+
+    <RatingBar
+        android:id = "@+id/map_point_detaille_rattingBar"
+        style = "?attr/ratingBarStyleSmall"
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:layout_marginStart = "8dp"
+        android:numStars = "5"
+        android:rating = "4"
+        android:stepSize = "0.5"
+        android:theme = "@style/favotieRatingBar"
+        app:layout_constraintStart_toEndOf = "@+id/map_point_detaille_image"
+        app:layout_constraintTop_toBottomOf = "@+id/map_point_detaille_adress" />
+
+
+</android.support.constraint.ConstraintLayout>
