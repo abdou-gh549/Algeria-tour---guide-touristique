@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.algeriatour.R;
 import com.algeriatour.uml_class.Ville;
+import com.algeriatour.utils.Networking;
 import com.androidnetworking.AndroidNetworking;
 
 import butterknife.BindView;
@@ -56,6 +57,7 @@ public class HomeFragment extends Fragment implements HomeFragmentConstraint.Vie
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
+        Networking.initAndroidNetworking(getContext());
         presenter = new HomeFragementPresenter(this);
         mAdapter = new HomeRecycleViewAdapter();
         setUpSwipToRefresh();
@@ -67,7 +69,6 @@ public class HomeFragment extends Fragment implements HomeFragmentConstraint.Vie
 
     private void setUpSwipToRefresh() {
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            AndroidNetworking.cancelAll();
             presenter.loadVilleToRecylerView();
         });
     }

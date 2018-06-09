@@ -58,23 +58,7 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             doLogin(pseudo, password);
         }
-        /*
 
-        AlgeriaTourUtils.gpsRequest(this, new AlgeriaTourUtils.GpsResponsListiner() {
-            @Override
-            public void onPermissionDenied() {
-                Toasty.error(SplashActivity.this, "to use the map you need gps permission", Toast
-                                .LENGTH_SHORT,
-                        true).show();
-            }
-
-            @Override
-            public void onPermissionGaranted() {
-                startActivity(new Intent(SplashActivity.this, MapActivity.class));
-                finish();
-            }
-        });
-*/
     }
 
 

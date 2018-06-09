@@ -2,6 +2,7 @@ package com.algeriatour.main.home;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,6 +42,9 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
         holder.setVilleRate(villes.get(position).getRate());
         if (villes.get(position).getImage() != null)
             holder.setVilleImage(villes.get(position).getImage());
+        else {
+            holder.setVilleImage(null);
+        }
     }
 
     @Override
@@ -64,7 +68,7 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
     }
 
     public void updateVille(Ville ville, int position) {
-        if(position < villes.size()){
+        if (position < villes.size()) {
             villes.set(position, ville);
             notifyItemChanged(position);
         }
@@ -88,6 +92,11 @@ public class HomeRecycleViewAdapter extends RecyclerView.Adapter<HomeRecycleView
         }
 
         void setVilleImage(Bitmap bitmap) {
+            if (bitmap == null) {
+                BitmapDrawable bitmapdraw = (BitmapDrawable) cardView.getResources()
+                        .getDrawable(R.drawable.ville_wait);
+                bitmap = bitmapdraw.getBitmap();
+            }
             ((ImageView) cardView.findViewById(R.id.home_cardView_Image)).setImageBitmap(bitmap);
         }
 

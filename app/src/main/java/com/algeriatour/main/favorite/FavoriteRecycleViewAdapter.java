@@ -111,6 +111,8 @@ public class FavoriteRecycleViewAdapter extends RecyclerView.Adapter<FavoriteRec
              ((RatingBar)favoriteItemView.findViewById(R.id.favorite_recyclerItem_rattingBar))
                      .setRating(favorite.getPointInteret().getRate());
              ((TextView)favoriteItemView.findViewById(R.id.favorite_recyclerItem_note)).setText(favorite.getNote());
+             ((TextView)favoriteItemView.findViewById(R.id.favorite_recyclerItem_dateAjout))
+                     .setText(favorite.getDatAjout());
 
              if(favorite.getPointInteret().getImage() != null){
                  ((ImageView)favoriteItemView.findViewById(R.id.favorite_recyclerItem_endroitImage))

@@ -2,6 +2,7 @@ package com.algeriatour.contect_nous;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.interfaces.StringRequestListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,7 +55,7 @@ public class ContacterNousActivity extends AppCompatActivity {
 
     @OnClick(R.id.contacter_nous_send_btn)
     public void onSendButtonClicked() {
-        if(spotsDialog == null){
+        if (spotsDialog == null) {
             spotsDialog = new SpotsDialog(this);
             spotsDialog.setCancelable(false);
         }
@@ -65,32 +67,35 @@ public class ContacterNousActivity extends AppCompatActivity {
 
         AndroidNetworking.post(web_site)
                 .addBodyParameter(StaticValue.PHP_TARGET, StaticValue.PHP_MYSQL_TARGET)
-                .addBodyParameter(StaticValue.PHP_USER_ID, User.getMembre().getId()+"")
+                .addBodyParameter(StaticValue.PHP_USER_ID, User.getMembre().getId() + "")
                 .addBodyParameter(StaticValue.PHP_CONTENT, messageEditText.getText().toString())
                 .addBodyParameter(StaticValue.PHP_OBJECT, subjectEditText.getText().toString())
                 .setPriority(Priority.MEDIUM)
-                .build().getAsJSONObject(new JSONObjectRequestListener() {
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
 
-            @Override
-            public void onResponse(JSONObject response) {
-                spotsDialog.dismiss();
-                try {
-                    if(response.getInt(StaticValue.JSON_NAME_SUCCESS) == 1){
-                        onMessageSendSuccess();
-                        return;
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        spotsDialog.dismiss();
+                        try {
+                            if (response.getInt(StaticValue.JSON_NAME_SUCCESS) == 1) {
+                                onMessageSendSuccess();
+                                return;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("tixx", "onResponse: catch = " + e.getMessage());
+                        }
+                        onMessageSendFail("cant send message ... server Error");
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                onMessageSendFail("cant send message ... server Error");
-            }
 
-            @Override
-            public void onError(ANError anError) {
-                spotsDialog.dismiss();
-                onMessageSendFail("can't send the message ... connection problem !");
-            }
-        });
+                    @Override
+                    public void onError(ANError anError) {
+                        spotsDialog.dismiss();
+                        onMessageSendFail("can't send the message ... connection problem !");
+                    }
+                });
+
     }
 
     private boolean checkInput() {

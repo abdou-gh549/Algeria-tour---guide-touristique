@@ -1,6 +1,7 @@
 package com.algeriatour.map.activity;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,6 +12,7 @@ import com.algeriatour.R;
 import com.algeriatour.uml_class.PlaceInfo;
 
 public class MapPointViewDetaille {
+    OnMapPointViewDetailleAction action;
     private View pointViewDetaille;
     private TextView pointName;
     private TextView pointType;
@@ -18,7 +20,6 @@ public class MapPointViewDetaille {
     private RatingBar pointRattingBar;
     private ImageView pointImage;
     private PlaceInfo pointInteret;
-    OnMapPointViewDetailleAction action;
 
     public MapPointViewDetaille(@NonNull View pointViewDetaille, @NonNull
             OnMapPointViewDetailleAction action) {
@@ -34,12 +35,12 @@ public class MapPointViewDetaille {
 
     private void setUpClickListiner() {
         pointViewDetaille.findViewById(R.id.map_point_detaille_navigateButton).setOnClickListener
-                (v->{
+                (v -> {
                     action.onNavigationClick(pointInteret);
                 });
 
         pointViewDetaille.findViewById(R.id.map_point_detaille_more).setOnClickListener
-                (v->{
+                (v -> {
                     action.onMoreInformationClick(pointInteret);
                 });
     }
@@ -50,6 +51,10 @@ public class MapPointViewDetaille {
         pointType.setText(pointInteret.getType());
         pointAdress.setText(pointInteret.getCompletAdress());
         pointRattingBar.setRating(pointInteret.getRate());
+
+        // set default image
+        Bitmap icon = BitmapFactory.decodeResource(pointViewDetaille.getContext().getResources(), R.drawable.wait_image_2);
+        pointImage.setImageBitmap(icon);
     }
 
     public void setPointImage(Bitmap image) {
@@ -71,8 +76,9 @@ public class MapPointViewDetaille {
     }
 
 
-    interface OnMapPointViewDetailleAction{
+    interface OnMapPointViewDetailleAction {
         void onNavigationClick(PlaceInfo placeInfo);
+
         void onMoreInformationClick(PlaceInfo placeInfo);
     }
 }

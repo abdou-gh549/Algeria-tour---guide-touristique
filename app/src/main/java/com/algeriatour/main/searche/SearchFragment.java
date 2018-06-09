@@ -201,6 +201,10 @@ public class SearchFragment extends Fragment {
         searchResult.setWilaya(jsonObject.getString(StaticValue.JSON_NAME_WILAYA));
         searchResult.setDescreption(jsonObject.getString(StaticValue.JSON_NAME_DESCREPTION));
         searchResult.setRate(Float.parseFloat(jsonObject.getString(StaticValue.JSON_NAME_RATING)));
+        if(! "ville".equals(searchResult.getType().toLowerCase())){
+            searchResult.setLongitude(jsonObject.getDouble(StaticValue.JSON_NAME_LONGITUDE));
+            searchResult.setLatitude(jsonObject.getDouble(StaticValue.JSON_NAME_LATITUDE));
+        }
         return searchResult;
     }
 

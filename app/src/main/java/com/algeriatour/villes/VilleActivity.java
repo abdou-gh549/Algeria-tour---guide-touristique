@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,12 @@ public class VilleActivity extends AppCompatActivity implements VilleConstraint.
     @BindView(R.id.ville_scrollView)
     NestedScrollView scrollView;
 
+    @BindView(R.id.ville_rating_bar)
+    RatingBar villeRatingBar;
+
+    @BindView(R.id.ville_adress)
+    TextView villeAdress;
+
     private LinearLayoutManager mLayoutManager;
     private VilleRecyclerViewAdapter mrecyclerViewAdapter;
     private VillePresenter presenter;
@@ -69,7 +76,6 @@ public class VilleActivity extends AppCompatActivity implements VilleConstraint.
         setUpAdapter();
         setUpVilleData();
         setUpRefreshLayout();
-
         presenter.loadPointIntere(ville.getId());
     }
 
@@ -86,6 +92,8 @@ public class VilleActivity extends AppCompatActivity implements VilleConstraint.
             actionBar.setTitle(ville.getName());
         Log.d("unicode", "setUpVilleData: " + ville.getDescreption());
         ville_descreption.setText(ville.getDescreption());
+        villeAdress.setText( ville.getWilaya()   );
+        villeRatingBar.setRating(ville.getRate());
         // load ville image
         presenter.loadVilleImage(ville);
     }

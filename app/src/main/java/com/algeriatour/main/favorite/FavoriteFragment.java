@@ -84,7 +84,6 @@ public class FavoriteFragment extends Fragment implements FavoriteConstraint.Vie
     private void setUpSwipToRefresh() {
         swipeRefreshLayout.setOnRefreshListener(() -> {
             if (User.getUserType() == StaticValue.MEMBER) {
-                AndroidNetworking.cancelAll();
                 presenter.loadFavoriteList();
             } else {
                 swipeRefreshLayout.setRefreshing(false);

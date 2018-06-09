@@ -6,12 +6,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
 public class MapClusterMarkerItem implements ClusterItem {
-    LatLng position;
-    String title;
+    private LatLng position;
+    private String title;
+    private String type;
 
-    public MapClusterMarkerItem(LatLng position, String title) {
+    public MapClusterMarkerItem(LatLng position, String title, String type) {
         this.position = position;
         this.title = title;
+        this.type = type;
     }
 
     @Override
@@ -30,5 +32,12 @@ public class MapClusterMarkerItem implements ClusterItem {
     }
 
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }
 

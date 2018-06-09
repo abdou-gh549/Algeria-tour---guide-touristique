@@ -2,8 +2,8 @@ package com.algeriatour.villes;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +21,11 @@ import java.util.ArrayList;
 public class VilleRecyclerViewAdapter extends RecyclerView.Adapter<VilleRecyclerViewAdapter.ViewHolder> {
 
     ArrayList<PointInteret> pointInterets;
-    public VilleRecyclerViewAdapter(){
+
+    public VilleRecyclerViewAdapter() {
         pointInterets = new ArrayList<>();
     }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ville_centre_intere_item, parent, false);
@@ -42,7 +44,7 @@ public class VilleRecyclerViewAdapter extends RecyclerView.Adapter<VilleRecycler
 
     public void addPointInteret(PointInteret pointInteret) {
         for (int i = 0; i < pointInterets.size(); i++) {
-            if(pointInterets.get(i).getId() == pointInteret.getId()){
+            if (pointInterets.get(i).getId() == pointInteret.getId()) {
                 // point already exist so replace it
                 pointInterets.set(i, pointInteret);
                 notifyItemChanged(i);
@@ -53,7 +55,7 @@ public class VilleRecyclerViewAdapter extends RecyclerView.Adapter<VilleRecycler
         notifyDataSetChanged();
     }
 
-    public void setPointInteretImage(Bitmap pointInteretImage, int position){
+    public void setPointInteretImage(Bitmap pointInteretImage, int position) {
         pointInterets.get(position).setImage(pointInteretImage);
         notifyItemChanged(position);
     }
@@ -77,9 +79,17 @@ public class VilleRecyclerViewAdapter extends RecyclerView.Adapter<VilleRecycler
 
         void setPointInteret(PointInteret pointInteret) {
             this.pointInteret = pointInteret;
-            if(pointInteret.getImage() != null){
-                 ((ImageView) view.findViewById(R.id.ville_centreInteretItem_photo)).setImageBitmap(pointInteret.getImage());
+            Bitmap villeImage;
+            if (pointInteret.getImage() != null) {
+                villeImage = pointInteret.getImage();
+            } else {
+                BitmapDrawable bitmapdraw = (BitmapDrawable) view.getResources()
+                        .getDrawable(R.drawable.wait_image_2);
+                villeImage = bitmapdraw.getBitmap();
+
             }
+            ((ImageView) view.findViewById(R.id.ville_centreInteretItem_photo)).setImageBitmap(villeImage);
+
             ((TextView) view.findViewById(R.id.ville_centreInteretItem_nome)).setText(pointInteret.getName());
             ((TextView) view.findViewById(R.id.ville_centreInteretItem_ville)).setText(pointInteret.getWilaya());
             ((TextView) view.findViewById(R.id.ville_centreInteretItem_type)).setText(pointInteret.getType());

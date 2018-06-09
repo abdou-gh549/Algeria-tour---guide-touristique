@@ -4,6 +4,7 @@ package com.algeriatour.map.activity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -19,6 +20,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -31,9 +34,6 @@ public abstract class MapBaseActivity extends FragmentActivity implements OnMapR
     protected GoogleMap mMap;
     protected ClusterManager<MapClusterMarkerItem> mClusterManager;
 
-    protected Location currentLoaction;
-
-    protected Marker myLastLocationMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public abstract class MapBaseActivity extends FragmentActivity implements OnMapR
         setUpClusterManager();
 
         mMap.setBuildingsEnabled(true);
-        mMap.setMyLocationEnabled(true);
+        mMap.setMyLocationEnabled(false);
 
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
@@ -73,6 +73,8 @@ public abstract class MapBaseActivity extends FragmentActivity implements OnMapR
         mUiSettings.setScrollGesturesEnabled(true);
         mUiSettings.setZoomGesturesEnabled(true);
         mUiSettings.setRotateGesturesEnabled(true);
+
+        // add my marker
     }
 
     private void setUpMapAlgeriaRestriction() {
@@ -123,5 +125,4 @@ public abstract class MapBaseActivity extends FragmentActivity implements OnMapR
         mClusterManager.setRenderer(customClusterRendered);
         mClusterManager.setAnimation(true);
     }
-
 }

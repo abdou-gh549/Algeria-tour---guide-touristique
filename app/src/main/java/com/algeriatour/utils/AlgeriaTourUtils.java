@@ -18,6 +18,8 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 /*
@@ -55,10 +57,15 @@ public class AlgeriaTourUtils {
         }).check();
     }
 
-
     public interface GpsResponsListiner {
         void onPermissionDenied();
         void onPermissionGaranted();
+    }
+
+    public interface NetworkResponseAction {
+        void onSuccess(Object response);
+
+        void onFail(String msg);
     }
 
 }

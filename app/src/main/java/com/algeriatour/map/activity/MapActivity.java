@@ -2,19 +2,24 @@ package com.algeriatour.map.activity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -32,10 +37,13 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -55,6 +63,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dmax.dialog.SpotsDialog;
 import es.dmoral.toasty.Toasty;
 
 public class MapActivity extends MapBaseActivity implements
@@ -64,37 +73,51 @@ public class MapActivity extends MapBaseActivity implements
         GoogleMap.OnMapClickListener,
         MapPointViewDetaille.OnMapPointViewDetailleAction,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener
-
+        GoogleApiClient.OnConnectionFailedListener,
+        com.google.android.gms.location.LocationListener,
+        GoogleMap.OnMapLongClickListener
 {
 
-    private static int countTry = 0;
-    private static int maxTry = 2;
     private final String TAG = "tixx";
+
+    private final int GPS_REQUEST = 199;
 
     @BindView(R.id.map_point_detaille)
     View pointDettailleView;
+
+    @BindView(R.id.map_navigation_fab)
+    FloatingActionButton longClickNavigationFab;
+
+    @BindView(R.id.map_route_action_layout)
+    View routeActionLayout;
+
+    GoogleApiClient googleApiClient;
+    LocationRequest locationRequest;
     MapPointViewDetaille mapPointViewDetaille;
     MapPresenter mapPresenter;
     ArrayList<PlaceInfo> allPlaceInfo;
-    private boolean moveCamtoPath = false;
-    private Polyline polyline;
-
-    private PlaceInfo placeToNavigate;
+    SpotsDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+
+        // check if gps enabled
+        checkGpsStatus();
+
+        progressDialog = new SpotsDialog(this);
         allPlaceInfo = new ArrayList<>();
         mapPresenter = new MapPresenter(this);
         mapPointViewDetaille = new MapPointViewDetaille(pointDettailleView, this);
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         setupMap(googleMap);
         mMap.setOnMapClickListener(this);
+        mMap.setOnMapLongClickListener(this);
         mClusterManager.setOnClusterItemClickListener(this);
         mClusterManager.setOnClusterClickListener(this);
 
@@ -103,16 +126,51 @@ public class MapActivity extends MapBaseActivity implements
         loadMapData();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1000){
+            if(resultCode == RESULT_OK && !googleApiClient.isConnected()){
+                googleApiClient.connect();
+            }
+        }else if(requestCode == GPS_REQUEST){
+            int locationMode = 0;
+            try {
+                locationMode = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+            }
+            if(locationMode == Settings.Secure.LOCATION_MODE_OFF){
+                showErrorToast("to use map option you need to activate your gps !");
+                finish();
+            }
+
+        }
+    }
+
     @OnClick(R.id.map_my_location)
     void onMyLocationClick() {
-        if (currentLoaction == null) {
-            Toasty.warning(this, "can't find position info please try to move and try again",
-                    Toast.LENGTH_SHORT, true).show();
-            return;
-        }
-        LatLng currentPosition = new LatLng(currentLoaction.getLatitude(), currentLoaction.getLongitude());
-        myLastLocationMarker.setPosition(currentPosition);
-        zoomeInto(currentPosition, 15);
+        mapPresenter.onMyLocationClick();
+    }
+
+    // to long click marker
+    @OnClick(R.id.map_navigation_fab)
+    void onNavigationFabClicked(){
+        mapPresenter.traceWayToLongClickMarker();
+    }
+
+    @OnClick(R.id.map_route_action_cancel)
+    void onCancelRouteClick(){
+        mapPresenter.cancelRoute();
+    }
+
+    @OnClick(R.id.map_route_action_fullView)
+    void onFullRouteViewClick(){
+        mapPresenter.onFullViewRoutClick();
+    }
+    @OnClick(R.id.map_route_action_refresh)
+    void onRefreshRouteClicked(){
+        mapPresenter.onRefreshRootClicked();
     }
 
     private void loadMapData() {
@@ -135,12 +193,6 @@ public class MapActivity extends MapBaseActivity implements
         mapPresenter.loadAllPoint();
     }
 
-    private void zoomeInto(final LatLng position, float zoom) {
-        new Handler().postDelayed(() -> {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, zoom));
-        }, 300);
-    }
-
     private int getPlaceInfoFromPosition(LatLng position) {
         for (int i = 0; i < allPlaceInfo.size(); i++) {
             if (allPlaceInfo.get(i).getLatitude() == position.latitude
@@ -151,80 +203,56 @@ public class MapActivity extends MapBaseActivity implements
         return -1;
     }
 
-
     private void setUpLoaction() {
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();
+        googleApiClient.connect();
 
-        LocationManager locationManager = (LocationManager)
-                getSystemService(Context.LOCATION_SERVICE);
-        LocationListener locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                Log.d("tixx", "onLocationChanged: " + location.toString());
-                // hide init location whene we get real location
-                currentLoaction = location;
-                if (myLastLocationMarker != null) {
-                    LatLng currentPosition = new LatLng(currentLoaction.getLatitude(), currentLoaction
-                            .getLongitude());
-                    myLastLocationMarker.setPosition(currentPosition);
-                }
-                // draw the new route if there is place navigation
-                if (placeToNavigate != null) {
-                    if (polyline != null) {
-                        polyline.remove();
-                        polyline = null;
-                    }
-                    LatLng currentPosition = new LatLng(currentLoaction.getLatitude(), currentLoaction
-                            .getLongitude());
-
-                    traceWay(currentPosition, placeToNavigate.getLatLng(), false);
-
-                }
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-            }
-        };
-        // get init location
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            // return;
-        }
-        currentLoaction = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-        if (currentLoaction == null)
-            return;
-
-        LatLng currentPosition = new LatLng(currentLoaction.getLatitude(), currentLoaction.getLongitude());
-        if (myLastLocationMarker == null) {
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.title("my position");
-            markerOptions.position(currentPosition);
-            myLastLocationMarker = mMap.addMarker(markerOptions);
-        } else {
-            myLastLocationMarker.setPosition(currentPosition);
-        }
-        // add init location to map
-        // todo not sur of it
-
-        locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, 0, 5, locationListener);
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(3000);
+        locationRequest.setFastestInterval(1000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", (dialog, id) -> startActivityForResult(new Intent(android
+                        .provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS),GPS_REQUEST))
+                .setNegativeButton("No", (dialog, id) -> {
+                    showErrorToast("to use map option you need to activate your gps !");
+                    MapActivity.this.finish();
+                    dialog.cancel();
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+    private void checkGpsStatus() {
+        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+        if(manager == null){
+            showErrorToast("can't get information of location service");
+            finish();
+            return;
+        }
+        if( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            buildAlertMessageNoGps();
+        }
+    }
+
+    @Override
+    public void zoomeInto(final LatLng position, float zoom) {
+        new Handler().postDelayed(() -> {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, zoom));
+        }, 300);
+    }
+
+    @Override
+    public Polyline addPolyline(PolylineOptions polylineOptions) {
+        return mMap.addPolyline(polylineOptions);
+    }
 
     @Override
     public void showInfoToast(String msg) {
@@ -235,6 +263,43 @@ public class MapActivity extends MapBaseActivity implements
     public void showErrorToast(String msg) {
         Toasty.error(this, msg, Toast.LENGTH_SHORT, true).show();
     }
+    @Override
+    public void showWarnningMessage(String msg) {
+        Toasty.warning(this, msg, Toast.LENGTH_SHORT, true).show();
+    }
+
+    @Override
+    public void hideLongClickNavigationFab() {
+        longClickNavigationFab.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showLongClickNavigationFab() {
+        longClickNavigationFab.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showRouteActionLayout() {
+        routeActionLayout.setVisibility(View.VISIBLE);
+        mMap.setPadding(0,0,0,routeActionLayout.getHeight() + 5);
+    }
+
+    @Override
+    public void hideRouteActionLayout() {
+        routeActionLayout.setVisibility(View.GONE);
+        mMap.setPadding(0,0,0,0);
+    }
+
+    @Override
+    public void showProgressDialog() {
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        progressDialog.dismiss();
+    }
+
 
     @Override
     public void showPointDetailleView() {
@@ -245,7 +310,13 @@ public class MapActivity extends MapBaseActivity implements
 
     @Override
     public void hidePointDetailleView() {
-        mMap.setPadding(0, 0, 0, 0);
+        if(routeActionLayout.getVisibility() == View.VISIBLE)
+        {
+            mMap.setPadding(0, 0, 0, routeActionLayout.getHeight() + 5);
+        }
+        else{
+            mMap.setPadding(0,0,0,0);
+        }
         mapPointViewDetaille.hideMapPointViewDetaille();
     }
 
@@ -270,8 +341,19 @@ public class MapActivity extends MapBaseActivity implements
     @Override
     public void addPointToMap(PlaceInfo placeInfo) {
         allPlaceInfo.add(placeInfo);
-        mClusterManager.addItem(new MapClusterMarkerItem(placeInfo.getLatLng(), placeInfo.getName()));
+        mClusterManager.addItem(new MapClusterMarkerItem(placeInfo.getLatLng(), placeInfo.getName
+                (),placeInfo.getType()));
         mClusterManager.cluster();
+    }
+
+    @Override
+    public Marker addMarker(MarkerOptions markerOptions) {
+        return mMap.addMarker(markerOptions);
+    }
+
+    @Override
+    public void setPointInteretImage(Bitmap image) {
+        mapPointViewDetaille.setPointImage(image);
     }
 
     @Override
@@ -282,6 +364,7 @@ public class MapActivity extends MapBaseActivity implements
             return false;
         }
         mapPointViewDetaille.setData(allPlaceInfo.get(placeInfoPosition));
+        mapPresenter.loadPointImage(allPlaceInfo.get(placeInfoPosition).getId());
         showPointDetailleView();
         return true;
     }
@@ -291,26 +374,12 @@ public class MapActivity extends MapBaseActivity implements
         if (pointDettailleView.getVisibility() == View.VISIBLE) {
             hidePointDetailleView();
         }
-        if (myLastLocationMarker != null)
-            myLastLocationMarker.hideInfoWindow();
+        mapPresenter.onMapClick(latLng);
     }
 
     @Override
     public void onNavigationClick(PlaceInfo placeInfo) {
-
-        if (polyline != null) {
-            polyline.remove();
-            polyline = null;
-        }
-        if (currentLoaction == null) {
-            showErrorToast("can't find user location !!");
-            return;
-        }
-        LatLng currentPosition = new LatLng(currentLoaction.getLatitude(), currentLoaction
-                .getLongitude());
-
-        traceWay(currentPosition, placeInfo.getLatLng(), true);
-        placeToNavigate = placeInfo;
+        mapPresenter.onNavigationClick(placeInfo.getLatLng());
     }
 
     @Override
@@ -326,48 +395,8 @@ public class MapActivity extends MapBaseActivity implements
         }
     }
 
-
-    private void traceWay(final LatLng origin, final LatLng destination, Boolean focusCamera) {
-        if (focusCamera != null)
-            moveCamtoPath = focusCamera;
-        String requestUrl = MapUtils.getRequestUrl(origin, destination);
-        AndroidNetworking.cancel("route");
-        AndroidNetworking.get(requestUrl).setTag("route")
-                .build().getAsString(new StringRequestListener() {
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "onResponse: " + response);
-                // do parsing
-                TaskParser taskParser = new TaskParser();
-
-                try {
-                    JSONObject jsRespons = new JSONObject(response);
-                    if ("ZERO_RESULTS".equals(jsRespons.getString("status"))) {
-                        // todo zero result query
-                        Toast.makeText(MapActivity.this, "no direction found", Toast.LENGTH_SHORT).show();
-                        placeToNavigate = null;
-                        return;
-                    }
-                } catch (JSONException e) {
-                    placeToNavigate = null;
-                    e.printStackTrace();
-                    Log.d(TAG, "onResponse: trace way msg -> " + e.getMessage());
-                }
-                taskParser.execute(new RouteRequestResult(origin, destination, response));
-            }
-
-            @Override
-            public void onError(ANError anError) {
-                placeToNavigate = null;
-                Log.d(TAG, "onError: " + anError.getMessage());
-            }
-        });
-    }
-
-    private void moveCameratoPath() {
-        if (!moveCamtoPath) {
-            return;
-        }
+    @Override
+    public void moveCameratoPath(Polyline polyline) {
         boolean hasPoints = false;
         Double maxLat = null, minLat = null, minLon = null, maxLon = null;
 
@@ -395,6 +424,7 @@ public class MapActivity extends MapBaseActivity implements
         }
     }
 
+
     @Override
     public boolean onClusterClick(Cluster<MapClusterMarkerItem> cluster) {
         zoomeInto(cluster.getPosition(), 8);
@@ -403,64 +433,49 @@ public class MapActivity extends MapBaseActivity implements
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toasty.error(this, "permission problem", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // check if gps enable
+        Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        if(location != null){
+            mapPresenter.setCurrentPosition(new LatLng(location.getLatitude(),location.getLongitude()));
+        }
+        // start update
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-
-    }
+    public void onConnectionSuspended(int i) { }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        showErrorToast("connection to geolocalisation fail");
+        Toasty.error(MapActivity.this, "location connection fail !", Toast.LENGTH_SHORT, true).show();
+        try {
+            connectionResult.startResolutionForResult(MapActivity.this,1000);
+
+        }catch (IntentSender.SendIntentException e){
+            e.printStackTrace();
+        }
 
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+        if(location == null )
+            return;
 
-    public class TaskParser extends AsyncTask<RouteRequestResult, Void, List<List<HashMap<String, String>>>> {
-        private RouteRequestResult m_routeRequestResult;
-
-        @Override
-        protected List<List<HashMap<String, String>>> doInBackground(RouteRequestResult... routeRequestResult) {
-            JSONObject jsonObject = null;
-            List<List<HashMap<String, String>>> routes = null;
-            m_routeRequestResult = routeRequestResult[0];
-            try {
-                jsonObject = new JSONObject(m_routeRequestResult.getRequestResult());
-                DirectionsParser directionsParser = new DirectionsParser();
-                routes = directionsParser.parse(jsonObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return routes;
-        }
-
-        @Override
-        protected void onPostExecute(List<List<HashMap<String, String>>> lists) {
-            //Get list route and display it into the map
-            //todo : draw PolylineOptions
-            PolylineOptions polylineOptions = MapUtils.convertToPolyLineOption(lists);
-
-            if (polylineOptions != null) {
-                polyline = mMap.addPolyline(polylineOptions);
-                countTry = 0;
-                hidePointDetailleView();
-                moveCameratoPath();
-
-            } else {
-                if (countTry < maxTry) {
-                    countTry++;
-                    new Handler().postDelayed(
-                            () -> traceWay(m_routeRequestResult.getOrigin(), m_routeRequestResult
-                                    .getDestination(), null), 5000);
-                } else {
-                    countTry = 0;
-                    Toast.makeText(getApplicationContext(), "can't load direction for the moment",
-                            Toast.LENGTH_SHORT).show();
-                    placeToNavigate = null;
-                }
-            }
-
-        }
+        Log.d("tixx", "onLocationChanged: " + location.toString());
+        // hide init location whene we get real location
+        mapPresenter.onLocationChanged( new LatLng(location.getLatitude(),location.getLongitude()));
     }
+
+    @Override
+    public void onMapLongClick(LatLng latLng) {
+        mapPresenter.onMapLongClick(latLng);
+    }
+
+
 }

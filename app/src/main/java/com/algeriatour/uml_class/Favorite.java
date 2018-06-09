@@ -4,10 +4,12 @@ public class Favorite {
     long favoriteId;
     private PointInteret pointInteret;
     private String note;
+    private String datAjout;
 
     public Favorite() {
         pointInteret = new PointInteret();
         note = "";
+        datAjout = "";
     }
 
     public long getFavoriteId() {
@@ -32,5 +34,13 @@ public class Favorite {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getDatAjout() {
+        return datAjout;
+    }
+
+    public void setDatAjout(String datAjout) {
+        this.datAjout = datAjout;
     }
 }

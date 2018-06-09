@@ -167,10 +167,4 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
         editor.putString(StaticValue.PASSWORD_TAGE, psw);
         editor.apply();
     }
-
-    @Override
-    protected void onDestroy() {
-        AndroidNetworking.cancelAll();
-        super.onDestroy();
-    }
 }

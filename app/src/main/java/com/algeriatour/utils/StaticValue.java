@@ -56,6 +56,7 @@ public class StaticValue {
     public static final String JSON_NAME_RATING = "rating";
     public static final String JSON_NAME_FAVORITE= "favorites";
     public static final String JSON_NAME_NOT= "note";
+    public static final String JSON_NAME_ADD_DATE= "add_date";
     public static final String JSON_NAME_POINT_RATING= "point_rating";
     public static final String JSON_NAME_RESULT = "result";
     public static final String JSON_NAME_LONGITUDE = "longitude";
@@ -80,7 +81,7 @@ public class StaticValue {
     public static final String  PHP_OBJECT = "object";
     public static final String  PHP_CONTENT = "content";
 
-    public static final String WEB_HOST = "https://algeriatour.000webhostapp.com/";
+    public static final String WEB_HOST = "https://algtour.000webhostapp.com/";
     public static final String LOCAL_HOST = "http://10.0.2.2/AT_PHP_FILE/";
     public static final String MYSQL_SITE = WEB_HOST;
 

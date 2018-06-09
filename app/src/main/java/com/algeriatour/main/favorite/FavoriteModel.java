@@ -35,8 +35,8 @@ public class FavoriteModel implements FavoriteConstraint.ModelConstraint {
 
     @Override
     public void loadFavoriteList() {
-
-        AndroidNetworking.post(loadFavoriteList_url)
+        AndroidNetworking.cancel("favorite");
+        AndroidNetworking.post(loadFavoriteList_url).setTag("favorite")
                 .addBodyParameter(StaticValue.PHP_TARGET, StaticValue.PHP_MYSQL_TARGET)
                 .addBodyParameter(StaticValue.PHP_USER_ID, User.getMembre().getId() + "")
                 .setPriority(Priority.MEDIUM)
@@ -193,6 +193,7 @@ public class FavoriteModel implements FavoriteConstraint.ModelConstraint {
         favorite.setFavoriteId(jsonObject.getLong(StaticValue.JSON_NAME_ID));
 
         favorite.setNote(jsonObject.getString(StaticValue.JSON_NAME_NOT));
+        favorite.setDatAjout(jsonObject.getString(StaticValue.JSON_NAME_ADD_DATE));
         favorite.setPointInteret(pointInteret);
         return favorite;
     }

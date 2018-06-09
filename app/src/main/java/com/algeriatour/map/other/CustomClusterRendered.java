@@ -19,20 +19,21 @@ public class CustomClusterRendered extends DefaultClusterRenderer<MapClusterMark
         mContext = context;
     }
 
-
     @Override
     protected void onBeforeClusterItemRendered(MapClusterMarkerItem item, MarkerOptions markerOptions) {
         super.onBeforeClusterItemRendered(item, markerOptions);
-        int height = 50;
-        int width = 25;
+/*
+
+        int height = 85;
+        int width = 55;
 
         BitmapDrawable bitmapdraw = (BitmapDrawable) mContext.getResources().getDrawable(R.drawable
                 .ic_marker_port);
         Bitmap b = bitmapdraw.getBitmap();
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+*/
+        Bitmap image = MapUtils.getIcon(mContext, item.getType());
 
-        final BitmapDescriptor markerDescreption = BitmapDescriptorFactory.fromBitmap(smallMarker);
-
-        markerOptions.icon(markerDescreption);
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(image));
     }
 }

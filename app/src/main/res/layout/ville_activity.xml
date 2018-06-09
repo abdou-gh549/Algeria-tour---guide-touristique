@@ -58,7 +58,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/ville_swipeRefresh"
+        android:id = "@+id/ville_swipeRefresh"
         android:layout_width = "match_parent"
         android:layout_height = "match_parent"
         app:layout_behavior = "@string/appbar_scrolling_view_behavior">
@@ -74,6 +74,26 @@
                 android:layout_height = "wrap_content"
                 android:descendantFocusability = "blocksDescendants"
                 android:orientation = "vertical">
+
+                <TextView
+                    android:id = "@+id/ville_adress"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:layout_marginStart = "8dp"
+                    android:layout_marginTop = "8dp"
+                    android:text = "Alger, Alger"
+                    android:textColor = "#c3000000" />
+
+                <RatingBar
+                    android:id = "@+id/ville_rating_bar"
+                    style = "?attr/ratingBarStyleSmall"
+                    android:layout_width = "wrap_content"
+                    android:layout_height = "wrap_content"
+                    android:layout_marginStart = "8dp"
+                    android:numStars = "5"
+                    android:rating = "4"
+                    android:stepSize = "0.5"
+                    android:theme = "@style/favotieRatingBar" />
 
                 <TextView
                     android:layout_width = "wrap_content"

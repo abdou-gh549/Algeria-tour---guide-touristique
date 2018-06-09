@@ -1,22 +1,38 @@
 package com.algeriatour.map.activity;
 
 import android.util.Log;
+import android.widget.Toast;
 
+import com.algeriatour.map.other.MapRoute;
+import com.algeriatour.map.other.MapUtils;
+import com.algeriatour.map.other.RouteRequestResult;
+import com.algeriatour.utils.AlgeriaTourUtils;
 import com.algeriatour.utils.StaticValue;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.interfaces.StringRequestListener;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.Polyline;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import okhttp3.Route;
 
 public class MapModel implements MapConstraint.ModelConstraint {
     private final String getAllPointsFileName = "at_get_all_point_for_map.php";
     private final String laodImageFileName = "at_get_image_of.php";
     private final String loadAllPoint_url = StaticValue.MYSQL_SITE + getAllPointsFileName;
     private final String getImage_url = StaticValue.MYSQL_SITE + laodImageFileName;
+
+    private Marker myLocationMarker;
+    private Marker longClickMarker;
+    private LatLng currentPosition;
+    private MapRoute route;
 
     @Override
     public void loadAllPoint(MapConstraint.PresenterCallBack.OnLoadallPointCallBack onLoadallPointCallBack) {
@@ -57,5 +73,81 @@ public class MapModel implements MapConstraint.ModelConstraint {
                 onLoadallPointCallBack.onLoadAllPointFail(error.getMessage());
             }
         });
+    }
+
+    @Override
+    public void loadPointIneteretImage(long pointInetertId,AlgeriaTourUtils.NetworkResponseAction action) {
+        Log.d("tixx", "loadPointIneteretImage: " + pointInetertId);
+        AndroidNetworking.post(getImage_url)
+                .addBodyParameter(StaticValue.PHP_TARGET, StaticValue.PHP_MYSQL_TARGET)
+                .addBodyParameter(StaticValue.PHP_WHAT, StaticValue.PHP_POINT)
+                .addBodyParameter(StaticValue.PHP_ID, pointInetertId + "")
+                .setPriority(Priority.MEDIUM)
+                .build().getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                action.onSuccess(response);
+            }
+            @Override
+            public void onError(ANError error) {
+                Log.d("tixx", "load image onError : " + error.getMessage());
+                action.onFail("load image error");
+            }
+        });
+    }
+
+    @Override
+    public void getPathInformation(LatLng origin, LatLng destination, AlgeriaTourUtils
+            .NetworkResponseAction action){
+        String requestUrl = MapUtils.getRequestUrl(origin, destination);
+        AndroidNetworking.cancel("route");
+        AndroidNetworking.get(requestUrl).setTag("route")
+                .build().getAsString(new StringRequestListener() {
+            @Override
+            public void onResponse(String response) {
+                action.onSuccess(response);
+
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                Log.d("tixx", "onError: " + anError.getMessage());
+                action.onFail("connection error");
+            }
+        });
+
+    }
+
+    public Marker getMyLocationMarker() {
+        return myLocationMarker;
+    }
+
+    public void setMyLocationMarker(Marker myLocationMarker) {
+        this.myLocationMarker = myLocationMarker;
+    }
+
+    public LatLng getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public void setCurrentPosition(LatLng currentPosition) {
+        this.currentPosition = currentPosition;
+    }
+
+
+    public Marker getLongClickMarker() {
+        return longClickMarker;
+    }
+
+    public void setLongClickMarker(Marker longClickMarker) {
+        this.longClickMarker = longClickMarker;
+    }
+
+    public MapRoute getRoute() {
+        return route;
+    }
+
+    public void setRoute(MapRoute route) {
+        this.route = route;
     }
 }

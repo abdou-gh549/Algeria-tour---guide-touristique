@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -141,7 +142,9 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
                 if (bundle != null) {
                     String source = bundle.getString(StaticValue.POINT_SOURCE_TAGE, "");
                     if (StaticValue.MAP.equals(source)) {
+                        Log.d("tixxPoint", "onPermissionGaranted: in finsih");
                         finish();
+                        return;
                     }
                 }
                 // open map activity
@@ -149,6 +152,7 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
                 mapIntent.putExtra(StaticValue.MAP_SOURCE_TAG, StaticValue.POINT);
                 mapIntent.putExtra(StaticValue.POINT_TAG, pointInteret.getPlaceInfo());
                 startActivity(mapIntent);
+                Log.d("tixxPoint", "onPermissionGaranted: after start activity");
             }
         });
 

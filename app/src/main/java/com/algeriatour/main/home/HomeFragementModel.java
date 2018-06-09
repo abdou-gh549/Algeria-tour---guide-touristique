@@ -34,7 +34,8 @@ public class HomeFragementModel implements HomeFragmentConstraint.ModelConstrain
 
     @Override
     public void loadVilles() {
-        AndroidNetworking.post(ville_url)
+        Log.d("tixxhome", "loadVilles: ");
+        AndroidNetworking.post(ville_url).setTag("loadVille")
                 .addBodyParameter(StaticValue.PHP_TARGET, StaticValue.PHP_MYSQL_TARGET)
                 .setPriority(Priority.MEDIUM)
                 .build()
@@ -81,7 +82,7 @@ public class HomeFragementModel implements HomeFragmentConstraint.ModelConstrain
 
             @Override
             public void onError(ANError error) {
-                Log.d("tixx", "onError: "+ error.getMessage());
+                Log.d("tixx", "onError: "+ error.getMessage() + " " +error.getErrorDetail());
                 presenter.onLoadVillesFailed("check your connection ! ");
             }
         });
