@@ -2,7 +2,9 @@ package com.algeriatour.main.favorite;
 
 import android.graphics.Bitmap;
 
+import com.algeriatour.R;
 import com.algeriatour.uml_class.Favorite;
+import com.algeriatour.utils.AlgeriaTourUtils;
 
 import java.util.ArrayList;
 
@@ -25,7 +27,7 @@ public class FavoritePresenter implements FavoriteConstraint.PresenterConstraint
     @Override
     public void onDeleteFavortieSuccess(long favoriteID) {
         favoriteView.hideProgressDialog();
-        favoriteView.showSucessToast("delete success");
+        favoriteView.showSucessToast(AlgeriaTourUtils.getString(R.string.favorite_delete_success));
         favoriteView.removeFavorite(favoriteID);
 
     }
@@ -45,7 +47,7 @@ public class FavoritePresenter implements FavoriteConstraint.PresenterConstraint
     @Override
     public void onLoadFavoriteListEmpty() {
         favoriteView.hideProgressRefresh();
-        favoriteView.showInformationText("Empty");
+        favoriteView.showInformationText(AlgeriaTourUtils.getString(R.string.empty));
     }
 
     @Override
@@ -71,7 +73,7 @@ public class FavoritePresenter implements FavoriteConstraint.PresenterConstraint
     @Override
     public void onUpdateNoteSucess() {
         favoriteView.hideProgressDialog();
-        favoriteView.showSucessToast("note update success");
+        favoriteView.showSucessToast(AlgeriaTourUtils.getString(R.string.note_update_success));
         favoriteView.hideEditDialog();
         loadFavoriteList()  ;
     }

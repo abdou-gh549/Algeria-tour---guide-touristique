@@ -2,6 +2,8 @@ package com.algeriatour.signin;
 
 import android.util.Log;
 
+import com.algeriatour.R;
+import com.algeriatour.utils.AlgeriaTourUtils;
 import com.algeriatour.utils.StaticValue;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -45,10 +47,12 @@ public class SignInModel implements SignInConstraint.ModelConstraint {
                             break;
                         case 0:
                             Log.d("tixx", "change onResponse: pseudo = " + pseudo);
-                            presenter.onSignInFail("user already exist");
+                            presenter.onSignInFail(AlgeriaTourUtils.getString(R.string
+                                    .user_not_exist_error));
                             break;
                         case -1:
-                            presenter.onSignInFail("server error");
+                            presenter.onSignInFail(AlgeriaTourUtils.getString(R.string
+                                    .server_error));
                             break;
                     }
                     Log.d("tixx", "reponse " + response.getInt(StaticValue.JSON_NAME_SUCCESS));
@@ -56,15 +60,15 @@ public class SignInModel implements SignInConstraint.ModelConstraint {
                     e.printStackTrace();
                     Log.d("tixx", "reponst catch" + e.getMessage());
 
-                    presenter.onSignInFail("getting information error");
-
+                    presenter.onSignInFail(AlgeriaTourUtils.getString(R.string.server_error));
                 }
             }
 
             @Override
             public void onError(ANError error) {
                 Log.d("tixx", "error " + error.getMessage());
-                presenter.onSignInFail("verfier votre connection ");
+                presenter.onSignInFail(AlgeriaTourUtils.getString(R.string
+                        .connection_fail));
             }
         });
     }

@@ -19,14 +19,15 @@
 
         <ImageButton
             android:id = "@+id/appBar_navDrawerImageView"
-            style = "@style/appBarImageButton"
-            android:layout_weight = "4"
-            android:background = "@null"
+            android:layout_width = "wrap_content"
+            android:layout_height = "50dp"
+            android:padding="20dp"
+            android:background = "?android:attr/selectableItemBackground"
             android:src = "@drawable/ic_menu_black" />
 
         <android.support.design.widget.TabLayout
             android:id = "@+id/main_tabLayout"
-            android:layout_width = "match_parent"
+            android:layout_width = "0dp"
             android:layout_height = "match_parent"
             android:layout_weight = "1"
             app:tabIndicatorHeight = "0dp"
@@ -38,7 +39,7 @@
         android:id = "@+id/main_viewPager"
         android:layout_width = "match_parent"
         android:layout_height = "match_parent"
-        android:layout_marginTop="65dp" />
+        android:layout_marginTop = "65dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id = "@+id/main_fab_map"
@@ -46,6 +47,6 @@
         android:layout_height = "50dp"
         android:layout_gravity = "bottom|end"
         android:layout_margin = "@dimen/fab_margin"
-        android:src = "@drawable/ic_map"/>
+        android:src = "@drawable/ic_map" />
 
 </android.support.design.widget.CoordinatorLayout>

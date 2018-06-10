@@ -58,7 +58,7 @@ public abstract class MapBaseActivity extends FragmentActivity implements OnMapR
         }
         setUpMapAlgeriaRestriction();
         setUpLang();
-        setUpClusterManager();
+
 
         mMap.setBuildingsEnabled(true);
         mMap.setMyLocationEnabled(false);
@@ -116,13 +116,5 @@ public abstract class MapBaseActivity extends FragmentActivity implements OnMapR
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
 
-    private void setUpClusterManager() {
-        mClusterManager = new ClusterManager<>(this, mMap);
-        CustomClusterRendered customClusterRendered = new CustomClusterRendered(this, mMap,
-                mClusterManager);
-        mMap.setOnCameraIdleListener(mClusterManager);
-        mMap.setOnMarkerClickListener(mClusterManager);
-        mClusterManager.setRenderer(customClusterRendered);
-        mClusterManager.setAnimation(true);
-    }
+
 }

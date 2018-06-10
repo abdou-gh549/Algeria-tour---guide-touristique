@@ -3,9 +3,11 @@ package com.algeriatour.point;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.algeriatour.R;
 import com.algeriatour.profile.ProfileConstraint;
 import com.algeriatour.uml_class.Commentaire;
 import com.algeriatour.uml_class.PointInteret;
+import com.algeriatour.utils.AlgeriaTourUtils;
 import com.algeriatour.utils.StaticValue;
 
 import org.json.JSONException;
@@ -50,7 +52,7 @@ public class PointInteretPresneter implements PointIneteretConstraint.PresenterC
     @Override
     public void onLoadEmptyCommentaire() {
         pointInetertView.hideProgressBar();
-        pointInetertView.showTextInDispalyInfor("empty ");
+        pointInetertView.showTextInDispalyInfor(AlgeriaTourUtils.getString(R.string.empty));
     }
 
     @Override
@@ -79,7 +81,7 @@ public class PointInteretPresneter implements PointIneteretConstraint.PresenterC
     @Override
     public void onFavoriteAlreadyExist() {
         pointInetertView.hideProgressDialog();
-        pointInetertView.showNotificationTaost("this point already added to favorite");
+        pointInetertView.showNotificationTaost(AlgeriaTourUtils.getString(R.string.favorite_already_exist_msg));
     }
 
     @Override
@@ -99,16 +101,16 @@ public class PointInteretPresneter implements PointIneteretConstraint.PresenterC
 
         try {
             if (response.getInt(StaticValue.JSON_NAME_SUCCESS) == 1) {
-                pointInetertView.showToastSuccess("point added to favorite");
+                pointInetertView.showToastSuccess(AlgeriaTourUtils.getString(R.string.point_added_to_favorite));
                 pointInetertView.hideAddFavoriteDialog();
             } else {
-                pointInetertView.showToastError("server error , try again later");
+                pointInetertView.showToastError(AlgeriaTourUtils.getString(R.string.server_error));
                 Log.d("tixx", "onAddFavoriteResultSuccess -1 : " + response.getString(StaticValue
                         .JSON_NAME_MESSAGE));
             }
         } catch (JSONException e) {
             Log.d("tixx", "onResponse check favorite: catch " + e.getMessage());
-            pointInetertView.showToastError("oops something happened ");
+            pointInetertView.showToastError(AlgeriaTourUtils.getString(R.string.server_error));
         }
         pointInetertView.hideProgressDialog();
     }
@@ -144,7 +146,7 @@ public class PointInteretPresneter implements PointIneteretConstraint.PresenterC
         pointInetertView.hideProgressDialog();
         pointInetertView.hideAddCommentDialog();
         loadCommentaire(pointInteretId);
-        pointInetertView.showToastSuccess("comment added");
+        pointInetertView.showToastSuccess(AlgeriaTourUtils.getString(R.string.comment_added));
     }
 
     @Override

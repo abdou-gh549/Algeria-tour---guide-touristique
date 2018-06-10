@@ -14,7 +14,6 @@ import com.algeriatour.uml_class.Membre;
 import com.algeriatour.utils.Networking;
 import com.algeriatour.utils.StaticValue;
 import com.algeriatour.utils.User;
-import com.androidnetworking.AndroidNetworking;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import butterknife.BindView;
@@ -159,12 +158,5 @@ public class LoginActivity extends AppCompatActivity implements LoginConstraint.
         progressDialog.dismiss();
     }
 
-    @Override
-    public void saveLoginTosharedPreference(String pseudo, String psw) {
-        SharedPreferences sharedPreferences = getPreferences( MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(StaticValue.PSEUDO_TAGE, pseudo);
-        editor.putString(StaticValue.PASSWORD_TAGE, psw);
-        editor.apply();
-    }
+
 }

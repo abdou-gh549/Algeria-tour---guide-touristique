@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android = "http://schemas.android.com/apk/res/android"
     xmlns:app = "http://schemas.android.com/apk/res-auto"
-    xmlns:tools = "http://schemas.android.com/tools"
     style = "@style/roundedLayout"
 
     >
@@ -9,6 +8,7 @@
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id = "@+id/signin_pseudo_inp"
         style = "@style/editText"
+        android:maxLength = "64"
         app:layout_constraintEnd_toEndOf = "parent"
         app:layout_constraintStart_toStartOf = "parent"
         app:layout_constraintTop_toTopOf = "parent"
@@ -20,8 +20,8 @@
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id = "@+id/signin_email_inp"
         style = "@style/editText"
-
         android:inputType = "textEmailAddress"
+        android:maxLength = "64"
         app:layout_constraintEnd_toEndOf = "parent"
         app:layout_constraintStart_toStartOf = "parent"
         app:layout_constraintTop_toBottomOf = "@+id/signin_pseudo_inp"
@@ -30,11 +30,11 @@
         app:met_floatingLabelAnimating = "true"
         app:met_floatingLabelText = "@string/email_input_label" />
 
-
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id = "@+id/signin_password_inp"
-        style="@style/editText"
+        style = "@style/editText"
         android:inputType = "textPassword"
+        android:maxLength = "64"
         app:layout_constraintEnd_toEndOf = "parent"
         app:layout_constraintStart_toStartOf = "parent"
         app:layout_constraintTop_toBottomOf = "@+id/signin_email_inp"
@@ -42,10 +42,12 @@
         app:met_floatingLabelAlwaysShown = "true"
         app:met_floatingLabelAnimating = "true"
         app:met_floatingLabelText = "@string/password_input_label" />
+
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id = "@+id/signin_confirmation_psw_inp"
-        style="@style/editText"
+        style = "@style/editText"
         android:inputType = "textPassword"
+        android:maxLength = "64"
         app:layout_constraintEnd_toEndOf = "parent"
         app:layout_constraintStart_toStartOf = "parent"
         app:layout_constraintTop_toBottomOf = "@+id/signin_password_inp"

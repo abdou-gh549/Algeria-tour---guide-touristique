@@ -52,12 +52,10 @@ public class ProfileActivity extends AppCompatActivity implements ProfileConstra
         try {
             presenter.loadProfileData(User.getMembre().getPseudo(), User.getMembre().getPassword());
         } catch (Exception exp) {
-            showToastError("can't get profile information try later");
+            showToastError(getString(R.string.cant_get_profile_info_msg));
             finish();
         }
-
     }
-
 
     @OnClick(R.id.profile_back_Button)
     public void onBackButtonClicked() {
@@ -177,6 +175,5 @@ public class ProfileActivity extends AppCompatActivity implements ProfileConstra
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
-
 
 }

@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.algeriatour.R;
-import com.algeriatour.main.MainActivity;
 import com.algeriatour.map.activity.MapActivity;
 import com.algeriatour.uml_class.Commentaire;
 import com.algeriatour.uml_class.PlaceInfo;
@@ -110,7 +109,7 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
     @OnClick(R.id.centre_intere_favorite_fab)
     void onAddToFavoriteClick() {
         if (User.getUserType() == StaticValue.VISITOR) {
-            showToastInformation("you need to be member for use add to favorite");
+            showToastInformation(getString(R.string.visiteur_favorite_message));
         } else {
             presneter.checkIfFavoriteExist(pointInteret.getId());
         }
@@ -119,7 +118,7 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
     @OnClick(R.id.centre_intere_comment_fab)
     void onAddCommentClick() {
         if (User.getUserType() == StaticValue.VISITOR) {
-            showToastInformation("you need to be member for adding a comment");
+            showToastInformation(getString(R.string.visitor_comment_message));
         } else {
             presneter.addCommentClicked(pointInteret.getId());
 
@@ -131,8 +130,7 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
         AlgeriaTourUtils.gpsRequest(this, new AlgeriaTourUtils.GpsResponsListiner() {
             @Override
             public void onPermissionDenied() {
-                Toasty.error(PointIntereActivity.this, "to use the map you need gps permission", Toast
-                                .LENGTH_SHORT,
+                Toasty.error(PointIntereActivity.this, getString(R.string.main_gps_permission_error), Toast.LENGTH_SHORT,
                         true).show();
             }
 

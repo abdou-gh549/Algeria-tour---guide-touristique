@@ -1,7 +1,6 @@
 package com.algeriatour.resetpassword;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.algeriatour.R;
 import com.algeriatour.utils.AlgeriaTourUtils;
@@ -45,14 +44,15 @@ public class ResetPasswordPresenter {
                         resetPsw_view.sendPassword(email, msg);
 
                     }else if (response.getInt(StaticValue.JSON_NAME_SUCCESS) == 0){
-                        resetPsw_view.showToastError("user doesn't exist");
+                        resetPsw_view.showToastError(AlgeriaTourUtils.getString(R.string
+                                .user_not_exist_error));
                     }else{
                         // server error
-                        resetPsw_view.showToastError("server error try again later");
+                        resetPsw_view.showToastError(AlgeriaTourUtils.getString(R.string.server_error));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    resetPsw_view.showToastError("ops something happened");
+                    resetPsw_view.showToastError(AlgeriaTourUtils.getString(R.string.server_error));
                 }
                 resetPsw_view.hideProgressDialog();
             }
@@ -61,7 +61,7 @@ public class ResetPasswordPresenter {
             public void onError(ANError error) {
                 resetPsw_view.hideProgressDialog();
                 Log.d("tixx", "onError: " + error.getMessage());
-                resetPsw_view.showToastError("check your connection");
+                resetPsw_view.showToastError(AlgeriaTourUtils.getString(R.string.connection_fail));
                 resetPsw_view.hideProgressDialog();
             }
         });

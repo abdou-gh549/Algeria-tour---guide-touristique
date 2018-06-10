@@ -2,7 +2,9 @@ package com.algeriatour.profile;
 
 import android.util.Log;
 
+import com.algeriatour.R;
 import com.algeriatour.uml_class.Membre;
+import com.algeriatour.utils.AlgeriaTourUtils;
 import com.algeriatour.utils.StaticValue;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -44,15 +46,17 @@ public class ProfileModel implements ProfileConstraint.ModelConstraint {
                             break;
                         case 0:
                             Log.d("tixx", "change onResponse: pseudo = " + pseudo);
-                            presenter.onLoadProfileDataFail("utilisateur n'exist pas !");
+                            presenter.onLoadProfileDataFail(AlgeriaTourUtils.getString(R.string
+                                    .user_not_exist_error));
                             break;
                         case -1:
-                            presenter.onLoadProfileDataFail("problem dans serveur ");
+                            presenter.onLoadProfileDataFail(AlgeriaTourUtils.getString(R.string
+                                    .server_error));
                             break;
                     }
                     Log.d("tixx", "reponse " + response.getInt(StaticValue.JSON_NAME_SUCCESS));
                 } catch (JSONException e) {
-                    presenter.onChangeFail("getting information error");
+                    presenter.onChangeFail(AlgeriaTourUtils.getString(R.string.change_info_error));
                     e.printStackTrace();
                     Log.d("tixx", "reponst catch" + e.getMessage());
                 }
@@ -61,7 +65,7 @@ public class ProfileModel implements ProfileConstraint.ModelConstraint {
             @Override
             public void onError(ANError error) {
                 Log.d("tixx", "error " + error.getMessage());
-                presenter.onChangeFail("verfier votre connection ");
+                presenter.onChangeFail(AlgeriaTourUtils.getString(R.string.connection_fail));
             }
         });
     }
@@ -89,10 +93,12 @@ public class ProfileModel implements ProfileConstraint.ModelConstraint {
                             presenter.onLoadProfileDataSuccess(membre);
                             break;
                         case 0:
-                            presenter.onLoadProfileDataFail("utilisateur n'exist pas !");
+                            presenter.onLoadProfileDataFail(AlgeriaTourUtils.getString(R.string
+                                    .user_not_exist_error));
                             break;
                         case -1:
-                            presenter.onLoadProfileDataFail("problem dans serveur ");
+                            presenter.onLoadProfileDataFail(AlgeriaTourUtils.getString(R.string
+                                    .server_error));
                             break;
                     }
                     Log.d("tixx", "reponse " + response.getInt(StaticValue.JSON_NAME_SUCCESS));
@@ -104,7 +110,8 @@ public class ProfileModel implements ProfileConstraint.ModelConstraint {
 
             @Override
             public void onError(ANError error) {
-                presenter.onLoadProfileDataFail("verfier votre connection ");
+                presenter.onLoadProfileDataFail(AlgeriaTourUtils.getString(R.string
+                        .connection_fail));
                 Log.d("tixx", "error " + error.getErrorDetail());
                 Log.d("tixx", "error " + error.getMessage());
             }

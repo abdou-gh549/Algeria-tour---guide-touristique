@@ -9,7 +9,6 @@ public class MapClusterMarkerItem implements ClusterItem {
     private LatLng position;
     private String title;
     private String type;
-
     public MapClusterMarkerItem(LatLng position, String title, String type) {
         this.position = position;
         this.title = title;
@@ -39,5 +38,6 @@ public class MapClusterMarkerItem implements ClusterItem {
     public void setType(String type) {
         this.type = type;
     }
+
 }
 

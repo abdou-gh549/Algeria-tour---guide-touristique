@@ -81,6 +81,13 @@ public class FavoriteFragment extends Fragment implements FavoriteConstraint.Vie
 
     }
 
+    @Override
+    public void onResume() {
+        if (User.getUserType() == StaticValue.MEMBER)
+             presenter.loadFavoriteList();
+        super.onResume();
+    }
+
     private void setUpSwipToRefresh() {
         swipeRefreshLayout.setOnRefreshListener(() -> {
             if (User.getUserType() == StaticValue.MEMBER) {
@@ -180,7 +187,7 @@ public class FavoriteFragment extends Fragment implements FavoriteConstraint.Vie
         saveButton.setOnClickListener(view -> {
             String newNote = noteEditText.getText().toString();
             if (favorite.getNote().equals(newNote)) {
-                showInformationToast("nothing to change :)");
+                showInformationToast(getString(R.string.favorite_edit_nothing_to_change_message));
             } else {
                 showProgressDialog();
                 presenter.updateNoteOfFavorite(favorite.getFavoriteId(), newNote);

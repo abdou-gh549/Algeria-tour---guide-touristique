@@ -2,6 +2,7 @@ package com.algeriatour.villes;
 
 import android.util.Log;
 
+import com.algeriatour.R;
 import com.algeriatour.uml_class.PointInteret;
 import com.algeriatour.uml_class.Ville;
 import com.algeriatour.utils.AlgeriaTourUtils;
@@ -65,7 +66,8 @@ public class VilleModel implements VilleConstraint.ModelConstraint {
                         case -1:
                             Log.d("tixx", "reponse -1 error : " + response.getInt(StaticValue
                                     .JSON_NAME_MESSAGE));
-                            presenter.onLoadPointIntereFail("server error !");
+                            presenter.onLoadPointIntereFail(AlgeriaTourUtils.getString(R.string
+                                    .server_error));
                             break;
                     }
                     Log.d("tixx", "reponse " + response.getInt(StaticValue.JSON_NAME_SUCCESS));
@@ -78,7 +80,7 @@ public class VilleModel implements VilleConstraint.ModelConstraint {
             @Override
             public void onError(ANError error) {
                 Log.d("tixx", "error " + error.getMessage());
-                presenter.onLoadPointIntereFail("verfier votre connection ");
+                presenter.onLoadPointIntereFail(AlgeriaTourUtils.getString(R.string.connection_fail));
             }
         });
 
@@ -138,7 +140,7 @@ public class VilleModel implements VilleConstraint.ModelConstraint {
                             presenter.onLoadVilleImageSuccess(AlgeriaTourUtils.parsImage(imageString));
                             break;
                         case -1:
-                            presenter.onLoadVilleImageFail("can't load ville image");
+                            presenter.onLoadVilleImageFail(AlgeriaTourUtils.getString(R.string.cant_load_vile_error));
                             break;
                     }
                     Log.d("tixx", "reponse load ville image" + response.getInt(StaticValue
@@ -146,13 +148,14 @@ public class VilleModel implements VilleConstraint.ModelConstraint {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.d("tixx", "reponst catch" + e.getMessage());
-
+                    presenter.onLoadVilleImageFail(AlgeriaTourUtils.getString(R.string.cant_load_vile_error));
                 }
             }
 
             @Override
             public void onError(ANError error) {
-                presenter.onLoadVilleImageFail("can't load ville image check your connection");
+                presenter.onLoadVilleImageFail( AlgeriaTourUtils.getString(R.string
+                        .cant_load_vile_error));
                 Log.d("tixx", "error " + error.getMessage());
             }
         });

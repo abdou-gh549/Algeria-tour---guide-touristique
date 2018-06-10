@@ -2,8 +2,10 @@ package com.algeriatour.villes;
 
 import android.graphics.Bitmap;
 
+import com.algeriatour.R;
 import com.algeriatour.uml_class.PointInteret;
 import com.algeriatour.uml_class.Ville;
+import com.algeriatour.utils.AlgeriaTourUtils;
 
 import java.util.ArrayList;
 
@@ -58,6 +60,6 @@ public class VillePresenter implements VilleConstraint.PresenterConstraint {
 
     @Override
     public void onLoadEmptyPointInteret() {
-        ville_view.showTextInDispalyInfor("Empty");
+        ville_view.showTextInDispalyInfor(AlgeriaTourUtils.getString(R.string.empty));
     }
 }

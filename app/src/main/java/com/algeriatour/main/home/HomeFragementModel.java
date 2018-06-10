@@ -5,7 +5,9 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 
+import com.algeriatour.R;
 import com.algeriatour.uml_class.Ville;
+import com.algeriatour.utils.AlgeriaTourUtils;
 import com.algeriatour.utils.StaticValue;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -69,8 +71,8 @@ public class HomeFragementModel implements HomeFragmentConstraint.ModelConstrain
 
                             break;
                         case -1:
-                            presenter.onLoadVillesFailed("server error ... please try again later" +
-                                    " ! ");
+                            presenter.onLoadVillesFailed(AlgeriaTourUtils.getString(R.string
+                                    .server_error));
                             break;
                     }
                     Log.d("tixx", "reponse " + response.getInt(StaticValue.JSON_NAME_SUCCESS));
@@ -83,7 +85,8 @@ public class HomeFragementModel implements HomeFragmentConstraint.ModelConstrain
             @Override
             public void onError(ANError error) {
                 Log.d("tixx", "onError: "+ error.getMessage() + " " +error.getErrorDetail());
-                presenter.onLoadVillesFailed("check your connection ! ");
+                presenter.onLoadVillesFailed(AlgeriaTourUtils.getString(R.string
+                        .connection_fail));
             }
         });
 

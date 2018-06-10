@@ -17,7 +17,6 @@ public class LoginConstraint {
         void startMainActiviy();
         void showProgressDialog();
         void hideProgressDialog();
-        void saveLoginTosharedPreference(String pseudo, String psw);
 
     }
 

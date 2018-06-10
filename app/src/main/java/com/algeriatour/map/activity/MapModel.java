@@ -1,11 +1,11 @@
 package com.algeriatour.map.activity;
 
 import android.util.Log;
-import android.widget.Toast;
 
+import com.algeriatour.R;
+import com.algeriatour.map.other.SelectedMarker;
 import com.algeriatour.map.other.MapRoute;
 import com.algeriatour.map.other.MapUtils;
-import com.algeriatour.map.other.RouteRequestResult;
 import com.algeriatour.utils.AlgeriaTourUtils;
 import com.algeriatour.utils.StaticValue;
 import com.androidnetworking.AndroidNetworking;
@@ -15,13 +15,10 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.Polyline;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import okhttp3.Route;
 
 public class MapModel implements MapConstraint.ModelConstraint {
     private final String getAllPointsFileName = "at_get_all_point_for_map.php";
@@ -33,6 +30,7 @@ public class MapModel implements MapConstraint.ModelConstraint {
     private Marker longClickMarker;
     private LatLng currentPosition;
     private MapRoute route;
+    private SelectedMarker clickedMarker;
 
     @Override
     public void loadAllPoint(MapConstraint.PresenterCallBack.OnLoadallPointCallBack onLoadallPointCallBack) {
@@ -54,7 +52,8 @@ public class MapModel implements MapConstraint.ModelConstraint {
                         Log.d("tixx", "reponse -1 error : " + response.getInt(StaticValue
                                 .JSON_NAME_MESSAGE));
 
-                        onLoadallPointCallBack.onLoadAllPointFail("server error");
+                        onLoadallPointCallBack.onLoadAllPointFail(AlgeriaTourUtils.getString(R
+                                .string.server_error));
                     }
 
                     Log.d("tixx", "reponse " + response.getInt(StaticValue.JSON_NAME_SUCCESS));
@@ -62,7 +61,8 @@ public class MapModel implements MapConstraint.ModelConstraint {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.d("tixx", "reponst catch" + e.getMessage());
-                    onLoadallPointCallBack.onLoadAllPointFail("parsing data error !");
+                    onLoadallPointCallBack.onLoadAllPointFail(AlgeriaTourUtils.getString(R
+                            .string.server_error));
 
                 }
             }
@@ -70,7 +70,7 @@ public class MapModel implements MapConstraint.ModelConstraint {
             @Override
             public void onError(ANError error) {
                 Log.d("tixx", "error " + error.getMessage());
-                onLoadallPointCallBack.onLoadAllPointFail(error.getMessage());
+                onLoadallPointCallBack.onLoadAllPointFail(AlgeriaTourUtils.getString(R.string.connection_fail));
             }
         });
     }
@@ -91,7 +91,7 @@ public class MapModel implements MapConstraint.ModelConstraint {
             @Override
             public void onError(ANError error) {
                 Log.d("tixx", "load image onError : " + error.getMessage());
-                action.onFail("load image error");
+                action.onFail(AlgeriaTourUtils.getString(R.string.load_image_error));
             }
         });
     }
@@ -112,7 +112,7 @@ public class MapModel implements MapConstraint.ModelConstraint {
             @Override
             public void onError(ANError anError) {
                 Log.d("tixx", "onError: " + anError.getMessage());
-                action.onFail("connection error");
+                action.onFail(AlgeriaTourUtils.getString(R.string.connection_fail));
             }
         });
 
@@ -149,5 +149,13 @@ public class MapModel implements MapConstraint.ModelConstraint {
 
     public void setRoute(MapRoute route) {
         this.route = route;
+    }
+
+    public SelectedMarker getClickedMarker() {
+        return clickedMarker;
+    }
+
+    public void setClickedMarker(SelectedMarker clickedMarker) {
+        this.clickedMarker = clickedMarker;
     }
 }

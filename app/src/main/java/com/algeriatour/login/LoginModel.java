@@ -2,13 +2,14 @@ package com.algeriatour.login;
 
 import android.util.Log;
 
+import com.algeriatour.R;
 import com.algeriatour.uml_class.Membre;
+import com.algeriatour.utils.AlgeriaTourUtils;
 import com.algeriatour.utils.StaticValue;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,22 +41,23 @@ public class LoginModel implements LoginConstraint.modelConstraint {
                             presenter.onLoginSucess(parseMembre(user));
                             break;
                         case 0:
-                            presenter.onLoginFail("utilisateur n'exist pas !");
+                            presenter.onLoginFail(AlgeriaTourUtils.getString(R.string.user_not_exist_error));
                             break;
                         case -1:
-                            presenter.onLoginFail("problem dans serveur ");
+                            presenter.onLoginFail(AlgeriaTourUtils.getString(R.string.server_error));
                             break;
                     }
                     Log.d("tixx", "reponse " + response.getInt(StaticValue.JSON_NAME_SUCCESS));
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.d("tixx", "reponst catch" + e.getMessage());
+                    presenter.onLoginFail(AlgeriaTourUtils.getString(R.string.server_error));
                 }
             }
 
             @Override
             public void onError(ANError error) {
-                presenter.onLoginFail("verfier votre connection ");
+                presenter.onLoginFail(AlgeriaTourUtils.getString(R.string.connection_fail));
                 Log.d("tixx", "error " + error.getErrorDetail());
                 Log.d("tixx", "error " + error.getMessage());
             }

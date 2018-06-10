@@ -57,16 +57,17 @@ public class MapUtils {
 
     static public Bitmap getIcon(Context context, String type) {
 
-        int height = 85;
-        int width = 55;
+
         int imageId = 0;
-        if(type.toLowerCase().equals("port")){
+        if (type.toLowerCase().equals("port")) {
             imageId = R.drawable.ic_marker_port;
-        }else if(type.toLowerCase().equals("plage")) {
+        } else if (type.toLowerCase().equals("plage")) {
             imageId = R.drawable.ic_marker_plage;
-        }else if(type.toLowerCase().equals("mémorial")){
+        } else if (type.toLowerCase().equals("mémorial")) {
             imageId = R.drawable.ic_marker_musume;
-        }else{
+        } else if (type.toLowerCase().equals("selected")) {
+            imageId = R.drawable.ic_marker_selected;
+        } else {
             imageId = R.drawable.ic_marker_default;
         }
 

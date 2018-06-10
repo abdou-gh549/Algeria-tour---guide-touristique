@@ -28,7 +28,6 @@ public class ProfileConstraint {
         void startMainActivityAfterChange();
     }
 
-
     public interface ModelConstraint {
         void change(String pseudo, String email, String password);
         void loadUserInfo(String pseudo, String password);

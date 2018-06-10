@@ -8,14 +8,8 @@ package com.algeriatour.utils;
 public class StaticValue {
     public static final String START_FROM_SPLASH_TAG = "start from splash screen";
     public static final int SIGN_IN_RESULT_TAGE = 1111;
-    public static final String EMAIL_TAGE = "email";
     public static final String PSEUDO_TAGE = "pseudo";
     public static final String PASSWORD_TAGE = "password";
-    public static final String USER_ID_TAGE = "user_id";
-    public static final String ID_TAGE = "id";
-    public static final String NAME_TAG = "name";
-    public static final String IMAGE_TAG = "image_string";
-    public static final String DESCREPTION_TAG = "descreption";
     public static final String POINT_TAG = "point_interet";
     public static final String LOGIN_SHARED_PEFERENCE = "user_id";
     public static final String VILLE_WITHOUT_IMAGE_TAG = "ville_without_iamge";
@@ -35,8 +29,6 @@ public class StaticValue {
     public static final String JSON_NAME_USER  = "user";
     public static final String JSON_NAME_MESSAGE  = "message";
     public static final String JSON_NAME_ID  = "id";
-    public static final String JSON_NAME_FAV_ID  = "favorite_id";
-    public static final String JSON_NAME_TOWN_ID  = "town_id";
     public static final String JSON_NAME_IMAGE  = "image";
     public static final String JSON_NAME_NAME  = "name";
     public static final String JSON_NAME_WILAYA = "wilaya";
@@ -81,7 +73,7 @@ public class StaticValue {
     public static final String  PHP_OBJECT = "object";
     public static final String  PHP_CONTENT = "content";
 
-    public static final String WEB_HOST = "https://algtour.000webhostapp.com/";
+    public static final String WEB_HOST = "https://algeriatourmanager.000webhostapp.com/extern/";
     public static final String LOCAL_HOST = "http://10.0.2.2/AT_PHP_FILE/";
     public static final String MYSQL_SITE = WEB_HOST;
 

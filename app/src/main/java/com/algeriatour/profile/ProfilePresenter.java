@@ -34,7 +34,8 @@ public class ProfilePresenter implements ProfileConstraint.PresenterConstraint {
         String passwrodToChange = "";
         String emailToChange = "";
         if(originaleEmail.equals(email) && originalPassword.equals(passwrod)){
-            profile_view.showToastInformation("nothing to change");
+            profile_view.showToastInformation(AlgeriaTourUtils.getString(R.string
+                    .favorite_edit_nothing_to_change_message));
         }else{
             emailToChange = originaleEmail.equals(email) ? "":email;
             passwrodToChange = originalPassword.equals(passwrod) ? "":passwrod;

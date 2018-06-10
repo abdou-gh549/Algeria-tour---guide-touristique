@@ -51,16 +51,16 @@
         <TextView
             android:layout_width = "wrap_content"
             android:layout_height = "wrap_content"
-            android:text = "Subject"
+            android:text = "Sujet"
             />
 
         <EditText
             android:id = "@+id/contacter_nous_subject"
             android:layout_width = "match_parent"
             android:layout_height = "wrap_content"
-            android:hint = "subject"
+            android:hint = "sujet"
             android:inputType = "text"
-            android:maxLength = "32" />
+            android:maxLength = "64" />
 
         <TextView
             android:layout_width = "wrap_content"
@@ -104,7 +104,7 @@
                 android:layout_marginStart = "8dp"
                 android:layout_marginTop = "0dp"
                 android:layout_weight = "1"
-                android:text = "Send" />
+                android:text = "Envoyer" />
         </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

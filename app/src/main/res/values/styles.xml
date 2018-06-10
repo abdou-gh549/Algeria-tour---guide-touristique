@@ -34,13 +34,7 @@
         <item name = "android:singleLine">true</item>
     </style>
 
-    <style name = "appBarImageButton">
-        <item name = "android:layout_weight">1</item>
-        <item name = "android:layout_width">match_parent</item>
-        <item name = "android:layout_height">30dp</item>
-        <item name = "android:layout_margin">10dp</item>
 
-    </style>
     <style name="favotieRatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">#a3a2a2</item>
         <item name="colorControlActivated">#807f7f</item>

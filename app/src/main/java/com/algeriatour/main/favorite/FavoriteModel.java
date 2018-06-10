@@ -2,6 +2,7 @@ package com.algeriatour.main.favorite;
 
 import android.util.Log;
 
+import com.algeriatour.R;
 import com.algeriatour.uml_class.Favorite;
 import com.algeriatour.uml_class.PointInteret;
 import com.algeriatour.utils.AlgeriaTourUtils;
@@ -67,17 +68,20 @@ public class FavoriteModel implements FavoriteConstraint.ModelConstraint {
                             loadPointIneteretImage(favorites.get(i).getPointInteret().getId());
                         }
                     } else {
-                        presenter.onLoadFavoriteListFail("server Error can't load favorite list");
+                        presenter.onLoadFavoriteListFail(AlgeriaTourUtils.getString(R.string
+                                .server_error));
                     }
                 } catch (JSONException e) {
-                    presenter.onLoadFavoriteListFail(" opps somthing happend");
+                    presenter.onLoadFavoriteListFail(AlgeriaTourUtils.getString(R.string
+                            .server_error));
                     Log.d("tixx", "onResponse error : in catch :  " + e.getMessage());
                 }
             }
 
             @Override
             public void onError(ANError error) {
-
+                presenter.onLoadFavoriteListFail(AlgeriaTourUtils.getString(R.string
+                        .connection_fail));
             }
         });
 
@@ -99,17 +103,17 @@ public class FavoriteModel implements FavoriteConstraint.ModelConstraint {
                     if (response.getInt(StaticValue.JSON_NAME_SUCCESS) == 1) {
                         presenter.onUpdateNoteSucess();
                     } else {
-                        presenter.onUpdateNoteFail("server Error can't update favorite");
+                        presenter.onUpdateNoteFail(AlgeriaTourUtils.getString(R.string.server_error));
                     }
                 } catch (JSONException e) {
-                    presenter.onUpdateNoteFail(" opps somthing happend");
+                    presenter.onUpdateNoteFail(AlgeriaTourUtils.getString(R.string.server_error));
                     Log.d("tixx", "onResponse error : in catch :  " + e.getMessage());
                 }
             }
 
             @Override
             public void onError(ANError error) {
-                presenter.onUpdateNoteFail("can't save change ... check your connection");
+                presenter.onUpdateNoteFail(AlgeriaTourUtils.getString(R.string.connection_fail));
             }
         });
     }
@@ -127,17 +131,17 @@ public class FavoriteModel implements FavoriteConstraint.ModelConstraint {
                     if (response.getInt(StaticValue.JSON_NAME_SUCCESS) == 1) {
                         presenter.onDeleteFavortieSuccess(favoriteId);
                     } else {
-                        presenter.onDeleteFavoriteFail("server error can't delete");
+                        presenter.onDeleteFavoriteFail(AlgeriaTourUtils.getString(R.string.server_error));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    presenter.onDeleteFavoriteFail("can't delete ... something happened");
+                    presenter.onDeleteFavoriteFail(AlgeriaTourUtils.getString(R.string.server_error));
                 }
             }
 
             @Override
             public void onError(ANError error) {
-                presenter.onDeleteFavoriteFail("can't delete check your connection");
+                presenter.onDeleteFavoriteFail(AlgeriaTourUtils.getString(R.string.connection_fail));
             }
         });
     }

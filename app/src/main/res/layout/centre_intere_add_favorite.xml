@@ -13,9 +13,9 @@
         android:layout_marginStart = "8dp"
         android:layout_marginTop = "8dp"
         android:gravity = "top"
-        android:hint = "add note"
+        android:hint = "ajouter une note"
         android:inputType = "textMultiLine"
-        android:maxLength = "200"
+        android:maxLength = "512"
         app:layout_constraintEnd_toEndOf = "parent"
         app:layout_constraintStart_toStartOf = "parent"
         app:layout_constraintTop_toTopOf = "parent" />
@@ -34,12 +34,12 @@
         <Button
             android:id = "@+id/centre_intere_addFavorite_cancel"
             style = "@style/loginButton"
-            android:text = "Cancel" />
+            android:text = "Annuler" />
 
         <Button
             android:id = "@+id/centre_intere_addFavorite_add"
             style = "@style/loginButton"
-            android:text = "Add" />
+            android:text = "Ajouter" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

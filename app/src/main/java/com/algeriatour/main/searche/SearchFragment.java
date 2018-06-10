@@ -61,8 +61,6 @@ public class SearchFragment extends Fragment {
     }
 
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -93,7 +91,7 @@ public class SearchFragment extends Fragment {
             progressDialog.show();
             doSearch(searchKey);
         } else {
-            Toasty.warning(getContext(), "mot de recherche est vide ", Toast.LENGTH_LONG, true).show();
+            Toasty.warning(getContext(), getString(R.string.search_empty_input_message), Toast.LENGTH_LONG, true).show();
         }
     }
 
@@ -109,7 +107,7 @@ public class SearchFragment extends Fragment {
                     if (response.getInt(StaticValue.JSON_NAME_SUCCESS) == 1) {
                         JSONArray jsonArray = response.getJSONArray(StaticValue.JSON_NAME_RESULT);
                         if (jsonArray.length() == 0) {
-                            showResultTextView("not found");
+                            showResultTextView(getString(R.string.search_not_found));
                         } else {
                             ArrayList<SearchResult> searchResults = new ArrayList<>();
                             for (int i = 0; i < jsonArray.length(); i++) {
@@ -124,7 +122,8 @@ public class SearchFragment extends Fragment {
 
                         }
                     } else {
-                        showToastError(" server error");
+                        showToastError(AlgeriaTourUtils.getString(R.string
+                                .server_error));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -137,7 +136,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onError(ANError anError) {
-                showToastError("check your connection ");
+                showToastError(AlgeriaTourUtils.getString(R.string.connection_fail));
                 progressDialog.dismiss();
             }
         });

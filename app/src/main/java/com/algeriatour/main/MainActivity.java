@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity
         AlgeriaTourUtils.gpsRequest(this, new AlgeriaTourUtils.GpsResponsListiner() {
             @Override
             public void onPermissionDenied() {
-                Toasty.error(MainActivity.this, "to use the map you need gps permission", Toast
+                Toasty.error(MainActivity.this, getString(R.string.main_gps_permission_error), Toast
                                 .LENGTH_SHORT,
                         true).show();
             }
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, ProfileActivity.class);
             startActivity(intent);
         } catch (Exception exp) {
-            Toasty.error(this, "sothing happend cant open profile", Toast.LENGTH_LONG, true).show();
+            Toasty.error(this, getString(R.string.main_open_profile_error), Toast.LENGTH_LONG, true).show();
         }
 
     }

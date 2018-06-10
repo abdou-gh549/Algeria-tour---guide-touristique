@@ -57,6 +57,9 @@ public class AlgeriaTourUtils {
         }).check();
     }
 
+    public static String getString(int stringId){
+        return User.getInstance().getString(stringId);
+    }
     public interface GpsResponsListiner {
         void onPermissionDenied();
         void onPermissionGaranted();

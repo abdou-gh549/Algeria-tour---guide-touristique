@@ -2,6 +2,7 @@ package com.algeriatour.point;
 
 import android.util.Log;
 
+import com.algeriatour.R;
 import com.algeriatour.uml_class.Commentaire;
 import com.algeriatour.utils.AlgeriaTourUtils;
 import com.algeriatour.utils.StaticValue;
@@ -116,6 +117,7 @@ public class PointInteretModel implements PointIneteretConstraint.ModelConstrain
 
             @Override
             public void onError(ANError error) {
+                presenter.onLoadCommentaireFail(AlgeriaTourUtils.getString(R.string.loading_comment_error));
                 Log.d("tixx", "load comment onError : " + error.getMessage());
             }
         });
@@ -139,18 +141,18 @@ public class PointInteretModel implements PointIneteretConstraint.ModelConstrain
                             presenter.onFavoriteDoesNoteExist();
                         }
                     } else {
-                        presenter.onFavoriteCheckFail("server error please try again later");
+                        presenter.onFavoriteCheckFail(AlgeriaTourUtils.getString(R.string.server_error));
                     }
                 } catch (JSONException e) {
                     Log.d("tixx", "onResponse check favorite: catch " + e.getMessage());
-                    presenter.onFavoriteCheckFail("ops something just happen");
+                    presenter.onFavoriteCheckFail(AlgeriaTourUtils.getString(R.string.server_error));
                 }
             }
 
             @Override
             public void onError(ANError error) {
                 Log.d("tixx", "load comment onError : " + error.getMessage());
-                presenter.onFavoriteCheckFail("connection error ");
+                presenter.onFavoriteCheckFail(AlgeriaTourUtils.getString(R.string.connection_fail));
             }
         });
     }
@@ -172,7 +174,7 @@ public class PointInteretModel implements PointIneteretConstraint.ModelConstrain
             @Override
             public void onError(ANError error) {
                 Log.d("tixx", "load comment onError : " + error.getMessage());
-                presenter.onAddFavoriteResultfail("check your connection");
+                presenter.onAddFavoriteResultfail(AlgeriaTourUtils.getString(R.string.connection_fail));
             }
         });
     }
@@ -190,23 +192,23 @@ public class PointInteretModel implements PointIneteretConstraint.ModelConstrain
                 try {
                     if (response.getInt(StaticValue.JSON_NAME_SUCCESS) == 1) {
                         if (response.getInt("has") == 1) { // true
-                            presenter.onCheckCommentExist("comment already exist");
+                            presenter.onCheckCommentExist(AlgeriaTourUtils.getString(R.string.comment_already_exist));
                         } else { // false
                             presenter.showCommentDialog();
                         }
                     } else {
-                        presenter.onCheckCommentError("server error please try again later");
+                        presenter.onCheckCommentError(AlgeriaTourUtils.getString(R.string.server_error));
                     }
                 } catch (JSONException e) {
                     Log.d("tixx", "onResponse checkIfCommentExistAndAddIt : catch " + e
                             .getMessage());
-                    presenter.onCheckCommentError("ops something just happen");
+                    presenter.onCheckCommentError(AlgeriaTourUtils.getString(R.string.server_error));
                 }
             }
             @Override
             public void onError(ANError error) {
                 Log.d("tixx", "checkIfCommentExistAndAddIt onError : " + error.getMessage());
-                presenter.onCheckCommentError("connection error");
+                presenter.onCheckCommentError(AlgeriaTourUtils.getString(R.string.connection_fail));
 
             }
         });
@@ -234,13 +236,13 @@ public class PointInteretModel implements PointIneteretConstraint.ModelConstrain
                         Log.d("tixx", "onResponse: -1 " + commentaire.getRatting()+" " + response
                                 .getString(StaticValue
                                 .JSON_NAME_MESSAGE));
-                        presenter.onAddCommentFail("error while adding comment try again later");
+                        presenter.onAddCommentFail(AlgeriaTourUtils.getString(R.string.error_while_adding_comment));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.d("tixx", "onResponse exp : " + e.getMessage());
 
-                    presenter.onAddCommentFail("error while adding comment try again later");
+                    presenter.onAddCommentFail(AlgeriaTourUtils.getString(R.string.error_while_adding_comment));
 
                 }
             }
@@ -248,7 +250,7 @@ public class PointInteretModel implements PointIneteretConstraint.ModelConstrain
             @Override
             public void onError(ANError error) {
                 Log.d("tixx", "load comment onError : " + error.getMessage());
-                presenter.onAddCommentFail("connection error ");
+                presenter.onAddCommentFail(AlgeriaTourUtils.getString(R.string.connection_fail));
             }
         });
 

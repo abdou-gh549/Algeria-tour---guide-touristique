@@ -56,6 +56,7 @@
                 android:layout_marginStart = "8dp"
                 android:layout_marginTop = "8dp"
                 android:layout_weight = "1"
+                android:maxLength="64"
                 android:enabled = "false"
                 app:met_floatingLabel = "highlight"
                 app:met_floatingLabelAlwaysShown = "true"
@@ -79,6 +80,7 @@
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id = "@+id/profile_passwordField"
                 style = "@style/editText"
+                android:maxLength="64"
                 android:layout_marginStart = "8dp"
                 android:layout_marginTop = "8dp"
                 android:layout_weight = "1"
@@ -129,7 +131,7 @@
             style = "@style/loginButton"
             android:layout_marginStart = "0dp"
             android:layout_marginTop = "8dp"
-            android:text = "Cancel" />
+            android:text = "Annuler" />
 
     </LinearLayout>
 

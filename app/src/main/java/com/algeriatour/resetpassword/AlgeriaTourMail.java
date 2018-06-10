@@ -3,6 +3,7 @@ package com.algeriatour.resetpassword;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.algeriatour.R;
 import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -18,7 +19,6 @@ public class AlgeriaTourMail {
         final String mailSubject = " Algeria Tours Reset Password";
         final String bodyMessage = msg;
 
-        AtomicReference<Boolean> emailSend = new AtomicReference<>(false);
         BackgroundMail.newBuilder(context)
                 .withUsername(ALGERIA_TOUR_Mail)
                 .withPassword(ALGERIA_TOUR_PASSWORD)
@@ -28,13 +28,9 @@ public class AlgeriaTourMail {
                 .withBody(bodyMessage)
                 .withSendingMessageSuccess(null)
                 .withSendingMessageError(null)
-                .withOnSuccessCallback(() ->{
-                        Toasty.success(context, "password send success", Toast.LENGTH_LONG, true)
-                                .show();
-                        }
+                .withOnSuccessCallback(Toasty.success(context, context.getString(R.string.password_send_success), Toast.LENGTH_LONG, true)::show
                 )
-                .withOnFailCallback(() ->
-                        Toasty.error(context, "password send failed", Toast.LENGTH_LONG, true).show()
+                .withOnFailCallback(Toasty.error(context, context.getString(R.string.password_send_fail), Toast.LENGTH_LONG, true)::show
                 )
                 .send();
     }

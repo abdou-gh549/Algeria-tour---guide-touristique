@@ -2,7 +2,6 @@ package com.algeriatour.map.activity;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -11,7 +10,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -25,16 +23,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.algeriatour.R;
-import com.algeriatour.map.other.DirectionsParser;
+import com.algeriatour.map.other.CustomClusterRendered;
 import com.algeriatour.map.other.MapClusterMarkerItem;
 import com.algeriatour.map.other.MapUtils;
-import com.algeriatour.map.other.RouteRequestResult;
 import com.algeriatour.point.PointIntereActivity;
 import com.algeriatour.uml_class.PlaceInfo;
+import com.algeriatour.utils.AlgeriaTourUtils;
 import com.algeriatour.utils.StaticValue;
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -51,12 +46,8 @@ import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -75,7 +66,9 @@ public class MapActivity extends MapBaseActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         com.google.android.gms.location.LocationListener,
-        GoogleMap.OnMapLongClickListener
+        GoogleMap.OnMapLongClickListener,
+        GoogleMap.OnMarkerClickListener
+
 {
 
     private final String TAG = "tixx";
@@ -116,10 +109,13 @@ public class MapActivity extends MapBaseActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         setupMap(googleMap);
+        setUpClusterManager();
         mMap.setOnMapClickListener(this);
         mMap.setOnMapLongClickListener(this);
         mClusterManager.setOnClusterItemClickListener(this);
         mClusterManager.setOnClusterClickListener(this);
+        mClusterManager.getMarkerCollection().setOnMarkerClickListener(this);
+
 
         setUpLoaction();
 
@@ -129,19 +125,19 @@ public class MapActivity extends MapBaseActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1000){
-            if(resultCode == RESULT_OK && !googleApiClient.isConnected()){
+        if (requestCode == 1000) {
+            if (resultCode == RESULT_OK && !googleApiClient.isConnected()) {
                 googleApiClient.connect();
             }
-        }else if(requestCode == GPS_REQUEST){
+        } else if (requestCode == GPS_REQUEST) {
             int locationMode = 0;
             try {
                 locationMode = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
             } catch (Settings.SettingNotFoundException e) {
                 e.printStackTrace();
             }
-            if(locationMode == Settings.Secure.LOCATION_MODE_OFF){
-                showErrorToast("to use map option you need to activate your gps !");
+            if (locationMode == Settings.Secure.LOCATION_MODE_OFF) {
+                showErrorToast(getString(R.string.map_gps_off_error));
                 finish();
             }
 
@@ -155,22 +151,33 @@ public class MapActivity extends MapBaseActivity implements
 
     // to long click marker
     @OnClick(R.id.map_navigation_fab)
-    void onNavigationFabClicked(){
+    void onNavigationFabClicked() {
         mapPresenter.traceWayToLongClickMarker();
     }
 
     @OnClick(R.id.map_route_action_cancel)
-    void onCancelRouteClick(){
+    void onCancelRouteClick() {
         mapPresenter.cancelRoute();
     }
 
     @OnClick(R.id.map_route_action_fullView)
-    void onFullRouteViewClick(){
+    void onFullRouteViewClick() {
         mapPresenter.onFullViewRoutClick();
     }
+
     @OnClick(R.id.map_route_action_refresh)
-    void onRefreshRouteClicked(){
+    void onRefreshRouteClicked() {
         mapPresenter.onRefreshRootClicked();
+    }
+
+    private void setUpClusterManager() {
+        mClusterManager = new ClusterManager<>(this, mMap);
+        CustomClusterRendered customClusterRendered = new CustomClusterRendered(this, mMap
+                , mClusterManager, mapPresenter);
+        mMap.setOnCameraIdleListener(mClusterManager);
+        mMap.setOnMarkerClickListener(mClusterManager);
+        mClusterManager.setRenderer(customClusterRendered);
+        mClusterManager.setAnimation(true);
     }
 
     private void loadMapData() {
@@ -218,26 +225,27 @@ public class MapActivity extends MapBaseActivity implements
 
     private void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+        builder.setMessage(R.string.open_gps_messge)
                 .setCancelable(false)
-                .setPositiveButton("Yes", (dialog, id) -> startActivityForResult(new Intent(android
-                        .provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS),GPS_REQUEST))
-                .setNegativeButton("No", (dialog, id) -> {
-                    showErrorToast("to use map option you need to activate your gps !");
+                .setPositiveButton("Oui", (dialog, id) -> startActivityForResult(new Intent
+                        (Settings.ACTION_LOCATION_SOURCE_SETTINGS), GPS_REQUEST))
+                .setNegativeButton("Non", (dialog, id) -> {
+                    showErrorToast(AlgeriaTourUtils.getString(R.string.map_gps_off_error));
                     MapActivity.this.finish();
                     dialog.cancel();
                 });
         final AlertDialog alert = builder.create();
         alert.show();
     }
+
     private void checkGpsStatus() {
-        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
-        if(manager == null){
-            showErrorToast("can't get information of location service");
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (manager == null) {
+            showErrorToast(getString(R.string.cant_get_location_msg));
             finish();
             return;
         }
-        if( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             buildAlertMessageNoGps();
         }
     }
@@ -248,6 +256,7 @@ public class MapActivity extends MapBaseActivity implements
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, zoom));
         }, 300);
     }
+
 
     @Override
     public Polyline addPolyline(PolylineOptions polylineOptions) {
@@ -263,6 +272,7 @@ public class MapActivity extends MapBaseActivity implements
     public void showErrorToast(String msg) {
         Toasty.error(this, msg, Toast.LENGTH_SHORT, true).show();
     }
+
     @Override
     public void showWarnningMessage(String msg) {
         Toasty.warning(this, msg, Toast.LENGTH_SHORT, true).show();
@@ -281,13 +291,13 @@ public class MapActivity extends MapBaseActivity implements
     @Override
     public void showRouteActionLayout() {
         routeActionLayout.setVisibility(View.VISIBLE);
-        mMap.setPadding(0,0,0,routeActionLayout.getHeight() + 5);
+        mMap.setPadding(0, 0, 0, routeActionLayout.getHeight() + 5);
     }
 
     @Override
     public void hideRouteActionLayout() {
         routeActionLayout.setVisibility(View.GONE);
-        mMap.setPadding(0,0,0,0);
+        mMap.setPadding(0, 0, 0, 0);
     }
 
     @Override
@@ -310,12 +320,10 @@ public class MapActivity extends MapBaseActivity implements
 
     @Override
     public void hidePointDetailleView() {
-        if(routeActionLayout.getVisibility() == View.VISIBLE)
-        {
+        if (routeActionLayout.getVisibility() == View.VISIBLE) {
             mMap.setPadding(0, 0, 0, routeActionLayout.getHeight() + 5);
-        }
-        else{
-            mMap.setPadding(0,0,0,0);
+        } else {
+            mMap.setPadding(0, 0, 0, 0);
         }
         mapPointViewDetaille.hideMapPointViewDetaille();
     }
@@ -342,7 +350,7 @@ public class MapActivity extends MapBaseActivity implements
     public void addPointToMap(PlaceInfo placeInfo) {
         allPlaceInfo.add(placeInfo);
         mClusterManager.addItem(new MapClusterMarkerItem(placeInfo.getLatLng(), placeInfo.getName
-                (),placeInfo.getType()));
+                (), placeInfo.getType()));
         mClusterManager.cluster();
     }
 
@@ -358,14 +366,6 @@ public class MapActivity extends MapBaseActivity implements
 
     @Override
     public boolean onClusterItemClick(ClusterItem clusterItem) {
-        zoomeInto(clusterItem.getPosition(), 15.5f);
-        int placeInfoPosition = getPlaceInfoFromPosition(clusterItem.getPosition());
-        if (placeInfoPosition == -1) {
-            return false;
-        }
-        mapPointViewDetaille.setData(allPlaceInfo.get(placeInfoPosition));
-        mapPresenter.loadPointImage(allPlaceInfo.get(placeInfoPosition).getId());
-        showPointDetailleView();
         return true;
     }
 
@@ -427,7 +427,9 @@ public class MapActivity extends MapBaseActivity implements
 
     @Override
     public boolean onClusterClick(Cluster<MapClusterMarkerItem> cluster) {
-        zoomeInto(cluster.getPosition(), 8);
+
+        zoomeInto(cluster.getPosition(), mMap.getCameraPosition().zoom + 2f);
+
         return true;
     }
 
@@ -439,37 +441,36 @@ public class MapActivity extends MapBaseActivity implements
         }
         // check if gps enable
         Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-        if(location != null){
-            mapPresenter.setCurrentPosition(new LatLng(location.getLatitude(),location.getLongitude()));
+        if (location != null) {
+            mapPresenter.setCurrentPosition(new LatLng(location.getLatitude(), location.getLongitude()));
         }
         // start update
         LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
     }
 
     @Override
-    public void onConnectionSuspended(int i) { }
+    public void onConnectionSuspended(int i) {
+    }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        showErrorToast("connection to geolocalisation fail");
-        Toasty.error(MapActivity.this, "location connection fail !", Toast.LENGTH_SHORT, true).show();
+        Toasty.error(MapActivity.this, getString(R.string.connecting_to_location_service_fail), Toast.LENGTH_SHORT, true).show();
         try {
-            connectionResult.startResolutionForResult(MapActivity.this,1000);
+            connectionResult.startResolutionForResult(MapActivity.this, 1000);
 
-        }catch (IntentSender.SendIntentException e){
+        } catch (IntentSender.SendIntentException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        if(location == null )
+        if (location == null)
             return;
 
         Log.d("tixx", "onLocationChanged: " + location.toString());
         // hide init location whene we get real location
-        mapPresenter.onLocationChanged( new LatLng(location.getLatitude(),location.getLongitude()));
+        mapPresenter.onLocationChanged(new LatLng(location.getLatitude(), location.getLongitude()));
     }
 
     @Override
@@ -478,4 +479,20 @@ public class MapActivity extends MapBaseActivity implements
     }
 
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        zoomeInto(marker.getPosition(), 15.5f);
+        int placeInfoPosition = getPlaceInfoFromPosition(marker.getPosition());
+        if (placeInfoPosition == -1) {
+            return false;
+        }
+        mapPresenter.setSelectedIconToMarker(marker,
+                MapUtils.getIcon(this, "selected"),
+                MapUtils.getIcon(this, allPlaceInfo.get(placeInfoPosition).getType()));
+
+        mapPointViewDetaille.setData(allPlaceInfo.get(placeInfoPosition));
+        mapPresenter.loadPointImage(allPlaceInfo.get(placeInfoPosition).getId());
+        showPointDetailleView();
+        return true;
+    }
 }

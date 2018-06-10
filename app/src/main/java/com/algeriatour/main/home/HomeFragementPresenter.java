@@ -1,6 +1,8 @@
 package com.algeriatour.main.home;
 
+import com.algeriatour.R;
 import com.algeriatour.uml_class.Ville;
+import com.algeriatour.utils.AlgeriaTourUtils;
 
 import java.util.ArrayList;
 
@@ -16,13 +18,12 @@ public class HomeFragementPresenter implements HomeFragmentConstraint.PresenterC
         home_view.hideEmptyContentTextView();
         home_view.showProgressBar();
         homeFragementModel.loadVilles();
-
     }
 
     @Override
     public void onLoadVillesSuccess(ArrayList<Ville> villes) {
         if(villes.isEmpty()){
-            home_view.showEmptyContentTextView("il n'y a pas des villes pour l'instant :)");
+            home_view.showEmptyContentTextView(AlgeriaTourUtils.getString(R.string.home_empty_ville));
         }
         else{
             for (int i = 0; i < villes.size(); i++) {
@@ -36,7 +37,6 @@ public class HomeFragementPresenter implements HomeFragmentConstraint.PresenterC
     public void onLoadVillesFailed(String msg) {
         home_view.hideProgressBar();
         home_view.showEmptyContentTextView(msg);
-
     }
 
     @Override

@@ -1,13 +1,16 @@
 package com.algeriatour.map.activity;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 
+import com.algeriatour.R;
 import com.algeriatour.map.other.DirectionsParser;
 import com.algeriatour.map.other.MapRoute;
 import com.algeriatour.map.other.MapUtils;
 import com.algeriatour.map.other.RouteRequestResult;
+import com.algeriatour.map.other.SelectedMarker;
 import com.algeriatour.uml_class.PlaceInfo;
 import com.algeriatour.uml_class.PointInteret;
 import com.algeriatour.utils.AlgeriaTourUtils;
@@ -73,10 +76,19 @@ public class MapPresenter implements MapConstraint.PresenterConstraint {
         return pointInteret;
     }
 
+    public void resetLastSelectedMarkerIcon(){
+        if(mapModel.getClickedMarker() != null){
+            mapModel.getClickedMarker().resetIcon();
+            mapModel.setClickedMarker(null);
+        }
+    }
     public void onMapLongClick(LatLng clickPosition) {
         if( ! mapView.isClickInAlgeria(clickPosition)){
             return;
         }
+        // reset clicked marker icon if exist
+        resetLastSelectedMarkerIcon();
+
         Marker marker;
         if(mapModel.getLongClickMarker() == null){
             MarkerOptions markerOptions = new MarkerOptions();
@@ -94,6 +106,8 @@ public class MapPresenter implements MapConstraint.PresenterConstraint {
     public void onMapClick(LatLng clickPosition) {
         if(! mapView.isClickInAlgeria(clickPosition))
             return;
+
+        resetLastSelectedMarkerIcon();
 
         if(mapModel.getLongClickMarker() != null){
             mapModel.getLongClickMarker().setVisible(false);
@@ -139,7 +153,7 @@ public class MapPresenter implements MapConstraint.PresenterConstraint {
                     if ("ZERO_RESULTS".equals(jsRespons.getString("status"))) {
                         // zero result query
                         mapView.hideProgressDialog();
-                        mapView.showErrorToast("no direction found");
+                        mapView.showErrorToast(AlgeriaTourUtils.getString(R.string.no_direction_found_msg));
                         return;
                     }
                 } catch (JSONException e) {
@@ -152,7 +166,7 @@ public class MapPresenter implements MapConstraint.PresenterConstraint {
             @Override
             public void onFail(String msg) {
                 mapView.hideProgressDialog();
-                mapView.showErrorToast("connection error");
+                    mapView.showErrorToast(AlgeriaTourUtils.getString(R.string.connection_fail));
             }
         });
 
@@ -180,16 +194,21 @@ public class MapPresenter implements MapConstraint.PresenterConstraint {
 
     public void onNavigationClick(LatLng latLng) {
         if(mapModel.getCurrentPosition() == null ){
-            mapView.showErrorToast("can't find your location");
+            mapView.showErrorToast(AlgeriaTourUtils.getString(R.string.cant_find_location));
             return;
+        }
+        if(mapModel.getLongClickMarker() != null){
+            mapModel.getLongClickMarker().setVisible(false);
+            mapView.hideLongClickNavigationFab();
         }
         traceWay(mapModel.getCurrentPosition(),latLng);
     }
 
 
     public void removePolylineFromMap(){
-        if (mapModel.getRoute() != null) {
+        if (mapModel.getRoute() != null && mapModel.getRoute().getPolyline()!= null) {
             mapModel.getRoute().getPolyline().remove();
+            mapModel.getRoute().getMarker().remove();
             mapModel.setRoute(null);
             mapView.hideRouteActionLayout();
         }
@@ -197,16 +216,15 @@ public class MapPresenter implements MapConstraint.PresenterConstraint {
 
     public void onMyLocationClick() {
         if (mapModel.getCurrentPosition() == null) {
-            mapView.showWarnningMessage("can't find position info please try to move and try " +
-                    "again");
+            mapView.showWarnningMessage(AlgeriaTourUtils.getString(R.string.move_to_find_location_msg));
             return;
         }
-        mapView.zoomeInto(mapModel.getCurrentPosition(), 10);
+        mapView.zoomeInto(mapModel.getCurrentPosition(), 13);
     }
 
     public void traceWayToLongClickMarker() {
         if(mapModel.getCurrentPosition() == null){
-            mapView.showErrorToast("can't find user location");
+            mapView.showErrorToast(AlgeriaTourUtils.getString(R.string.cant_find_location));
             return;
         }
         mapView.hideLongClickNavigationFab();
@@ -215,6 +233,7 @@ public class MapPresenter implements MapConstraint.PresenterConstraint {
 
     public void cancelRoute() {
         removePolylineFromMap();
+        resetLastSelectedMarkerIcon();
         mapView.hideRouteActionLayout();
         if(mapModel.getLongClickMarker() != null)
             mapModel.getLongClickMarker().setVisible(false);
@@ -231,12 +250,40 @@ public class MapPresenter implements MapConstraint.PresenterConstraint {
     public void onRefreshRootClicked() {
         if(mapModel.getRoute() != null ){
             if(mapModel.getCurrentPosition() == null){
-                mapView.showErrorToast("can't find the new location");
+                mapView.showErrorToast(AlgeriaTourUtils.getString(R.string.cant_find_new_location));
             }else{
                 traceWay( mapModel.getCurrentPosition(), mapModel.getRoute().getDestination());
             }
         }else{
             mapView.hideRouteActionLayout();
+        }
+    }
+
+    public void setSelectedIconToMarker(Marker marker, Bitmap selectedIcon, Bitmap markerIcon) {
+        // if exist clicked marker reset his icon
+        resetLastSelectedMarkerIcon();
+
+        marker.setIcon(BitmapDescriptorFactory.fromBitmap(selectedIcon));
+        SelectedMarker selectedMarker = new SelectedMarker();
+        selectedMarker.setMarker(marker);
+        selectedMarker.setDefaultBitmap(markerIcon);
+
+        mapModel.setClickedMarker(selectedMarker);
+    }
+
+    public boolean isSelectedMarker(Marker marker) {
+        if(mapModel.getClickedMarker() == null){
+            return false;
+        }
+        // else
+        LatLng selectedMarkerPosition = mapModel.getClickedMarker().getMarker().getPosition();
+        if (marker.getPosition().longitude == selectedMarkerPosition.longitude &&
+                marker.getPosition().latitude == selectedMarkerPosition.latitude
+                && marker.getTitle().equals(mapModel.getClickedMarker().getMarker().getTitle())) {
+            mapModel.getClickedMarker().setMarker(marker);
+            return true;
+        }else{
+            return false;
         }
     }
 
@@ -270,10 +317,16 @@ public class MapPresenter implements MapConstraint.PresenterConstraint {
             if (polylineOptions != null) {
                 Polyline polyline = mapView.addPolyline(polylineOptions);
                 mapModel.getRoute().setPolyline(polyline);
+                MarkerOptions markerOptions = new MarkerOptions().position(mapModel.getRoute().getDestination()).
+                        icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
+                mapModel.getRoute().setMarker(mapView.addMarker(markerOptions));
+
                 countTry = 0;
                 mapView.hidePointDetailleView();
                 mapView.moveCameratoPath(mapModel.getRoute().getPolyline());
                 mapView.showRouteActionLayout();
+                mapView.hideProgressDialog();
             } else {
                 if (countTry < maxTry) {
                     countTry++;
@@ -282,10 +335,10 @@ public class MapPresenter implements MapConstraint.PresenterConstraint {
                                     .getDestination()), 5000);
                 } else {
                     countTry = 0;
-                    mapView.showErrorToast("can't load direction for the moment");
+                    mapView.showErrorToast(AlgeriaTourUtils.getString(R.string.connection_fail));
+                    mapView.hideProgressDialog();
                 }
             }
-            mapView.hideProgressDialog();
 
         }
     }

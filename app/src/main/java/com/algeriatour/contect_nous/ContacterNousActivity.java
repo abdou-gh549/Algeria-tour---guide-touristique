@@ -14,7 +14,6 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.androidnetworking.interfaces.StringRequestListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -86,13 +85,13 @@ public class ContacterNousActivity extends AppCompatActivity {
                             e.printStackTrace();
                             Log.d("tixx", "onResponse: catch = " + e.getMessage());
                         }
-                        onMessageSendFail("cant send message ... server Error");
+                        onMessageSendFail(getString(R.string.server_error));
                     }
 
                     @Override
                     public void onError(ANError anError) {
                         spotsDialog.dismiss();
-                        onMessageSendFail("can't send the message ... connection problem !");
+                        onMessageSendFail(getString(R.string.connection_fail));
                     }
                 });
 
@@ -101,11 +100,11 @@ public class ContacterNousActivity extends AppCompatActivity {
     private boolean checkInput() {
         boolean valide = true;
         if (subjectEditText.getText().toString().isEmpty()) {
-            subjectEditText.setError("remplire le sujet svp");
+            subjectEditText.setError(getString(R.string.contacter_nous_empty_subject_error));
             valide = false;
         }
         if (messageEditText.getText().toString().isEmpty()) {
-            messageEditText.setError("remplire le message svp");
+            messageEditText.setError(getString(R.string.contacter_nous_empty_message_error));
             valide = false;
         }
         return valide;
@@ -113,7 +112,7 @@ public class ContacterNousActivity extends AppCompatActivity {
     }
 
     private void onMessageSendSuccess() {
-        Toasty.success(this, "message send success", Toast.LENGTH_LONG, true).show();
+        Toasty.success(this, getString(R.string.contacter_nous_send_success), Toast.LENGTH_LONG, true).show();
         finish();
     }
 
