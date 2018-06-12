@@ -53,8 +53,8 @@
     <string name = "cant_find_location">Localisation introuvable</string>
     <string name = "move_to_find_location_msg">Localisation introuvable, veuillez bouger puis essayer à nouveau</string>
     <string name = "cant_find_new_location">La nouvelle localisation est introuvable</string>
-    <string name = "visiteur_favorite_message">Vous devez vous inscrire pour ajouter des favoris</string>
-    <string name = "visitor_comment_message">Vous devez vous inscrire pour laisser des avis</string>
+    <string name = "visiteur_favorite_message">Vous devez vous identifier pour ajouter des favoris</string>
+    <string name = "visitor_comment_message">Vous devez vous identifier pour laisser des avis</string>
     <string name = "loading_comment_error">Erreur de connexion pendant le chargement</string>
     <string name = "comment_already_exist">Avis déjà laissé pour ce point d\'intérêt</string>
     <string name = "error_while_adding_comment">Erreur d\'ajout d\'avis, réessayer

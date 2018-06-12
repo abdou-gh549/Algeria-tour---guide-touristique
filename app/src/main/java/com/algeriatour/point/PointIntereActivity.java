@@ -1,6 +1,8 @@
 package com.algeriatour.point;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.algeriatour.R;
+import com.algeriatour.login.LoginActivity;
 import com.algeriatour.map.activity.MapActivity;
 import com.algeriatour.uml_class.Commentaire;
 import com.algeriatour.uml_class.PlaceInfo;
@@ -109,16 +112,29 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
     @OnClick(R.id.centre_intere_favorite_fab)
     void onAddToFavoriteClick() {
         if (User.getUserType() == StaticValue.VISITOR) {
-            showToastInformation(getString(R.string.visiteur_favorite_message));
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setMessage(getString(R.string.visiteur_favorite_message));
+            dialog.setPositiveButton("identifier", (dialogInterface, i) -> {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            });
+            dialog.setNegativeButton("Annuler", null);
+            dialog.show();
         } else {
             presneter.checkIfFavoriteExist(pointInteret.getId());
         }
     }
-
     @OnClick(R.id.centre_intere_comment_fab)
     void onAddCommentClick() {
         if (User.getUserType() == StaticValue.VISITOR) {
-            showToastInformation(getString(R.string.visitor_comment_message));
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setMessage(getString(R.string.visitor_comment_message));
+            dialog.setPositiveButton("identifier", (dialogInterface, i) -> {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            });
+            dialog.setNegativeButton("Annuler", null);
+            dialog.show();
         } else {
             presneter.addCommentClicked(pointInteret.getId());
 
