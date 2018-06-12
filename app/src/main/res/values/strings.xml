@@ -4,12 +4,12 @@
     <string name = "password_input_label">Mot de passe</string>
     <string name = "confirme_password_input_label">Confirmer</string>
     <string name = "forget_password_textView">Mot de passe perdu</string>
-    <string name = "login_btn_text">S\'authentifier</string>
+    <string name = "login_btn_text">S\'identifier </string>
     <string name = "signIn_btn_text">S\'inscrire</string>
     <string name = "pseudo_input_label">Pseudo</string>
     <string name = "title_activity_main">MainActivity</string>
     <string name = "main_navItem_profile">Profile</string>
-    <string name = "main_navItem_creatAccount">Créer un compte</string>
+    <string name = "main_navItem_creatAccount">S\'identifier</string>
     <string name = "main_navItem_contacter_nous">Contacter-nous</string>
     <string name = "main_navItem_logout">Déconnecter</string>
     <string name = "main_navItem_exit">Quitter</string>
@@ -28,7 +28,7 @@
     <string name = "refreche_route">Retracer</string>
     <string name = "annuler_itiniraire">Annuler</string>
     <string name = "full_route_view">Vue globale</string>
-    <string name = "server_error">Erreur interne</string>
+    <string name = "server_error">Erreur serveur</string>
     <string name = "connection_fail">Problème de connexion</string>
     <string name = "contacter_nous_empty_subject_error">Champ objet vide</string>
     <string name = "contacter_nous_empty_message_error">Champ message vide</string>
@@ -41,12 +41,11 @@
     <string name = "note_update_success">Note mise à jour</string>
     <string name = "home_empty_ville">Il n\'y a pas des villes pour l\'instant</string>
     <string name = "search_empty_input_message">Champ mot clé vide</string>
-    <string name = "search_not_found">Introuvable</string>
+    <string name = "search_not_found">Pas de résultats</string>
     <string name = "main_gps_permission_error">Activez les permissions GPS pour utiliser la carte</string>
-    <string name = "main_open_profile_error">something happend cant open profile</string>
+    <string name = "main_open_profile_error">erreur</string>
     <string name = "map_gps_off_error">Activez les permissions GPS pour utiliser les options de la carte</string>
-    <string name = "open_gps_messge">Votre GPS est désactivé, voulez-vous l\'activer maintenant
-        ?</string>
+    <string name = "open_gps_messge">Votre GPS est désactivé, voulez-vous l\'activer maintenant?</string>
     <string name = "cant_get_location_msg">Échec dans le service de localisation</string>
     <string name = "connecting_to_location_service_fail">Connexion au serveur de localisation échoué</string>
     <string name = "load_image_error">Le chargement de l\'image a échoué</string>

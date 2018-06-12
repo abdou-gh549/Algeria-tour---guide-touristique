@@ -39,7 +39,7 @@
                     android:layout_height = "wrap_content"
                     android:layout_gravity = "center"
                     android:gravity = "center"
-                    android:text = "Pour Consulter list des favoritsvous devez vous connecter" />
+                    android:text = "Pour Consulter list des favoris vous devez vous connecter" />
 
                 <TextView
                     android:id = "@+id/favorite_visitorConnectTxtV"
@@ -47,7 +47,7 @@
                     android:layout_height = "wrap_content"
                     android:layout_gravity = "center"
                     android:gravity = "center"
-                    android:text = "Click pour connecté"
+                    android:text = "S'identifier"
                     android:textColor = "@color/colorPrimary"
                     android:textStyle = "bold" />
 

@@ -80,6 +80,7 @@ public class FavoriteModel implements FavoriteConstraint.ModelConstraint {
 
             @Override
             public void onError(ANError error) {
+                Log.d("tixx", "onError: favorite : " + error.getMessage());
                 presenter.onLoadFavoriteListFail(AlgeriaTourUtils.getString(R.string
                         .connection_fail));
             }

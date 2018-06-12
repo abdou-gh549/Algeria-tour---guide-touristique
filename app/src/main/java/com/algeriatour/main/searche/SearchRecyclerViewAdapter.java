@@ -2,6 +2,7 @@ package com.algeriatour.main.searche;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -77,16 +78,20 @@ public class SearchRecyclerViewAdapter  extends RecyclerView.Adapter<SearchRecyc
                 view.getContext().startActivity(intent);
 
             });
-
         }
-
 
         public void setData(SearchResult data) {
             this.data = data;
-
-            if(data.getImage() != null){
-                ((ImageView) view.findViewById(R.id.search_result_item_image)).setImageBitmap(data.getImage());
+            Bitmap image;
+            if (data.getImage() != null) {
+                image = data.getImage();
+            } else {
+                BitmapDrawable bitmapdraw = (BitmapDrawable) view.getResources()
+                        .getDrawable(R.drawable.wait_image_2);
+                image = bitmapdraw.getBitmap();
             }
+
+            ((ImageView) view.findViewById(R.id.search_result_item_image)).setImageBitmap(image);
             ((TextView) view.findViewById(R.id.search_result_item_name)).setText(data.getName());
             ((TextView) view.findViewById(R.id.search_result_item_adress)).setText(data.getWilaya());
             ((TextView) view.findViewById(R.id.search_result_item_type)).setText(data.getType());

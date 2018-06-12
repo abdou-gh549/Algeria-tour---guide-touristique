@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,13 +67,13 @@ public class FavoriteFragment extends Fragment implements FavoriteConstraint.Vie
         presenter = new FavoritePresenter(this);
         progressDialog = new SpotsDialog(getActivity());
         progressDialog.setCancelable(false);
+
         setUpSwipToRefresh();
         // user test
         if (User.getUserType() == StaticValue.MEMBER) {
             recyclerView.setVisibility(View.VISIBLE);
             visitorLayout.setVisibility(View.GONE);
             setUpAdapter();
-            presenter.loadFavoriteList();
         } else {
             recyclerView.setVisibility(View.GONE);
             visitorLayout.setVisibility(View.VISIBLE);
@@ -83,6 +84,7 @@ public class FavoriteFragment extends Fragment implements FavoriteConstraint.Vie
 
     @Override
     public void onResume() {
+        Log.d("tixx", "onResume: favrotie");
         if (User.getUserType() == StaticValue.MEMBER)
              presenter.loadFavoriteList();
         super.onResume();
@@ -90,10 +92,10 @@ public class FavoriteFragment extends Fragment implements FavoriteConstraint.Vie
 
     private void setUpSwipToRefresh() {
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            if (User.getUserType() == StaticValue.MEMBER) {
+            if (User.getUserType() == StaticValue.VISITOR) {
+              swipeRefreshLayout.setRefreshing(false);
+            }else{
                 presenter.loadFavoriteList();
-            } else {
-                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }

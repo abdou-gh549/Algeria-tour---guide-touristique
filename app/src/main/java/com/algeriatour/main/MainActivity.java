@@ -239,7 +239,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void disconnect() {
         removeLoginFromSharedPreference();
-        Intent intent = new Intent(this, SplashActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra(StaticValue.START_FROM_SPLASH_TAG, true);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

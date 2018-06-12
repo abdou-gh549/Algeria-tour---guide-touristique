@@ -36,6 +36,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements ResetPas
         presenter = new ResetPasswordPresenter(this);
         Networking.initAndroidNetworking(this);
         progressDialog = new SpotsDialog(this);
+
         progressDialog.setCancelable(false);
     }
 

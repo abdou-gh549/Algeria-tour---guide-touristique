@@ -100,7 +100,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void onLoginFail() {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(StaticValue.START_FROM_SPLASH_TAG, true);
         startActivity(intent);
         finish();
@@ -108,12 +108,11 @@ public class SplashActivity extends AppCompatActivity {
 
     private void onLoginFail(int duration) {
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.putExtra(StaticValue.START_FROM_SPLASH_TAG, true);
             startActivity(intent);
             finish();
         }, duration);
-
     }
 
     private void onLoginSucess() {

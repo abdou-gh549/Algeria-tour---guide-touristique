@@ -43,6 +43,7 @@ public class SignInActivity extends AppCompatActivity implements SignInConstrain
         presenter = new SignInPresenter(this);
         Networking.initAndroidNetworking(this);
         progressDialog = new SpotsDialog(this);
+
         progressDialog.setCancelable(false);
 
     }

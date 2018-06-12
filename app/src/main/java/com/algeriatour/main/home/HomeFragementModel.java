@@ -85,8 +85,7 @@ public class HomeFragementModel implements HomeFragmentConstraint.ModelConstrain
             @Override
             public void onError(ANError error) {
                 Log.d("tixx", "onError: "+ error.getMessage() + " " +error.getErrorDetail());
-                presenter.onLoadVillesFailed(AlgeriaTourUtils.getString(R.string
-                        .connection_fail));
+                presenter.onLoadVillesFailed(AlgeriaTourUtils.getString(R.string.connection_fail));
             }
         });
 

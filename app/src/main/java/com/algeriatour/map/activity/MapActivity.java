@@ -100,6 +100,7 @@ public class MapActivity extends MapBaseActivity implements
         checkGpsStatus();
 
         progressDialog = new SpotsDialog(this);
+        progressDialog.setCancelable(false);
         allPlaceInfo = new ArrayList<>();
         mapPresenter = new MapPresenter(this);
         mapPointViewDetaille = new MapPointViewDetaille(pointDettailleView, this);

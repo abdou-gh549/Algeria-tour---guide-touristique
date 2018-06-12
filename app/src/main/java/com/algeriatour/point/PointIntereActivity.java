@@ -182,6 +182,7 @@ public class PointIntereActivity extends AppCompatActivity implements PointInete
         Button cancelButton = addCommentDialog.findViewById(R.id.centre_intere_addComment_cancele);
         cancelButton.setOnClickListener(view -> addCommentDialog.dismiss());
         addButton.setOnClickListener(view -> {
+            showProgressDialog();
             Commentaire commentaire = new Commentaire();
             commentaire.setPointInteretId(pointInteret.getId());
             commentaire.setUserId(User.getMembre().getId());

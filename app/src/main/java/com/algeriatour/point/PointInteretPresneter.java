@@ -46,7 +46,7 @@ public class PointInteretPresneter implements PointIneteretConstraint.PresenterC
     @Override
     public void onLoadCommentaireFail(String msg) {
         pointInetertView.hideProgressBar();
-        pointInetertView.showTextInDispalyInfor(msg);
+        pointInetertView.showToastError(msg);
     }
 
     @Override

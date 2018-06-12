@@ -59,14 +59,29 @@ public class MapUtils {
 
 
         int imageId = 0;
-        if (type.toLowerCase().equals("port")) {
+
+        String pointType = type.toLowerCase();
+        if (pointType.equals("port")) {
             imageId = R.drawable.ic_marker_port;
-        } else if (type.toLowerCase().equals("plage")) {
+        } else if (pointType.equals("plage")) {
             imageId = R.drawable.ic_marker_plage;
-        } else if (type.toLowerCase().equals("mémorial")) {
+        } else if (pointType.equals("mémorial") || pointType.equals("monument")
+         || pointType.equals("musée")) {
             imageId = R.drawable.ic_marker_musume;
-        } else if (type.toLowerCase().equals("selected")) {
+        } else if (pointType.equals("selected")) {
             imageId = R.drawable.ic_marker_selected;
+        }else if(pointType.equals("mosquée")) {
+            imageId = R.drawable.ic_marker_mosque;
+        }else if (pointType.equals("basilique")) {
+            imageId = R.drawable.ic_marker_basilique;
+        }else if (pointType.equals("lieu historique") || pointType.equals("site historique")) {
+            imageId = R.drawable.ic_marker_historique;
+        }else if(pointType.equals("zoo")) {
+            imageId = R.drawable.ic_marker_zoo;
+        }else if(pointType.equals("parc")) {
+            imageId = R.drawable.ic_marker_parc;
+        }else if (pointType.equals("jardin")){
+            imageId = R.drawable.ic_marker_jardin;
         } else {
             imageId = R.drawable.ic_marker_default;
         }
